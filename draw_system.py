@@ -7,7 +7,6 @@ import numpy as np
 
 record = False
 # record = True
-record_snaps = False
 
 def draw_text(_input):
     text_actor = vtk.vtkTextActor()
@@ -37,9 +36,6 @@ class vtkTimerCallback(object):
 #            _dir = 'C:/Users/bdemin/Desktop/Simulation/'
             _dir = ''
             self._filter, self.writer = get_video(renWin, _dir, rate)
-        elif record_snaps:
-            _dir = 'C:/Users/bdemin/Desktop/Simulation/Snaps/'
-            self._filter, self.writer = get_snapshots(renWin, _dir, self.timer_count)
 
     def execute(self, obj, event):
         key = obj.GetKeySym()
@@ -83,17 +79,10 @@ class vtkTimerCallback(object):
                 if record:
                     self._filter.Modified()
                     self.writer.Write()
-                elif record_snaps:
-#                    self._filter.Modified()
-#                    self.writer.Write()
-                    _dir = 'C:/Users/bdemin/Desktop/Simulation/Snaps/'
-                    snap(self.writer, _dir, self.timer_count)
                 self.timer_count += 1
                 print(np.rad2deg(self.data[4][0].path_dir[self.timer_count]))
             else:
                 if record:
-                    self.writer.End()
-                if record_snaps:
                     self.writer.End()
                 self.timer_count = 0
                 self.iren.DestroyTimer()
