@@ -3,6 +3,8 @@ from place_object import place_object, scale_actor
 from base_classes import Surface
 from get_video import get_video, get_snapshots, snap
 
+import numpy as np
+
 record = False
 # record = True
 record_snaps = False
@@ -51,7 +53,7 @@ class vtkTimerCallback(object):
             self.text_actor.SetInput('Pause')
             obj.GetRenderWindow().Render()
         else:
-#            define camera parameters:
+            # define camera parameters:
             cam_d = 14
             self.camera.SetPosition(self.data[0][0].position[0], -1*cam_d, 0.5*cam_d)
             self.camera.SetFocalPoint(self.data[0][0].position) 
@@ -77,8 +79,6 @@ class vtkTimerCallback(object):
                     
             if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
             # if self.timer_count < 719:
-#                1196 721
-#            if self.timer_count < 1000:
                 obj.GetRenderWindow().Render()
                 if record:
                     self._filter.Modified()
@@ -89,6 +89,7 @@ class vtkTimerCallback(object):
                     _dir = 'C:/Users/bdemin/Desktop/Simulation/Snaps/'
                     snap(self.writer, _dir, self.timer_count)
                 self.timer_count += 1
+                print(np.rad2deg(self.data[4][0].path_dir[self.timer_count]))
             else:
                 if record:
                     self.writer.End()

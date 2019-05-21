@@ -83,25 +83,21 @@ track_units = []
 obj_type = 'Track_Unit'
 position_data = np.loadtxt(path_directory + obj_type + '.txt', delimiter = ',')
 
-#calculate directions:
-position_data_L, position_data_R = np.split(position_data, 2, axis = 1)
-direction_data_L = np.roll(position_data_L, 3, axis=1) - position_data_L
-direction_data_R = np.roll(position_data_R, 3, axis=1) - position_data_R
-direction_data = np.concatenate((direction_data_L, direction_data_R), axis = 1)
-
-
 num_cols = int(position_data.shape[1])
-for track_unit_index in range(0, num_cols, 3):
+for track_unit_index in range(0, num_cols, 6):
     path_loc = []
     path_dir = []
-    _slice = slice(track_unit_index, track_unit_index+3)
-    path_loc = position_data[:, _slice]
-    path_dir = np.asarray(list(chassis[0].path_dir))
-    y_angle = np.arctan2(direction_data[:,track_unit_index], direction_data[:,track_unit_index+2])
-    path_dir[:,1] = np.deg2rad(90) + y_angle
+    loc_slice = slice(track_unit_index, track_unit_index+3)
+    dir_slice = slice(track_unit_index+3, track_unit_index+6)
+    path_loc = position_data[:, loc_slice]
+    path_dir = position_data[:, dir_slice]
+    path_dir[:,2] += np.deg2rad(180)
     track_units.append(Track_Unit(path_loc, path_dir))
 
-    
+track_units[63].actor.GetProperty().SetColor([1,0,0])
+print(track_units[63].path_loc[0])
+print(np.rad2deg(track_units[63].path_dir[0]))
+
 #%%create Obstacle objects:
     
 if '6' in path_directory:
@@ -123,21 +119,7 @@ if '6' in path_directory:
         sphered_rocks.append(Sphered_Rock(path_loc, path_dir,
                                           cloud_positions, cloud_rads))
         
-#if '7' in path_directory:
-#    obstacles = []
-#    obj_type = 'Obstacle'
-#    path_data = np.loadtxt(path_directory + obj_type + '.txt', delimiter = ',')
-#    
-#    num_cols = int(path_data.shape[1])
-#    for obstacle_index in range(0, num_cols, 6):
-#        path_loc = []
-#        path_dir = []
-#        loc_slice = slice(obstacle_index, obstacle_index+3)
-#        dir_slice = slice(obstacle_index+3, obstacle_index+6)
-#        path_loc = path_data[:,loc_slice]
-#        path_dir = path_data[:,dir_slice]
-#        obstacles.append(Obstacle(path_loc, path_dir))
-#        
+        
 #%%draw system:
 #load time data:
 total_time = np.loadtxt(path_directory + 'Time_Data.txt', delimiter = ',')
