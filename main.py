@@ -7,7 +7,8 @@ from simulation_description import show_description
 
 
 dataFile = 'M113_STL.xlsx'
-path_directory = 'INPUT/Simulation_5/'
+# path_directory = 'INPUT/Simulation_5/'
+path_directory = 'C:/Users/bdemin/Documents/GitHub/M113_tests/Data_Movies/Simulation_5/'
 show_description(path_directory)
 
 #%%create Chassis object:

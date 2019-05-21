@@ -3,8 +3,8 @@ from place_object import place_object, scale_actor
 from base_classes import Surface
 from get_video import get_video, get_snapshots, snap
 
-#record = False
-record = True
+record = False
+# record = True
 record_snaps = False
 
 def draw_text(_input):
@@ -75,8 +75,8 @@ class vtkTimerCallback(object):
                                      _object.path_dir[self.timer_count])
                     sphered_rock.Update_Spheres()
                     
-#            if 0 <= self.timer_count and self.timer_count < int((self.num_frames - 1)*(2/4)):
-            if self.timer_count < 719:
+            if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
+            # if self.timer_count < 719:
 #                1196 721
 #            if self.timer_count < 1000:
                 obj.GetRenderWindow().Render()

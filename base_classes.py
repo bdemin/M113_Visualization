@@ -23,7 +23,8 @@ def get_stl_actor(filename):
     return actor
 
         
-directory = 'STL/'
+# directory = 'STL/'
+directory = 'C:/Users/bdemin/Documents/GitHub/M113_tests/Data_Movies/STL/'
 class Chassis(object):
     def __init__(self, path_loc, path_dir):        
         self.position = path_loc[0]
@@ -152,7 +153,7 @@ class Surface(object):
         self.type = 'Surface'
         resolution = 6
         
-        if '3' in path_directory:
+        if 'Simulation_3' in path_directory:
             width = 2
             left_offset = width/2
             right_offset = -width/2
@@ -162,9 +163,9 @@ class Surface(object):
             right_actor = get_surface_actor(width, resolution, right_offset, path_directory + file)
             self.actors = [left_actor, right_actor]
             
-        elif '4' in path_directory:
+        elif 'Simulation_4' in path_directory:
             self.actors = [get_3dsurface_actor(path_directory)]
-        elif '5' in path_directory:
+        elif 'Simulation_5' in path_directory:
             self.actors = [get_3dsurface_actor(path_directory)]
         else:
             width = 10
