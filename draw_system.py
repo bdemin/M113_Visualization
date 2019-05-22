@@ -1,28 +1,31 @@
+import numpy as np
 import vtk
+
+from place_camera import place_camera
 from place_object import place_object, scale_actor
 from base_classes import Surface
 from get_video import get_video, get_snapshots, snap
+from draw_text import draw_text
 
-import numpy as np
 
 record = False
 # record = True
 
-def draw_text(_input):
-    text_actor = vtk.vtkTextActor()
-    text_actor.SetInput(_input)
-    text_prop = text_actor.GetTextProperty()
-    text_prop.SetFontFamilyToArial()
-    text_prop.SetFontSize(34)
-    text_prop.SetColor(1,1,1)
-    text_actor.SetDisplayPosition(80,900)
-    return text_actor
+# def draw_text(_input):
+#     text_actor = vtk.vtkTextActor()
+#     text_actor.SetInput(_input)
+#     text_prop = text_actor.GetTextProperty()
+#     text_prop.SetFontFamilyToArial()
+#     text_prop.SetFontSize(34)
+#     text_prop.SetColor(1,1,1)
+#     text_actor.SetDisplayPosition(80,900)
+#     return text_actor
     
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
-        self.timer_count = 0
-#        self.timer_count = 299+299+299
+        # self.timer_count = 0
+        self.timer_count = 360
         self.pause = False
         
         self.renderer = renderer
@@ -49,12 +52,8 @@ class vtkTimerCallback(object):
             self.text_actor.SetInput('Pause')
             obj.GetRenderWindow().Render()
         else:
-            # define camera parameters:
-            cam_d = 14
-            self.camera.SetPosition(self.data[0][0].position[0], -1*cam_d, 0.5*cam_d)
-            self.camera.SetFocalPoint(self.data[0][0].position) 
-            self.camera.OrthogonalizeViewUp()
-            self.camera.Azimuth(15)
+            place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.data[0][0].path_dir[self.timer_count])
+
             
             text = 'time = %.1fs' % (self.timer_count * self.dt)
             self.text_actor.SetInput(text)
@@ -80,6 +79,9 @@ class vtkTimerCallback(object):
                     self._filter.Modified()
                     self.writer.Write()
                 self.timer_count += 1
+                # print('viewup: ', self.camera.GetViewUp(),'\n')
+                # print('roll: ', self.camera.GetRoll(),'\n')
+                # print('view angle: ', self.camera.GetViewAngle(),'\n')
                 print(np.rad2deg(self.data[4][0].path_dir[self.timer_count]))
             else:
                 if record:
