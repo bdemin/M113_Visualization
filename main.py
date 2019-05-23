@@ -91,12 +91,7 @@ for track_unit_index in range(0, num_cols, 6):
     dir_slice = slice(track_unit_index+3, track_unit_index+6)
     path_loc = position_data[:, loc_slice]
     path_dir = position_data[:, dir_slice]
-    path_dir[:,2] += np.deg2rad(180)
     track_units.append(Track_Unit(path_loc, path_dir))
-
-track_units[63].actor.GetProperty().SetColor([1,0,0])
-print(track_units[63].path_loc[0])
-print(np.rad2deg(track_units[63].path_dir[0]))
 
 #%%create Obstacle objects:
     

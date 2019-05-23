@@ -1,4 +1,3 @@
-
 from vtk import vtkTextActor
 
 

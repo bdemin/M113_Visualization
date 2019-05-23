@@ -11,4 +11,4 @@ def place_camera(camera, chs_pos, chs_ang):
     # place camera and set focal point:
     camera.SetViewUp([0,0,1])
     camera.SetPosition(camera_pos)
-    camera.SetFocalPoint(chs_pos) 
+    camera.SetFocalPoint(chs_pos)

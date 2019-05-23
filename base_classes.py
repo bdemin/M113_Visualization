@@ -43,7 +43,7 @@ class Chassis(object):
         self.position = new_position
         self.angles = new_angles
         
-    def __repr__(self):
+    def __repr__(self): 
         return "%r\n location: %r \n orientation: %r" % (self.type,
                                                            self.position,
                                                            str(np.rad2deg(self.angles)))

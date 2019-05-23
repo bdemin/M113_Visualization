@@ -4,28 +4,16 @@ import vtk
 from place_camera import place_camera
 from place_object import place_object, scale_actor
 from base_classes import Surface
-from get_video import get_video, get_snapshots, snap
 from draw_text import draw_text
+from get_video import get_video, get_snapshots, snap
 
 
-record = False
-# record = True
-
-# def draw_text(_input):
-#     text_actor = vtk.vtkTextActor()
-#     text_actor.SetInput(_input)
-#     text_prop = text_actor.GetTextProperty()
-#     text_prop.SetFontFamilyToArial()
-#     text_prop.SetFontSize(34)
-#     text_prop.SetColor(1,1,1)
-#     text_actor.SetDisplayPosition(80,900)
-#     return text_actor
-    
+# record = False
+record = True
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
-        # self.timer_count = 0
-        self.timer_count = 360
+        self.timer_count = 0
         self.pause = False
         
         self.renderer = renderer
@@ -36,7 +24,7 @@ class vtkTimerCallback(object):
         self.renderer.AddActor(self.text_actor)
         
         if record:
-#            _dir = 'C:/Users/bdemin/Desktop/Simulation/'
+            # _dir = 'C:/Users/bdemin/Desktop/Simulation/'
             _dir = ''
             self._filter, self.writer = get_video(renWin, _dir, rate)
 
@@ -54,7 +42,6 @@ class vtkTimerCallback(object):
         else:
             place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.data[0][0].path_dir[self.timer_count])
 
-            
             text = 'time = %.1fs' % (self.timer_count * self.dt)
             self.text_actor.SetInput(text)
            
@@ -82,7 +69,6 @@ class vtkTimerCallback(object):
                 # print('viewup: ', self.camera.GetViewUp(),'\n')
                 # print('roll: ', self.camera.GetRoll(),'\n')
                 # print('view angle: ', self.camera.GetViewAngle(),'\n')
-                print(np.rad2deg(self.data[4][0].path_dir[self.timer_count]))
             else:
                 if record:
                     self.writer.End()
@@ -94,17 +80,17 @@ class vtkTimerCallback(object):
 
 
 def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
-#    create renderer, figure and axes:
+    # create renderer, figure and axes:
     renderer = vtk.vtkRenderer()
     renWin = vtk.vtkRenderWindow()
     renWin.AddRenderer(renderer)
     iren = vtk.vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-#   add stationary axes:    
+    # add stationary axes:    
     axesActor = vtk.vtkAxesActor()
     scale_actor(axesActor, 4)
-#    renderer.AddActor(axesActor)
+    # renderer.AddActor(axesActor)
     widget = vtk.vtkOrientationMarkerWidget()
     widget.SetOrientationMarker(axesActor)
     widget.SetInteractor(iren)
@@ -116,7 +102,7 @@ def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
     renderer.SetBackground2(0.2,0.2,0.6)
     renWin.SetSize(1920, 1080)
 
-# add all actors to the renderer
+    # add all actors to the renderer
     for i in range(len(args)):
         for obj in args[i]:
             renderer.AddActor(obj.actor)
@@ -132,7 +118,6 @@ def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
                 renderer.AddActor(sphere_actor)
                 place_object(actor, sphered_rock.position + sphered_rock.cloud[i], sphered_rock.direction)
                 
-
     iren.Initialize()
 
     # Sign up to receive TimerEvent
@@ -150,7 +135,5 @@ def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
     
     iren.AddObserver('TimerEvent', callback.execute)
     
-
-#    FPMS = FPS/300
-    iren.CreateRepeatingTimer(int(1/FPMS)); #ms
+    iren.CreateRepeatingTimer(int(1/FPMS)) #ms
     iren.Start()

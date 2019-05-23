@@ -1,5 +1,6 @@
 import vtk
 
+
 def get_video(renWin, _dir, rate):
     _filter = vtk.vtkWindowToImageFilter()
     _filter.SetInput(renWin)
