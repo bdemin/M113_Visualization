@@ -1,6 +1,9 @@
 import vtk
 import numpy as np
 
+
+color_map = True
+#color_map = False
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
@@ -51,54 +54,64 @@ def get_3dsurface_actor(path_directory):
             triangle.GetPointIds().SetId(2, count + 5)
     
             count += 6
-    
             triangles.InsertNextCell(triangle)
     
     # Create a polydata object
-    trianglePolyData = vtk.vtkPolyData()
+    PolyData = vtk.vtkPolyData()
     
     # Add the geometry and topology to the polydata
-    trianglePolyData.SetPoints(points)
-    #trianglePolyData.GetPointData().SetScalars(colors)
-    trianglePolyData.SetPolys(triangles)
+    PolyData.SetPoints(points)
+    PolyData.SetPolys(triangles)
     
+    #%% Create colormap
+    bounds= 6*[0.0]
+    PolyData.GetBounds(bounds)
+
+    # Find min and max z
+    minz = bounds[4]
+    maxz = bounds[5]
+
+    colorLookupTable = vtk.vtkLookupTable()
+    colorLookupTable.SetTableRange(minz, maxz)
+    colorLookupTable.Build()
+
+    # Generate the colors for each point based on the color map
+    colors = vtk.vtkUnsignedCharArray()
+    colors.SetNumberOfComponents(3)
+    colors.SetName("Colors")
+        
+    for i in range(0, PolyData.GetNumberOfPoints()):
+        p= 3*[0.0]
+        PolyData.GetPoint(i,p)
+
+        dcolor = 3*[0.0]
+        colorLookupTable.GetColor(p[2], dcolor)
+
+        color=3*[0.0]
+        for j in range(0,3):
+          color[j] = int(255.0 * dcolor[j])
+
+        try:
+            colors.InsertNextTupleValue(color)
+        except AttributeError:
+            # For compatibility with new VTK generic data arrays.
+            colors.InsertNextTypedTuple(color)
+
+
+    PolyData.GetPointData().SetScalars(colors)
+
     # Clean the polydata so that the edges are shared !
     cleanPolyData = vtk.vtkCleanPolyData()
-    cleanPolyData.SetInputData(trianglePolyData)
+    cleanPolyData.SetInputData(PolyData)
     
     # Use a filter to smooth the data (will add triangles and smooth)
     smooth_loop = vtk.vtkLoopSubdivisionFilter()
     smooth_loop.SetNumberOfSubdivisions(3)
     smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
     
-  
-    res = 10
-    tableSize = res*res + 1
-    lut = vtk.vtkLookupTable()
-    lut.SetNumberOfTableValues(tableSize)
-    lut.Build()
-    
-    #Fill in a few known colors, the rest will be generated if needed
-    lut.SetTableValue(0     , 0     , 0     , 0, 1)  #Black
-    lut.SetTableValue(1, 0.8900, 0.8100, 0.3400, 1) # Banana
-    lut.SetTableValue(2, 1.0000, 0.3882, 0.2784, 1) # Tomato
-    lut.SetTableValue(3, 0.9608, 0.8706, 0.7020, 1) # Wheat
-    lut.SetTableValue(4, 0.9020, 0.9020, 0.9804, 1) # Lavender
-    lut.SetTableValue(5, 1.0000, 0.4900, 0.2500, 1) # Flesh
-    lut.SetTableValue(6, 0.5300, 0.1500, 0.3400, 1) # Raspberry
-    lut.SetTableValue(7, 0.9804, 0.5020, 0.4471, 1) # Salmon
-    lut.SetTableValue(8, 0.7400, 0.9900, 0.7900, 1) # Mint
-    lut.SetTableValue(9, 0.2000, 0.6300, 0.7900, 1) # Peacock
-    
-    
-    
-    
     # Create a mapper and actor for smoothed dataset
     mapper = vtk.vtkPolyDataMapper()
     mapper.SetInputConnection(smooth_loop.GetOutputPort())
-    
-    mapper.SetScalarRange(0, tableSize - 1)
-    mapper.SetLookupTable(lut)
     
     actor_loop = vtk.vtkActor()
     actor_loop.SetMapper(mapper)
