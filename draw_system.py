@@ -13,7 +13,7 @@ record = False
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
-        self.timer_count = 0
+        self.timer_count = 1000
         self.pause = False
         
         self.renderer = renderer
@@ -24,7 +24,6 @@ class vtkTimerCallback(object):
         self.renderer.AddActor(self.text_actor)
         
         if record:
-            # _dir = 'C:/Users/bdemin/Desktop/Simulation/'
             _dir = ''
             self._filter, self.writer = get_video(renWin, _dir, rate)
 

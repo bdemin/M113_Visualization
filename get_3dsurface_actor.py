@@ -3,7 +3,7 @@ import numpy as np
 
 
 color_map = True
-#color_map = False
+color_map = False
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
@@ -63,42 +63,43 @@ def get_3dsurface_actor(path_directory):
     PolyData.SetPoints(points)
     PolyData.SetPolys(triangles)
     
-    #%% Create colormap
-    bounds= 6*[0.0]
-    PolyData.GetBounds(bounds)
+    if color_map:
+        #%% Create colormap
+        bounds= 6*[0.0]
+        PolyData.GetBounds(bounds)
 
-    # Find min and max z
-    minz = bounds[4]
-    maxz = bounds[5]
+        # Find min and max z
+        minz = bounds[4]
+        maxz = bounds[5]
 
-    colorLookupTable = vtk.vtkLookupTable()
-    colorLookupTable.SetTableRange(minz, maxz)
-    colorLookupTable.Build()
+        colorLookupTable = vtk.vtkLookupTable()
+        colorLookupTable.SetTableRange(minz, maxz)
+        colorLookupTable.Build()
 
-    # Generate the colors for each point based on the color map
-    colors = vtk.vtkUnsignedCharArray()
-    colors.SetNumberOfComponents(3)
-    colors.SetName("Colors")
-        
-    for i in range(0, PolyData.GetNumberOfPoints()):
-        p= 3*[0.0]
-        PolyData.GetPoint(i,p)
+        # Generate the colors for each point based on the color map
+        colors = vtk.vtkUnsignedCharArray()
+        colors.SetNumberOfComponents(3)
+        colors.SetName("Colors")
+            
+        for i in range(0, PolyData.GetNumberOfPoints()):
+            p= 3*[0.0]
+            PolyData.GetPoint(i,p)
 
-        dcolor = 3*[0.0]
-        colorLookupTable.GetColor(p[2], dcolor)
+            dcolor = 3*[0.0]
+            colorLookupTable.GetColor(p[2], dcolor)
 
-        color=3*[0.0]
-        for j in range(0,3):
-          color[j] = int(255.0 * dcolor[j])
+            color=3*[0.0]
+            for j in range(0,3):
+                color[j] = int(255.0 * dcolor[j])
 
-        try:
-            colors.InsertNextTupleValue(color)
-        except AttributeError:
-            # For compatibility with new VTK generic data arrays.
-            colors.InsertNextTypedTuple(color)
+            try:
+                colors.InsertNextTupleValue(color)
+            except AttributeError:
+                # For compatibility with new VTK generic data arrays.
+                colors.InsertNextTypedTuple(color)
 
 
-    PolyData.GetPointData().SetScalars(colors)
+        PolyData.GetPointData().SetScalars(colors)
 
     # Clean the polydata so that the edges are shared !
     cleanPolyData = vtk.vtkCleanPolyData()
