@@ -6,8 +6,8 @@ from draw_system import draw_system
 from simulation_description import show_description
 
 
-# path_directory = 'C:/Users/bdemin/Documents/GitHub/M113_tests/Data_Movies/Simulation_5/'
-path_directory = 'C:/Users/slavd/Documents/GitHub/M113_tests/Data_Movies/Simulation_5/'
+path_directory = 'C:/Users/bdemin/Documents/GitHub/M113_tests/Data_Movies/Simulation_5/'
+# path_directory = 'C:/Users/slavd/Documents/GitHub/M113_tests/Data_Movies/Simulation_5/'
 show_description(path_directory)
 
 #%%create Chassis object:

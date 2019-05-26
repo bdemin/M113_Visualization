@@ -16,7 +16,7 @@
             "name": "Python: main.py",
             "type": "python",
             "request": "launch",
-            "program": "C:/Users/slavd/Documents/GitHub/M113_Visualization/main.py",
+            "program": "C:/Users/bdemin/Documents/GitHub/M113_Visualization/main.py",
             "console": "integratedTerminal"
         },
         {

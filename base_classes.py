@@ -23,9 +23,7 @@ def get_stl_actor(filename):
     return actor
 
         
-# directory = 'STL/'
-# directory = 'C:/Users/bdemin/Documents/GitHub/M113_tests/Data_Movies/STL/'
-directory = 'C:/Users/slavd/Documents/GitHub/M113_tests/Data_Movies/STL/'
+directory = 'STL/'
 class Chassis(object):
     def __init__(self, path_loc, path_dir):        
         self.position = path_loc[0]
