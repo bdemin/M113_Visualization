@@ -1,7 +1,7 @@
 import vtk
 
 
-def get_video(renWin, _dir, rate):
+def get_video(renWin, rate, filename):
     _filter = vtk.vtkWindowToImageFilter()
     _filter.SetInput(renWin)
     _filter.SetInputBufferTypeToRGB()
@@ -10,9 +10,8 @@ def get_video(renWin, _dir, rate):
     writer.SetRate(int(rate))
     writer.SetQuality(2)
     writer.SetCompressorFourCC('DIB')
-#    writer.PromptCompressionOptionsOn()
     writer.SetInputConnection(_filter.GetOutputPort())
-    writer.SetFileName(_dir + 'Test3.avi')
+    writer.SetFileName(filename + '.avi')
     writer.Start()
     return _filter, writer
 

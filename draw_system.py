@@ -9,11 +9,12 @@ from get_video import get_video, get_snapshots, snap
 
 
 record = False
-# record = True
+record = True
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
-        self.timer_count = 1000
+        self.timer_count = 1
+        self.rate = rate
         self.pause = False
         
         self.renderer = renderer
@@ -24,8 +25,8 @@ class vtkTimerCallback(object):
         self.renderer.AddActor(self.text_actor)
         
         if record:
-            _dir = ''
-            self._filter, self.writer = get_video(renWin, _dir, rate)
+            self.video_count = 1
+            self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
 
     def execute(self, obj, event):
         key = obj.GetKeySym()
@@ -59,15 +60,15 @@ class vtkTimerCallback(object):
                     sphered_rock.Update_Spheres()
                     
             if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
-            # if self.timer_count < 719:
                 obj.GetRenderWindow().Render()
                 if record:
+                    if self.timer_count % 500 == 0:
+                        self.writer.End()
+                        self.video_count += 1
+                        self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
                     self._filter.Modified()
                     self.writer.Write()
                 self.timer_count += 1
-                # print('viewup: ', self.camera.GetViewUp(),'\n')
-                # print('roll: ', self.camera.GetRoll(),'\n')
-                # print('view angle: ', self.camera.GetViewAngle(),'\n')
             else:
                 if record:
                     self.writer.End()
