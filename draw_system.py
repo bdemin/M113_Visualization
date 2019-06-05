@@ -9,7 +9,7 @@ from get_video import get_video, get_snapshots, snap
 
 
 record = False
-record = True
+# record = True
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
@@ -104,19 +104,21 @@ def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
 
     # add all actors to the renderer
     for i in range(len(args)):
-        for obj in args[i]:
-            renderer.AddActor(obj.actor)
-            place_object(obj.actor, obj.position, obj.angles)
+        if not args[i] == None:
+            for obj in args[i]:
+                renderer.AddActor(obj.actor)
+                place_object(obj.actor, obj.position, obj.angles)
             
-    surface = Surface(path_directory)
-    for actor in surface.actors:
-        renderer.AddActor(actor)
+    # NEED TO FIX THIS
+    # surface = Surface(path_directory)
+    # for actor in surface.actors:
+        # renderer.AddActor(actor)
         
     if sphered_rocks is not None:
         for sphered_rock in sphered_rocks:
             for i, sphere_actor in enumerate(sphered_rock.actors):
                 renderer.AddActor(sphere_actor)
-                place_object(actor, sphered_rock.position + sphered_rock.cloud[i], sphered_rock.direction)
+                place_object(sphere_actor, sphered_rock.position + sphered_rock.cloud[i], sphered_rock.direction)
                 
     iren.Initialize()
 
@@ -126,7 +128,7 @@ def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
     FPMS = FPS/1000
     
     callback = vtkTimerCallback(renderer, renWin, FPS)
-    callback.data = args
+    callback.data = [x for x in args if x is not None]
     callback.ren = renderer
     callback.num_frames = args[0][0].path_dir.shape[0]
     callback.iren = iren
