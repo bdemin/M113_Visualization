@@ -1,27 +1,12 @@
 import numpy as np
-# import vtk
 from vtk import vtkSTLReader, vtkPolyDataMapper, vtkActor, vtkSphereSource
 
-from get_surface_actor import get_surface_actor
-from set_actor_visuals import set_actor_visuals
-from get_3dsurface_actor import get_3dsurface_actor
-from place_object import place_object
+# from get_surface_actor import get_surface_actor
+# from set_actor_visuals import set_actor_visuals
+# from get_3dsurface_actor import get_3dsurface_actor
+# from place_object import place_object
 
 
-def find_angle(x0, y0):
-    return np.arctan(y0/x0)*180/np.pi+90
-
-def get_stl_actor(filename):
-    reader = vtkSTLReader()
-    reader.SetFileName(filename)
-    
-    mapper = vtkPolyDataMapper()
-    mapper.SetInputConnection(reader.GetOutputPort())
-    
-    actor = vtkActor()
-    actor.SetMapper(mapper)
-    
-    return actor
 
         
 directory = 'STL/'
