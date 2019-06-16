@@ -1,5 +1,10 @@
-import vtk
 import numpy as np
+
+from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
+    vtkPolyData, vtkLookupTable, vtkCleanPolyData, \
+    vtkUnsignedCharArray, vtkLoopSubdivisionFilter, \
+    vtkPolyDataMapper, vtkActor
+
 
 #color_map = True
 color_map = False
@@ -16,8 +21,8 @@ def get_surface_actor(width, resolution, y_offset, path_directory):
     n = y_coords.shape[0]
     
     # Define points, triangles and colors
-    points = vtk.vtkPoints()
-    triangles = vtk.vtkCellArray()
+    points = vtkPoints()
+    triangles = vtkCellArray()
     
     # Build the meshgrid manually
     count = 0
@@ -32,7 +37,7 @@ def get_surface_actor(width, resolution, y_offset, path_directory):
             points.InsertNextPoint(x_coords[i], y_coords[j+1], z2)
             points.InsertNextPoint(x_coords[i+1], y_coords[j], z3)
     
-            triangle = vtk.vtkTriangle()
+            triangle = vtkTriangle()
             triangle.GetPointIds().SetId(0, count)
             triangle.GetPointIds().SetId(1, count + 1)
             triangle.GetPointIds().SetId(2, count + 2)
@@ -48,7 +53,7 @@ def get_surface_actor(width, resolution, y_offset, path_directory):
             points.InsertNextPoint(x_coords[i+1], y_coords[j+1], z2)
             points.InsertNextPoint(x_coords[i+1], y_coords[j], z3)
             
-            triangle = vtk.vtkTriangle()
+            triangle = vtkTriangle()
             triangle.GetPointIds().SetId(0, count + 3)
             triangle.GetPointIds().SetId(1, count + 4)
             triangle.GetPointIds().SetId(2, count + 5)
@@ -58,7 +63,7 @@ def get_surface_actor(width, resolution, y_offset, path_directory):
             triangles.InsertNextCell(triangle)
     
     # Create a polydata object
-    PolyData = vtk.vtkPolyData()
+    PolyData = vtkPolyData()
     
     # Add the geometry and topology to the polydata
     PolyData.SetPoints(points)
@@ -69,11 +74,11 @@ def get_surface_actor(width, resolution, y_offset, path_directory):
         bounds = PolyData.GetBounds()
         minz = bounds[4]
         maxz = bounds[5]
-        lut = vtk.vtkLookupTable()
+        lut = vtkLookupTable()
         lut.SetTableRange(minz, maxz)
         lut.Build()
         
-        colors = vtk.vtkUnsignedCharArray()
+        colors = vtkUnsignedCharArray()
         colors.SetNumberOfComponents(3)
         colors.SetName('Colors')
         
@@ -87,18 +92,18 @@ def get_surface_actor(width, resolution, y_offset, path_directory):
         PolyData.GetPointData().SetScalars(colors)
         
     # Clean the polydata so that the edges are shared !
-    cleanPolyData = vtk.vtkCleanPolyData()
+    cleanPolyData = vtkCleanPolyData()
     cleanPolyData.SetInputData(PolyData)
     
     # Use a filter to smooth the data (will add triangles and smooth)
-    smoothPolyData = vtk.vtkLoopSubdivisionFilter()
+    smoothPolyData = vtkLoopSubdivisionFilter()
     smoothPolyData.SetNumberOfSubdivisions(3)
     smoothPolyData.SetInputConnection(cleanPolyData.GetOutputPort())
     
     # Create a mapper and actor for smoothed dataset
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(smoothPolyData.GetOutputPort())
-    actor_loop = vtk.vtkActor()
+    actor_loop = vtkActor()
     actor_loop.SetMapper(mapper)
     
     actor_loop.GetProperty().SetColor(0.929, 0.788, 0.686)

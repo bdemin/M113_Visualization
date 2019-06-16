@@ -1,5 +1,6 @@
 import numpy as np
-import vtk
+# import vtk
+from vtk import vtkSTLReader, vtkPolyDataMapper, vtkActor, vtkSphereSource
 
 from get_surface_actor import get_surface_actor
 from set_actor_visuals import set_actor_visuals
@@ -11,13 +12,13 @@ def find_angle(x0, y0):
     return np.arctan(y0/x0)*180/np.pi+90
 
 def get_stl_actor(filename):
-    reader = vtk.vtkSTLReader()
+    reader = vtkSTLReader()
     reader.SetFileName(filename)
     
-    mapper = vtk.vtkPolyDataMapper()
+    mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(reader.GetOutputPort())
     
-    actor = vtk.vtkActor()
+    actor = vtkActor()
     actor.SetMapper(mapper)
     
     return actor
@@ -207,16 +208,16 @@ class Sphered_Rock():
 #        self.actor = get_stl_actor(directory + self.type + '.STL')
         
     def Get_Sphere(self, position, radius):
-        source = vtk.vtkSphereSource()
+        source = vtkSphereSource()
         source.SetCenter(position)
         source.SetRadius(radius)
         source.SetThetaResolution(3)
         source.SetPhiResolution(3)
         
-        mapper = vtk.vtkPolyDataMapper()
+        mapper = vtkPolyDataMapper()
         mapper.SetInputConnection(source.GetOutputPort())
         
-        actor = vtk.vtkActor()
+        actor = vtkActor()
         actor.SetMapper(mapper)
         actor.GetProperty().SetColor(0.3,0.3,0.3)
         return actor

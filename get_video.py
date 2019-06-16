@@ -1,12 +1,12 @@
-import vtk
+from vtk import vtkWindowToImageFilter, vtkAVIWriter, vtkPNGWriter
 
 
 def get_video(renWin, rate, filename):
-    _filter = vtk.vtkWindowToImageFilter()
+    _filter = vtkWindowToImageFilter()
     _filter.SetInput(renWin)
     _filter.SetInputBufferTypeToRGB()
     
-    writer = vtk.vtkAVIWriter()
+    writer = vtkAVIWriter()
     writer.SetRate(int(rate))
     writer.SetQuality(2)
     writer.SetCompressorFourCC('DIB')
@@ -17,11 +17,11 @@ def get_video(renWin, rate, filename):
 
 
 def get_snapshots(renWin, _dir, frame):
-    _filter = vtk.vtkWindowToImageFilter()
+    _filter = vtkWindowToImageFilter()
     _filter.SetInput(renWin)
     _filter.SetInputBufferTypeToRGB()
     
-    writer = vtk.vtkPNGWriter()
+    writer = vtkPNGWriter()
 
     writer.SetInputConnection(_filter.GetOutputPort())
     writer.SetFileName(_dir + 'snap' + str(frame) + '.png')
@@ -32,6 +32,6 @@ def snap(writer, _dir, frame):
     writer.SetFileName(_dir + 'snap' + str(frame) + '.png')
 
 def image_writer(renWin, _dir):
-    _filter = vtk.vtkWindowToImageFilter()
+    _filter = vtkWindowToImageFilter()
     _filter.SetInput(renWin)
     _filter.SetInputBufferTypeToRGB()

@@ -1,5 +1,7 @@
 import numpy as np
-import vtk
+from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
+    vtkRenderWindowInteractor, vtkAxesActor, \
+    vtkOrientationMarkerWidget
 
 from place_camera import place_camera
 from place_object import place_object, scale_actor
@@ -9,7 +11,7 @@ from get_video import get_video, get_snapshots, snap
 
 
 record = False
-record = True
+# record = True
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
@@ -18,7 +20,7 @@ class vtkTimerCallback(object):
         self.pause = False
         
         self.renderer = renderer
-        self.camera = vtk.vtkCamera()
+        self.camera = vtkCamera()
         self.renderer.SetActiveCamera(self.camera)
         
         self.text_actor = draw_text('Init')
@@ -81,17 +83,17 @@ class vtkTimerCallback(object):
 
 def draw_system(*args, path_directory, total_time = 25, sphered_rocks = None):
     # create renderer, figure and axes:
-    renderer = vtk.vtkRenderer()
-    renWin = vtk.vtkRenderWindow()
+    renderer = vtkRenderer()
+    renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
-    iren = vtk.vtkRenderWindowInteractor()
+    iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
     # add stationary axes:    
-    axesActor = vtk.vtkAxesActor()
+    axesActor = vtkAxesActor()
     scale_actor(axesActor, 4)
     # renderer.AddActor(axesActor)
-    widget = vtk.vtkOrientationMarkerWidget()
+    widget = vtkOrientationMarkerWidget()
     widget.SetOrientationMarker(axesActor)
     widget.SetInteractor(iren)
     widget.SetEnabled(1)

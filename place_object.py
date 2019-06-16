@@ -1,5 +1,6 @@
-import vtk
 import numpy as np
+
+from vtk import vtkTransform, vtkMatrix4x4, vtkTransformPolyDataFilter
 
 
 def trans_matrix(dx, dy, dz):
@@ -38,23 +39,23 @@ def rot_matrix(a3, a2, a1):
     
 def place_object(actor, new_pos, angles):
     matrix = np.matmul(trans_matrix(*new_pos) , rot_matrix(*angles))
-    trans = vtk.vtkTransform()
-    vtk_matrix = vtk.vtkMatrix4x4()
+    trans = vtkTransform()
+    vtk_matrix = vtkMatrix4x4()
     m, n = matrix.shape
     for i in range(m):
         for j in range(n):
             vtk_matrix.SetElement(i,j,matrix[i][j])
     trans.SetMatrix(vtk_matrix)
-    transformFilter = vtk.vtkTransformPolyDataFilter()
+    transformFilter = vtkTransformPolyDataFilter()
     transformFilter.SetTransform(trans)
     actor.SetUserTransform(trans)
     
 def scale_actor(actor, factor, prev_trans = None):
-    transform = vtk.vtkTransform()
+    transform = vtkTransform()
     if prev_trans != None:
         transform.Concatenate(prev_trans)
     transform.Scale(tuple(3*[factor]))
-    transformFilter = vtk.vtkTransformPolyDataFilter()
+    transformFilter = vtkTransformPolyDataFilter()
     transformFilter.SetTransform(transform)
     actor.SetUserTransform(transform)
     return transform #can be improved
