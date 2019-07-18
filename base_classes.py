@@ -164,7 +164,7 @@ class Surface(object):
             
         elif 'Simulation_4' in path_directory:
             self.actors = [get_3dsurface_actor(path_directory)]
-        elif 'Simulation_5' in path_directory:
+        elif '3d_Rocks1' in path_directory:
             self.actors = [get_3dsurface_actor(path_directory)]
         else:
             width = 10

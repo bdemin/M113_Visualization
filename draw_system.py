@@ -15,7 +15,7 @@ class vtkTimerCallback(object):
 #        I can try putting most draw_system commands here?
         self.timer_count = 1
         self.rate = rate
-        self.pause = False
+        self.pause = True
         
         self.renderer = renderer
         self.camera = vtk.vtkCamera()
