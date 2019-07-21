@@ -162,7 +162,7 @@ class Surface(object):
             right_actor = get_surface_actor(width, resolution, right_offset, path_directory + file)
             self.actors = [left_actor, right_actor]
             
-        elif 'Simulation_4' in path_directory:
+        elif 'Simulation_5' in path_directory:
             self.actors = [get_3dsurface_actor(path_directory)]
         elif '3d_Rocks1' in path_directory:
             self.actors = [get_3dsurface_actor(path_directory)]
