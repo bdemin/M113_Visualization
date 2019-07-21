@@ -9,7 +9,7 @@ from get_video import get_video, get_snapshots, snap
 
 
 record = False
-record = True
+# record = True
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most draw_system commands here?
