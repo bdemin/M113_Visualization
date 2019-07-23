@@ -8,10 +8,9 @@ from simulation_description import show_description
 
 
 path_directory = '../M113_tests/Data_Movies/3d_Rocks1/'
-# path_directory = '../M113_PY/save_data/data/'
 show_description(path_directory)
 
-#%%create 
+#%% Create bodies
 chassis = create_bodies(path_directory, 'Chassis')
 road_wheels = create_bodies(path_directory, 'Road_Wheel', side = True)
 trailing_arms = create_bodies(path_directory, 'Trailing_Arm', side = True)
@@ -19,7 +18,7 @@ sprockets = create_bodies(path_directory, 'Sprocket', side = True)
 idlers = create_bodies(path_directory, 'Idler', side = True)
 track_units = create_bodies(path_directory, 'Track_Unit')
 
-#%%create Obstacle objects:    
+#%% Create Obstacle objects    
 if '6' in path_directory:
     sphered_rocks = []
     obj_type = 'Sphered_Rock'
@@ -27,7 +26,6 @@ if '6' in path_directory:
     cloud_data = np.loadtxt(path_directory + 'Sphere_Data' + '.txt', delimiter = ',')
     cloud_positions = cloud_data[:,0:3]
     cloud_rads = cloud_data[:,-1]
-#    num_cols = int(path_data.shape[1])
     num_cols = 1
     for obstacle_index in range(0, num_cols, 6):
         path_loc = []
@@ -40,17 +38,22 @@ if '6' in path_directory:
                                           cloud_positions, cloud_rads))
         
         
-#%%visualize:
-#load time data:
+#%% Visualize
+# Load time data
 total_time = np.loadtxt(path_directory + 'Time_Data.txt', delimiter = ',')
 
 try:
     sphered_rocks
 except NameError:
     sphered_rocks = None
-    
-# visualize(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, path_directory = path_directory)
-# visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units, 
-            # path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
+
+# Visualize all bodies
 visualize(road_wheels, sprockets, idlers, 
             path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
+
+# Visualize specific bodies
+# visualize(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, path_directory = path_directory)
+
+# Include obstacles in the visualization
+# visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units, 
+            # path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
