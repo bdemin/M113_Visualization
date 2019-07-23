@@ -17,7 +17,7 @@ def create_bodies(path_directory, type_, side = None):
         if side:
             if path_loc[0][1] > 0:
                 side = 'L'
-                # path_dir[:,2] += np.pi
+                path_dir[:,2] += np.pi
             else:
                 side = 'R'
         bodies.append(Body(type_, path_loc, path_dir, side))    

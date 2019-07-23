@@ -42,7 +42,7 @@ if '6' in path_directory:
                                           cloud_positions, cloud_rads))
         
         
-#%%draw system:
+#%%visualize:
 #load time data:
 total_time = np.loadtxt(path_directory + 'Time_Data.txt', delimiter = ',')
 
@@ -51,6 +51,6 @@ try:
 except NameError:
     sphered_rocks = None
     
-#draw_system(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, path_directory = path_directory)
+#visualize(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, path_directory = path_directory)
 visualize(chassis, road_wheels, sprockets, idlers, track_units, 
             path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
