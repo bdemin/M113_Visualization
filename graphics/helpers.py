@@ -32,3 +32,4 @@ def set_actor_visuals(actor, _type):
 #    actor.GetProperty().SetDiffuseColor(_type['diffc'])
     actor.GetProperty().SetSpecular(_type['spec'])
     actor.GetProperty().SetSpecularPower(_type['specp'])
+    

@@ -17,8 +17,6 @@ road_wheels = create_bodies(path_directory, 'Road_Wheel', side = True)
 trailing_arms = create_bodies(path_directory, 'Trailing_Arm', side = True)
 sprockets = create_bodies(path_directory, 'Sprocket', side = True)
 idlers = create_bodies(path_directory, 'Idler', side = True)
-for index, idler in enumerate(idlers):
-    idler.path_dir = sprockets[int(index/6)].path_dir
 track_units = create_bodies(path_directory, 'Track_Unit')
 
 #%%create Obstacle objects:    
@@ -52,6 +50,7 @@ except NameError:
     sphered_rocks = None
     
 # visualize(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, path_directory = path_directory)
-visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units, 
+# visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units, 
+            # path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
+visualize(road_wheels, sprockets, idlers, 
             path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
-# visualize(road_wheels, trailing_arms, sprockets, path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks))
