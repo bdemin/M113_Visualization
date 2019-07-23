@@ -3,7 +3,7 @@ import numpy as np
 from bodies.helpers import create_bodies
 from graphics.visualize import visualize
 
-from base_classes import Sphered_Rock
+from base_classes import SpheredRock
 from simulation_description import show_description
 
 
@@ -34,7 +34,7 @@ if '6' in path_directory:
         dir_slice = slice(obstacle_index+3, obstacle_index+6)
         path_loc = path_data[:,loc_slice]
         path_dir = path_data[:,dir_slice]
-        sphered_rocks.append(Sphered_Rock(path_loc, path_dir,
+        sphered_rocks.append(SpheredRock(path_loc, path_dir,
                                           cloud_positions, cloud_rads))
         
         

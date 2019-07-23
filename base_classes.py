@@ -1,4 +1,5 @@
 import numpy as np
+
 from vtk import vtkSTLReader, vtkPolyDataMapper, vtkActor, vtkSphereSource
 
         
@@ -25,7 +26,7 @@ class Obstacle():
                                                            str(np.rad2deg(self.angles)))
         
 
-class Sphered_Rock():
+class SpheredRock():
     def __init__(self, path_loc, path_dir, cloud, rads):
         self.position = path_loc[0]
         self.direction = path_dir[0]
