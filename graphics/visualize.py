@@ -20,7 +20,7 @@ class vtkTimerCallback(object):
 #        I can try putting most visualize commands here?
         self.timer_count = 1
         self.rate = rate
-        self.pause = False
+        self.pause = True
         
         self.renderer = renderer
         self.camera = vtkCamera()
@@ -40,7 +40,7 @@ class vtkTimerCallback(object):
             
         if key == 'o':
             self.pause = False
-            
+
         if self.pause == True:
             self.text_actor.SetInput('Pause')
             obj.GetRenderWindow().Render()
