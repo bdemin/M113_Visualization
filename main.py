@@ -18,6 +18,14 @@ sprockets = create_bodies(path_directory, 'Sprocket', side = True)
 idlers = create_bodies(path_directory, 'Idler', side = True)
 track_units = create_bodies(path_directory, 'Track_Unit')
 
+# Test trailing arm
+offset = 0.2
+for arm in trailing_arms:
+    if arm.side == 'L':
+        arm.path_loc[:,1] -= offset
+    else:
+        arm.path_loc[:,1] += offset
+
 #%% Create Obstacle objects    
 if '6' in path_directory:
     sphered_rocks = []
