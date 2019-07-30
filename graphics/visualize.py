@@ -4,7 +4,7 @@ from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
     vtkOrientationMarkerWidget
 
 from graphics.place_camera import place_camera
-from graphics.place_object import place_object
+from graphics.place_object import place_all_bodies
 from graphics.transformations import scale_actor
 from graphics.draw_text import draw_text
 
@@ -21,6 +21,7 @@ class vtkTimerCallback(object):
         self.timer_count = 1
         self.rate = rate
         self.pause = True
+        self.camera_flag = True
         
         self.renderer = renderer
         self.camera = vtkCamera()
@@ -35,53 +36,53 @@ class vtkTimerCallback(object):
 
     def execute(self, obj, event):
         key = obj.GetKeySym()
-        if key == 'p':
+        if key == 'o':
             self.pause = True
             
-        if key == 'o':
+        elif key == 'i':
             self.pause = False
+        
+        elif key == 'u':
+            self.camera_flag = False
+            
+        elif key == 'y':
+            self.camera_flag = True
 
-        if self.pause == True:
-            self.text_actor.SetInput('Pause')
-            obj.GetRenderWindow().Render()
-        else:
+        if self.camera_flag:
             place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.data[0][0].path_dir[self.timer_count])
 
-            text = 'time = %.1fs' % (self.timer_count * self.dt)
-            self.text_actor.SetInput(text)
-           
-            for obj_index in range(len(self.data)):
-                for _object in self.data[obj_index]:
-                    _object.Move(_object.path_loc[self.timer_count],
-                                 _object.path_dir[self.timer_count])
-                    place_object(_object.actor,
-                                 _object.position,
-                                 _object.angles)
+        place_all_bodies(self.data, self.timer_count)
 
-            if self.sphered_rocks != None:                    
-                for sphered_rock in self.sphered_rocks:
-                    sphered_rock.Move(sphered_rock.path_loc[self.timer_count],
-                                     _object.path_dir[self.timer_count])
-                    sphered_rock.Update_Spheres()
-                    
-            if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
-                obj.GetRenderWindow().Render()
-                if record:
-                    if self.timer_count % 500 == 0:
-                        self.writer.End()
-                        self.video_count += 1
-                        self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
-                    self._filter.Modified()
-                    self.writer.Write()
-                self.timer_count += 1
-            else:
-                if record:
+        if self.sphered_rocks != None:                    
+            for sphered_rock in self.sphered_rocks:
+                sphered_rock.Move(sphered_rock.path_loc[self.timer_count],
+                                    _object.path_dir[self.timer_count])
+                sphered_rock.Update_Spheres()
+                
+        if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
+            obj.GetRenderWindow().Render()
+            if record:
+                if self.timer_count % 500 == 0:
                     self.writer.End()
-                self.timer_count = 0
-                self.iren.DestroyTimer()
-                self.iren.GetRenderWindow().Finalize()
-                self.iren.TerminateApp()
-                print('Simulation End')
+                    self.video_count += 1
+                    self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
+                self._filter.Modified()
+                self.writer.Write()
+            if self.pause == True:
+                self.text_actor.SetInput('Pause')
+                obj.GetRenderWindow().Render()
+            else:
+                text = 'time = %.1fs' % (self.timer_count * self.dt)
+                self.text_actor.SetInput(text)
+                self.timer_count += 1
+        else:
+            if record:
+                self.writer.End()
+            self.timer_count = 0
+            self.iren.DestroyTimer()
+            self.iren.GetRenderWindow().Finalize()
+            self.iren.TerminateApp()
+            print('Simulation End')
 
 
 def visualize(*args, path_directory, total_time = 25, sphered_rocks = None):
@@ -111,8 +112,7 @@ def visualize(*args, path_directory, total_time = 25, sphered_rocks = None):
     for i in range(len(args)):
         for obj in args[i]:
             renderer.AddActor(obj.actor)
-            place_object(obj.actor, obj.position, obj.angles)
-            
+
     surface = Surface(path_directory)
     for actor in surface.actors:
         renderer.AddActor(actor)
