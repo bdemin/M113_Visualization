@@ -26,42 +26,14 @@ for arm in trailing_arms:
     else:
         arm.path_loc[:,1] += offset
 
-#%% Create Obstacle objects    
-if '6' in path_directory:
-    sphered_rocks = []
-    obj_type = 'Sphered_Rock'
-    path_data = np.loadtxt(path_directory + obj_type + '.txt', delimiter = ',')
-    cloud_data = np.loadtxt(path_directory + 'Sphere_Data' + '.txt', delimiter = ',')
-    cloud_positions = cloud_data[:,0:3]
-    cloud_rads = cloud_data[:,-1]
-    num_cols = 1
-    for obstacle_index in range(0, num_cols, 6):
-        path_loc = []
-        path_dir = []
-        loc_slice = slice(obstacle_index, obstacle_index+3)
-        dir_slice = slice(obstacle_index+3, obstacle_index+6)
-        path_loc = path_data[:,loc_slice]
-        path_dir = path_data[:,dir_slice]
-        sphered_rocks.append(SpheredRock(path_loc, path_dir,
-                                          cloud_positions, cloud_rads))
-        
         
 #%% Visualize
 # Load time data
 total_time = np.loadtxt(path_directory + 'Time_Data.txt', delimiter = ',')
 
-try:
-    sphered_rocks
-except NameError:
-    sphered_rocks = None
-
 # Visualize all bodies
 visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units,
-            path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
+            path_directory = path_directory, total_time = total_time)
 
 # Visualize specific bodies
 # visualize(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, path_directory = path_directory)
-
-# Include obstacles in the visualization
-# visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units, 
-            # path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)

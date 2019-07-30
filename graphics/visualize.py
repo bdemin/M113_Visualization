@@ -45,12 +45,6 @@ class vtkTimerCallback(object):
 
         place_all_bodies(self.data, self.timer_count)
 
-        if self.sphered_rocks != None:                    
-            for sphered_rock in self.sphered_rocks:
-                sphered_rock.Move(sphered_rock.path_loc[self.timer_count],
-                                    _object.path_dir[self.timer_count])
-                sphered_rock.Update_Spheres()
-                
         if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
             obj.GetRenderWindow().Render()
             if record:
@@ -77,7 +71,7 @@ class vtkTimerCallback(object):
             print('Simulation End')
 
 
-def visualize(*args, path_directory, total_time = 25, sphered_rocks = None):
+def visualize(*args, path_directory, total_time = 25):
     # create renderer, figure and axes:
     renderer = vtkRenderer()
     renWin = vtkRenderWindow()
@@ -88,7 +82,6 @@ def visualize(*args, path_directory, total_time = 25, sphered_rocks = None):
     # add stationary axes:    
     axesActor = vtkAxesActor()
     scale_actor(axesActor, 4)
-    # renderer.AddActor(axesActor)
     widget = vtkOrientationMarkerWidget()
     widget.SetOrientationMarker(axesActor)
     widget.SetInteractor(iren)
@@ -109,12 +102,6 @@ def visualize(*args, path_directory, total_time = 25, sphered_rocks = None):
     for actor in surface.actors:
         renderer.AddActor(actor)
         
-    if sphered_rocks is not None:
-        for sphered_rock in sphered_rocks:
-            for i, sphere_actor in enumerate(sphered_rock.actors):
-                renderer.AddActor(sphere_actor)
-                place_object(actor, sphered_rock.position + sphered_rock.cloud[i], sphered_rock.direction)
-                
     iren.Initialize()
 
     # Sign up to receive TimerEvent
@@ -128,7 +115,6 @@ def visualize(*args, path_directory, total_time = 25, sphered_rocks = None):
     callback.num_frames = args[0][0].path_dir.shape[0]
     callback.iren = iren
     callback.dt = total_time/callback.num_frames
-    callback.sphered_rocks = sphered_rocks
     
     iren.AddObserver('TimerEvent', callback.execute)
     
