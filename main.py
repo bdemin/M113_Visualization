@@ -56,7 +56,7 @@ except NameError:
     sphered_rocks = None
 
 # Visualize all bodies
-visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, 
+visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units,
             path_directory = path_directory, total_time = total_time, sphered_rocks = sphered_rocks)
 
 # Visualize specific bodies
