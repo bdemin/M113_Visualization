@@ -21,7 +21,6 @@ class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
 #        I can try putting most visualize commands here?
         self.timer_count = 1
-        self.rate = rate
         self.pause = True
         self.camera_flag = True
         
@@ -33,12 +32,13 @@ class vtkTimerCallback(object):
         self.renderer.AddActor(self.text_actor)
         
         if record:
+            self.rate = rate
             self.video_count = 1
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
 
+
     def execute(self, obj, event):
         self.pause, self.camera_flag = keyboard_events(obj, self.pause, self.camera_flag)
-        print(self.pause, self.camera_flag)
 
         if self.camera_flag:
             place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.data[0][0].path_dir[self.timer_count])

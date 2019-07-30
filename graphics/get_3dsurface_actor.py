@@ -8,6 +8,8 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
 
 color_map = True
 # color_map = False
+soil_map = True
+# soil_map = False
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
@@ -68,7 +70,7 @@ def get_3dsurface_actor(path_directory):
     PolyData.SetPolys(triangles)
     
     if color_map:
-        #%% Create colormap
+        # Create colormap
         bounds = 6*[0.0]
         PolyData.GetBounds(bounds)
 
@@ -84,6 +86,40 @@ def get_3dsurface_actor(path_directory):
         colors = vtkUnsignedCharArray()
         colors.SetNumberOfComponents(3)
         colors.SetName("Colors")
+            
+        for i in range(0, PolyData.GetNumberOfPoints()):
+            p= 3*[0.0]
+            PolyData.GetPoint(i,p)
+
+            dcolor = 3*[0.0]
+            colorLookupTable.GetColor(p[2], dcolor)
+
+            color=3*[0.0]
+            for j in range(0,3):
+                color[j] = int(255.0 * dcolor[j])
+
+            colors.InsertNextTypedTuple(color)
+
+        PolyData.GetPointData().SetScalars(colors)
+        
+    else:
+        if soil_map:
+            # Create colormap
+            bounds = 6*[0.0]
+            PolyData.GetBounds(bounds)
+
+            # Find min and max z
+            minz = bounds[4]
+            maxz = bounds[5]
+
+            colorLookupTable = vtkLookupTable()
+            colorLookupTable.SetTableRange(minz, maxz)
+            colorLookupTable.Build()
+
+            # Generate the colors for each point based on the color map
+            colors = vtkUnsignedCharArray()
+            colors.SetNumberOfComponents(3)
+            colors.SetName("Colors")
             
         for i in range(0, PolyData.GetNumberOfPoints()):
             p= 3*[0.0]
