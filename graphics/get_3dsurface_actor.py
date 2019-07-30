@@ -7,7 +7,7 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
 
 
 color_map = True
-color_map = False
+# color_map = False
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
@@ -69,7 +69,7 @@ def get_3dsurface_actor(path_directory):
     
     if color_map:
         #%% Create colormap
-        bounds= 6*[0.0]
+        bounds = 6*[0.0]
         PolyData.GetBounds(bounds)
 
         # Find min and max z
@@ -96,12 +96,7 @@ def get_3dsurface_actor(path_directory):
             for j in range(0,3):
                 color[j] = int(255.0 * dcolor[j])
 
-            try:
-                colors.InsertNextTupleValue(color)
-            except AttributeError:
-                # For compatibility with new VTK generic data arrays.
-                colors.InsertNextTypedTuple(color)
-
+            colors.InsertNextTypedTuple(color)
 
         PolyData.GetPointData().SetScalars(colors)
 

@@ -20,6 +20,7 @@ def set_actor_visuals(actor, _type):
     Sprocket = {'color':(0.194, 0.225, 0.025), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
     Idler = {'color':(0.194, 0.225, 0.025), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
     Track_Unit = {'color':(0.35,0.35,0.35), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+    Trailing_Arm = {'color':(0.35,0.35,0.35), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
     _type = vars()[_type]
     
     actor.GetProperty().SetColor(_type['color'])
@@ -31,3 +32,4 @@ def set_actor_visuals(actor, _type):
 #    actor.GetProperty().SetDiffuseColor(_type['diffc'])
     actor.GetProperty().SetSpecular(_type['spec'])
     actor.GetProperty().SetSpecularPower(_type['specp'])
+    
