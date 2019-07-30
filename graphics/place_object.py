@@ -28,4 +28,3 @@ def place_object(actor, new_pos, angles):
     transformFilter.SetTransform(trans)
     actor.SetUserTransform(trans)
     
-
