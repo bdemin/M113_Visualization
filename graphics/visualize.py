@@ -37,9 +37,11 @@ class vtkTimerCallback(object):
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
 
 
-    def execute(self, obj, event):
+    def keypress(self, obj, event):
         self.pause, self.camera_flag = keyboard_events(obj, self.pause, self.camera_flag)
 
+
+    def execute(self, obj, event):
         if self.camera_flag:
             place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.data[0][0].path_dir[self.timer_count])
 
@@ -117,6 +119,7 @@ def visualize(*args, directory, total_time = 25):
     callback.dt = total_time/callback.num_frames
     
     iren.AddObserver('TimerEvent', callback.execute)
+    iren.AddObserver('KeyPressEvent', callback.keypress)
     
     iren.CreateRepeatingTimer(int(1/FPMS)) #ms
     iren.Start()

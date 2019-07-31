@@ -29,7 +29,6 @@ for arm in trailing_arms:
     else:
         arm.path_loc[:,1] -= offset
 
-        
 #%% Visualize
 # Load time data
 total_time = np.loadtxt(directory + 'Time_Data.txt', delimiter = ',')
