@@ -3,13 +3,16 @@ import numpy as np
 from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyData, vtkLookupTable, vtkCleanPolyData, \
     vtkUnsignedCharArray, vtkLoopSubdivisionFilter, \
-    vtkPolyDataMapper, vtkActor
+    vtkPolyDataMapper, vtkActor, \
+    vtkNamedColors
+
+from graphics.ground import visualize_elevation, visualize_soil
 
 
 color_map = True
 # color_map = False
-soil_map = True
-# soil_map = False
+soil_map_bool = True
+# soil_map_bool = False
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
@@ -70,6 +73,51 @@ def get_3dsurface_actor(path_directory):
     PolyData.SetPolys(triangles)
     
     if color_map:
+        visualize_elevation(PolyData)
+        
+    elif soil_map_bool:
+        
+        visualize_soil(PolyData, soil_type_array)
+
+        soil_color_map = vtkUnsignedCharArray()
+        soil_color_map.SetNumberOfComponents(3)
+        soil_color_map.SetName("Colors")
+
+        colors = vtkNamedColors()
+        # color1 = colors.GetColor3d('SandyBrown')
+        # color2 = colors.GetColor3d('Sienna')
+        # color3 = colors.GetColor3d('DarkOliveGreen')
+        color1 = (1,0,0)
+        color2 = (0,1,0)
+        color3 = (0,1,1)
+
+        # for i in range(0, PolyData.GetNumberOfPoints()):
+            # p = 3*[0.0]
+            # PolyData.GetPoint(i,p)
+            # p[2] = 
+
+            # dcolor = 3*[0.0]
+            # colorLookupTable.GetColor(p[2], dcolor)
+
+            # color=3*[0.0]
+            # for j in range(0,3):
+                # color[j] = int(255.0 * dcolor[j])
+
+
+
+        for i in range(m):
+            for j in range(n):
+                if soil_map[i,j] == 2:
+                    soil_color_map.InsertNextTypedTuple(color1)
+                elif soil_map[i,j] == -1:
+                    soil_color_map.InsertNextTypedTuple(color2)
+                else:
+                    soil_color_map.InsertNextTypedTuple(color3)
+        """
+        
+
+        colors.InsertNextTypedTuple(color)
+
         # Create colormap
         bounds = 6*[0.0]
         PolyData.GetBounds(bounds)
@@ -82,59 +130,8 @@ def get_3dsurface_actor(path_directory):
         colorLookupTable.SetTableRange(minz, maxz)
         colorLookupTable.Build()
 
-        # Generate the colors for each point based on the color map
-        colors = vtkUnsignedCharArray()
-        colors.SetNumberOfComponents(3)
-        colors.SetName("Colors")
-            
-        for i in range(0, PolyData.GetNumberOfPoints()):
-            p= 3*[0.0]
-            PolyData.GetPoint(i,p)
-
-            dcolor = 3*[0.0]
-            colorLookupTable.GetColor(p[2], dcolor)
-
-            color=3*[0.0]
-            for j in range(0,3):
-                color[j] = int(255.0 * dcolor[j])
-
-            colors.InsertNextTypedTuple(color)
-
-        PolyData.GetPointData().SetScalars(colors)
-        
-    else:
-        if soil_map:
-            # Create colormap
-            bounds = 6*[0.0]
-            PolyData.GetBounds(bounds)
-
-            # Find min and max z
-            minz = bounds[4]
-            maxz = bounds[5]
-
-            colorLookupTable = vtkLookupTable()
-            colorLookupTable.SetTableRange(minz, maxz)
-            colorLookupTable.Build()
-
-            # Generate the colors for each point based on the color map
-            colors = vtkUnsignedCharArray()
-            colors.SetNumberOfComponents(3)
-            colors.SetName("Colors")
-            
-        for i in range(0, PolyData.GetNumberOfPoints()):
-            p= 3*[0.0]
-            PolyData.GetPoint(i,p)
-
-            dcolor = 3*[0.0]
-            colorLookupTable.GetColor(p[2], dcolor)
-
-            color=3*[0.0]
-            for j in range(0,3):
-                color[j] = int(255.0 * dcolor[j])
-
-            colors.InsertNextTypedTuple(color)
-
-        PolyData.GetPointData().SetScalars(colors)
+        """ 
+        PolyData.GetPointData().SetScalars(soil_color_map)
 
     # Clean the polydata so that the edges are shared !
     cleanPolyData = vtkCleanPolyData()
@@ -166,3 +163,4 @@ def get_3dsurface_actor(path_directory):
 #    actor_loop.GetProperty().SetLineWidth(0.2)
 
     return actor_loop
+    
