@@ -19,7 +19,8 @@ record = False
 # record = True
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
-#        I can try putting most visualize commands here?
+    # I can try putting most visualize commands here?
+    # Move observer definitions here?
         self.timer_count = 1
         self.pause = True
         self.camera_flag = True
