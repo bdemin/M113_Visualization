@@ -1,5 +1,4 @@
 import numpy as np
-from os import listdir
 
 from bodies.helpers import create_bodies
 from graphics.visualize import visualize
