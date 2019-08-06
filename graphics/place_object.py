@@ -12,7 +12,8 @@ def place_all_bodies(data, timer_count):
                 _object.path_dir[timer_count])
             place_object(_object.actor,
                 _object.position,
-                _object.angles)    
+                _object.angles)
+    print(_object.path_dir[timer_count][1])
 
 
 def place_object(actor, new_pos, angles):

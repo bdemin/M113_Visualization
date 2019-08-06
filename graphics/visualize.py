@@ -58,11 +58,11 @@ class vtkTimerCallback(object):
                 self._filter.Modified()
                 self.writer.Write()
             if self.pause == True:
-                self.text_actor.SetInput('Pause')
+                self.text_actor.SetInput('Pause\nCamera: ' + str(self.camera_flag))
                 obj.GetRenderWindow().Render()
             else:
                 text = 'time = %.1fs' % (self.timer_count * self.dt)
-                self.text_actor.SetInput(text)
+                self.text_actor.SetInput(text + '\nCamera: ' + str(self.camera_flag))
                 self.timer_count += 1
         else:
             if record:
@@ -101,9 +101,9 @@ def visualize(*args, directory, total_time = 25):
         for obj in args[i]:
             renderer.AddActor(obj.actor)
 
-    surface = Surface(directory)
-    for actor in surface.actors:
-        renderer.AddActor(actor)
+    # surface = Surface(directory)
+    # for actor in surface.actors:
+    #     renderer.AddActor(actor)
         
     iren.Initialize()
 

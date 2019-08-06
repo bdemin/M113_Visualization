@@ -3,7 +3,7 @@ import numpy as np
 
 def place_camera(camera, chs_pos, chs_ang):
     # Define camera parameters
-    view = 3
+    view = 1
     if view == 1:
         # General view
         cam_d = 14 # [m]

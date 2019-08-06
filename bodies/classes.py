@@ -6,7 +6,7 @@ from graphics.get_3dsurface_actor import get_3dsurface_actor
 from graphics.place_object import place_object
 
 
-directory = 'graphics/STL_data/'
+directory = 'graphics/STL_data_eitan/'
 class Body(object):
     def __init__(self, type_, path_loc, path_dir, side = None):
         self.type = type_
