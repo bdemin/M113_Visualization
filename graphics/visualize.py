@@ -15,8 +15,8 @@ from bodies.classes import Surface
 from graphics.get_video import get_video, get_snapshots, snap
 
 
-record = False
-# record = True
+record_video = True
+
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
     # I can try putting most visualize commands here?
@@ -34,7 +34,7 @@ class vtkTimerCallback(object):
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
         
-        if record:
+        if record_video:
             self.rate = rate
             self.video_count = 1
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
@@ -53,7 +53,7 @@ class vtkTimerCallback(object):
 
         if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
             obj.GetRenderWindow().Render()
-            if record:
+            if record_video:
                 if self.timer_count % 500 == 0:
                     self.writer.End()
                     self.video_count += 1
@@ -68,7 +68,7 @@ class vtkTimerCallback(object):
                 self.text_actor.SetInput(text)
                 self.timer_count += 1
         else:
-            if record:
+            if record_video:
                 self.writer.End()
             self.timer_count = 0
             self.iren.DestroyTimer()
