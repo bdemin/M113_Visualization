@@ -9,10 +9,9 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
 from graphics.ground import visualize_elevation, visualize_soil, create_soil_type_arr
 
 
-color_map = True
-color_map = False
-soil_map_bool = True
-# soil_map_bool = False
+color_map = False # Create elevation-based colormap for the ground
+soil_map_bool = True # Create soil-based colormap for the ground
+
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
@@ -79,8 +78,7 @@ def get_3dsurface_actor(path_directory):
         soil_type_array = create_soil_type_arr((m, n))
         visualize_soil(PolyData, soil_type_array)
 
-
-    # Clean the polydata so that the edges are shared !
+    # Clean the polydata so that the edges are shared
     cleanPolyData = vtkCleanPolyData()
     cleanPolyData.SetInputData(PolyData)
     
@@ -96,18 +94,15 @@ def get_3dsurface_actor(path_directory):
     actor_loop = vtkActor()
     actor_loop.SetMapper(mapper)
     
-#    actor_loop.GetProperty().SetColor(0.929, 0.788, 0.686)
-    actor_loop.GetProperty().SetAmbient(0.9)
-#    actor_loop.GetProperty().SetAmbientColor(0.3,0.3,0.3)
-    
-    actor_loop.GetProperty().SetDiffuse(0.4)
-#    actor_loop.GetProperty().SetDiffuseColor(0.396, 0.263, 0.129)
-#    actor_loop.GetProperty().SetInterpolationToPhong()
-#    actor_loop.GetProperty().SetSpecular(0.6)
-#    actor_loop.GetProperty().SetSpecularPower(10)
-#    actor_loop.GetProperty().EdgeVisibilityOn()
-    
-#    actor_loop.GetProperty().SetLineWidth(0.2)
+    actor_loop.GetProperty().SetAmbient(0.5)
+    actor_loop.GetProperty().SetAmbientColor(0.1,0.1,0.1)
+
+    # # actor_loop.GetProperty().SetInterpolationToPhong()
+    actor_loop.GetProperty().SetDiffuse(0.5)
+    actor_loop.GetProperty().SetDiffuseColor(0.1, 0.1, 0.1)
+    # actor_loop.GetProperty().SetSpecular(10)
+    actor_loop.GetProperty().SetSpecularPower(100)
+    # actor_loop.GetProperty().SetSpecularColor(0.1,0.1,0.1)
 
     return actor_loop
     
