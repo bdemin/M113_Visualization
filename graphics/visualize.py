@@ -27,7 +27,9 @@ class vtkTimerCallback(object):
         
         self.renderer = renderer
         self.camera = vtkCamera()
+        self.camera_distance = 14
         self.renderer.SetActiveCamera(self.camera)
+        self.view = 1
         
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
@@ -39,12 +41,13 @@ class vtkTimerCallback(object):
 
 
     def keypress(self, obj, event):
-        self.pause, self.camera_flag = keyboard_events(obj, self.pause, self.camera_flag)
+        self.pause, self.camera_flag, self.camera_distance ,self.view = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view)
 
 
     def execute(self, obj, event):
         if self.camera_flag:
-            place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.data[0][0].path_dir[self.timer_count])
+            # place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.camera_distance)
+            place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view)
 
         place_all_bodies(self.data, self.timer_count)
 
