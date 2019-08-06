@@ -6,11 +6,11 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyDataMapper, vtkActor, \
     vtkNamedColors
 
-from graphics.ground import visualize_elevation, visualize_soil
+from graphics.ground import visualize_elevation, visualize_soil, create_soil_type_arr
 
 
 color_map = True
-# color_map = False
+color_map = False
 soil_map_bool = True
 # soil_map_bool = False
 def get_3dsurface_actor(path_directory):
@@ -18,7 +18,7 @@ def get_3dsurface_actor(path_directory):
     x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
     y_data = np.loadtxt(path_directory + 'y.txt', delimiter = ',')
     z_data = np.loadtxt(path_directory + 'z.txt', delimiter = ',')
-    z_data -= 0.1 #fix ground clipping
+    # z_data -= 0.1 #fix ground clipping
     
     m = z_data.shape[0]
     n = z_data.shape[1]
@@ -76,62 +76,9 @@ def get_3dsurface_actor(path_directory):
         visualize_elevation(PolyData)
         
     elif soil_map_bool:
-        
+        soil_type_array = create_soil_type_arr((m, n))
         visualize_soil(PolyData, soil_type_array)
 
-        soil_color_map = vtkUnsignedCharArray()
-        soil_color_map.SetNumberOfComponents(3)
-        soil_color_map.SetName("Colors")
-
-        colors = vtkNamedColors()
-        # color1 = colors.GetColor3d('SandyBrown')
-        # color2 = colors.GetColor3d('Sienna')
-        # color3 = colors.GetColor3d('DarkOliveGreen')
-        color1 = (1,0,0)
-        color2 = (0,1,0)
-        color3 = (0,1,1)
-
-        # for i in range(0, PolyData.GetNumberOfPoints()):
-            # p = 3*[0.0]
-            # PolyData.GetPoint(i,p)
-            # p[2] = 
-
-            # dcolor = 3*[0.0]
-            # colorLookupTable.GetColor(p[2], dcolor)
-
-            # color=3*[0.0]
-            # for j in range(0,3):
-                # color[j] = int(255.0 * dcolor[j])
-
-
-
-        for i in range(m):
-            for j in range(n):
-                if soil_map[i,j] == 2:
-                    soil_color_map.InsertNextTypedTuple(color1)
-                elif soil_map[i,j] == -1:
-                    soil_color_map.InsertNextTypedTuple(color2)
-                else:
-                    soil_color_map.InsertNextTypedTuple(color3)
-        """
-        
-
-        colors.InsertNextTypedTuple(color)
-
-        # Create colormap
-        bounds = 6*[0.0]
-        PolyData.GetBounds(bounds)
-
-        # Find min and max z
-        minz = bounds[4]
-        maxz = bounds[5]
-
-        colorLookupTable = vtkLookupTable()
-        colorLookupTable.SetTableRange(minz, maxz)
-        colorLookupTable.Build()
-
-        """ 
-        PolyData.GetPointData().SetScalars(soil_color_map)
 
     # Clean the polydata so that the edges are shared !
     cleanPolyData = vtkCleanPolyData()
@@ -150,10 +97,10 @@ def get_3dsurface_actor(path_directory):
     actor_loop.SetMapper(mapper)
     
 #    actor_loop.GetProperty().SetColor(0.929, 0.788, 0.686)
-#    actor_loop.GetProperty().SetAmbient(0.1)
+    actor_loop.GetProperty().SetAmbient(0.9)
 #    actor_loop.GetProperty().SetAmbientColor(0.3,0.3,0.3)
     
-#    actor_loop.GetProperty().SetDiffuse(0.1)
+    actor_loop.GetProperty().SetDiffuse(0.4)
 #    actor_loop.GetProperty().SetDiffuseColor(0.396, 0.263, 0.129)
 #    actor_loop.GetProperty().SetInterpolationToPhong()
 #    actor_loop.GetProperty().SetSpecular(0.6)
