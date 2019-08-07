@@ -101,14 +101,34 @@ def generate_perlin_noise_2d(size, res):
     return np.sqrt(2)*((1-t[:,:,1])*n0 + t[:,:,1]*n1)
 
 
+def perlin2D(m):
+    from scipy.interpolate import interp2d
+    s = np.zeros((m,m)) # Prepare output image (size: m x m)
+    w = m
+    i = 0
+    while w > 3:
+        i = i + 1
+        # d = interp2(randn([m,m]), i-1, 'spline')
+        x = i
+        y = i
+        z = np.random.randn(m,m)
+        d = interp2d(x,y,z, kind='spline')
+        s = s + i * d[1:m, 1:m]
+        w = w - np.ceil(w/2 - 1)
+
+    s = (s - min(min(s[:,:]))) / (max(max(s[:,:])) - min(min(s[:,:])))
+
+    return s
+
 def create_soil_type_arr(size):
     # Create an array of different soil types scatterd randomly using Perlin Noise
 
     np.random.seed(1)
-    noise = generate_perlin_noise_2d(size, (139, 6)) # Get perlin noise
+    noise = generate_perlin_noise_2d((size[0], 60), (5, 6)) # Get perlin noise
+    # noise = perlin2D(size[0])
     soil_type_arr = np.zeros(size)
 
-    num_soil_types = 2 # Define how many soil types (colors) should be set
+    num_soil_types = 3 # Define how many soil types (colors) should be set
     arr_min = noise.min()
     soil_type_step = (noise.max() - arr_min)/num_soil_types
     # Fill array with different soil types
