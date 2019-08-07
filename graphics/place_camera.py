@@ -18,7 +18,7 @@ def place_camera(time, data, camera, camera_distance, view):
     elif view == 2:
         # Rear view
         chs_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chs2cam = [-12,0,0]
+        chs2cam = [-7,0,-0.5]
         chs_fix = [0,0,0]
         camera_pos = chs_pos + chs2cam
 
