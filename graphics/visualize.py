@@ -15,7 +15,7 @@ from bodies.classes import Surface
 from graphics.get_video import get_video, get_snapshots, snap
 
 
-record_video = True
+record_video = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
@@ -41,17 +41,17 @@ class vtkTimerCallback(object):
 
 
     def keypress(self, obj, event):
-        self.pause, self.camera_flag, self.camera_distance ,self.view = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view)
+        self.pause, self.camera_flag, self.camera_distance ,self.view, self.timer_count = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view, self.timer_count)
 
 
     def execute(self, obj, event):
         if self.camera_flag:
-            # place_camera(self.camera, self.data[0][0].path_loc[self.timer_count], self.camera_distance)
             place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view)
 
         place_all_bodies(self.data, self.timer_count)
 
-        if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
+        # if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
+        if self.timer_count < self.num_frames - 1:
             obj.GetRenderWindow().Render()
             if record_video:
                 if self.timer_count % 500 == 0:
