@@ -7,7 +7,6 @@ def main():
     soil = True
 
     simulation = DBDSimulation(vehicle_type, record_video, soil)
-    print(simulation)
 
 if __name__ == '__main__':
     main()

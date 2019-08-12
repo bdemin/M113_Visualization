@@ -1,25 +1,18 @@
 import numpy as np
 from os import listdir
 
-from bodies.helpers import create_bodies
 from graphics.visualize import visualize
 
 from helpers.functions import get_directory
-from simulation_description import show_description
+
 
 
 path = '../M113_tests/Data_Movies/'
 directory = get_directory(path)
 
-show_description(directory)
 
-#%% Create bodies
-chassis = create_bodies(directory, 'Chassis')
-road_wheels = create_bodies(directory, 'Road_Wheel', side = True)
-trailing_arms = create_bodies(directory, 'Trailing_Arm', side = True)
-sprockets = create_bodies(directory, 'Sprocket', side = True)
-idlers = create_bodies(directory, 'Idler', side = True)
-track_units = create_bodies(directory, 'Track_Unit')
+
+
 
 # Test trailing arm
 offset = 0.1
