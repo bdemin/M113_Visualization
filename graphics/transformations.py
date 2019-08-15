@@ -10,23 +10,35 @@ def trans_matrix(dx, dy, dz):
     matrix[2,3] = dz
     return matrix
 
-def rot_matrix(a3, a2, a1):
+def rot_matrix(x, y, z):
+    # [,,;...
+    # ;];
+
     sin = np.sin
     cos = np.cos
     matrix = []
-    matrix.append(cos(a1)*cos(a2))
-    matrix.append(cos(a1)*sin(a2)*sin(a3) - sin(a1)*cos(a3))
-    matrix.append(cos(a1)*sin(a2)*cos(a3) + sin(a1)*sin(a3))
+
+    Cx = cos(x)
+    Cy = cos(y)
+    Cz = cos(z)
+
+    Sx = sin(x)
+    Sy = sin(y)
+    Sz = sin(z)
+
+    matrix.append(Cy * Cz)
+    matrix.append(Cz * Sx * Sy-Cx * Sz)
+    matrix.append(Sx * Sz+Cx * Cz * Sy)
     matrix.append(0)
     
-    matrix.append(sin(a1)*cos(a2))
-    matrix.append(sin(a1)*sin(a2)*sin(a3) + cos(a1)*cos(a3))
-    matrix.append(sin(a1)*sin(a2)*cos(a3) - cos(a1)*sin(a3))
+    matrix.append(Cy * Sz)
+    matrix.append(Cx * Cz+Sx * Sy * Sz)
+    matrix.append(Cx * Sy * Sz-Cz * Sx)
     matrix.append(0)
     
-    matrix.append(-sin(a2))
-    matrix.append(cos(a2)*sin(a3))
-    matrix.append(cos(a2)*cos(a3))
+    matrix.append(-Sy)
+    matrix.append(Cy * Sx)
+    matrix.append(Cx * Cy)
     matrix.append(0)
     
     matrix.append(0)
