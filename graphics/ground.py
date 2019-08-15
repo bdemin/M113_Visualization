@@ -120,12 +120,12 @@ def perlin2D(m):
 
     return s
 
+
 def create_soil_type_arr(size):
     # Create an array of different soil types scatterd randomly using Perlin Noise
 
     np.random.seed(1)
-    noise = generate_perlin_noise_2d((size[0], 60), (5, 6)) # Get perlin noise
-    # noise = perlin2D(size[0])
+    noise = generate_perlin_noise_2d((size), (10, 10)) # Get perlin noise
     soil_type_arr = np.zeros(size)
 
     num_soil_types = 3 # Define how many soil types (colors) should be set
