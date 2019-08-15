@@ -10,7 +10,7 @@ from graphics.ground import visualize_elevation, visualize_soil, create_soil_typ
 
 
 color_map = False # Create elevation-based colormap for the ground
-soil_map_bool = False # Create soil-based colormap for the ground
+soil_map_bool = True # Create soil-based colormap for the ground
 
 def get_3dsurface_actor(path_directory):
     path_directory = path_directory
