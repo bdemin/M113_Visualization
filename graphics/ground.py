@@ -138,11 +138,4 @@ def create_soil_type_arr(size):
                 if (noise[i,j] <= arr_min + (k+1)*soil_type_step) and (arr_min + k*soil_type_step <= noise[i,j]):
                     soil_type_arr[i,j] = k
 
-    # np.place(noise, noise < (arr_min + soil_type_step), 0)
-    # np.place(noise, (arr_min + soil_type_step < noise) * (noise < arr_min + 2*soil_type_step), 1)
-    # np.place(noise, (arr_min + 2*soil_type_step < noise) * (noise < arr_min + 3*soil_type_step), 2)
-    # np.place(noise, (arr_min + 3*soil_type_step < noise) * (noise < arr_min + 4*soil_type_step), 3)
-    # np.place(noise, (arr_min + 4*soil_type_step < noise) * (noise < arr_min + 5*soil_type_step), 4)
-    # np.place(noise, (arr_min + 5*soil_type_step < noise) * (noise < arr_min + 6*soil_type_step), 5)
-    # np.place(noise, noise.max() - soil_type_step < noise, 6)
     return soil_type_arr
