@@ -1,6 +1,7 @@
 def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
     key = obj.GetKeySym()
-    print(key)
+    # print(key)
+
     if key == 'o' and pause == False:
         pause = True
     elif key == 'o':
@@ -24,23 +25,20 @@ def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
         else:
             view = 1
 
-    if pause:
-        if key == 'bracketright':
-            timer += 10
-        elif key == 'bracketleft':
-            if timer > 10:
-                timer -= 10
+    if key == 'bracketright':
+        timer += 10
+    elif key == 'bracketleft':
+        if timer > 10:
+            timer -= 10
 
     if key == 'backslash':
         timer = 0
-
 
     # Add camera zoom
     if key == 'equal':
         pass
     if key == 'minus':
         pass
-        
 
     return pause, camera_flag, camera_distance, view, timer
     
