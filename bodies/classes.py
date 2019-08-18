@@ -16,8 +16,7 @@ class Body(object):
 
         self.position = path_loc[0]
         self.angles = path_dir[0]
-        if side:
-            self.side = side
+        self.side = side
 
         self.actor = get_stl_actor(directory + self.type + '.STL')
         set_actor_visuals(self.actor, self.type)
