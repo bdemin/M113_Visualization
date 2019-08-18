@@ -36,10 +36,11 @@ def place_all_bodies(data, timer_count):
 def place_object(actor, new_pos, angles, chassis_angles, side):
     if side == 'L':
         first_angles = (-chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)
+        y_rotation = (0, -angles[1], 0)
     elif side == 'R':
         first_angles = chassis_angles[:]
-        
-    y_rotation = (0, angles[1], 0)
+        y_rotation = (0, angles[1], 0)
+    
     rotations_matrix = np.matmul(rot_matrix(*(first_angles[0],0,first_angles[2])), rot_matrix(*y_rotation))
 
     final_matrix = np.matmul(trans_matrix(*new_pos), rotations_matrix)
