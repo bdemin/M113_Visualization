@@ -60,6 +60,7 @@ class vtkTimerCallback(object):
                     self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
                 self._filter.Modified()
                 self.writer.Write()
+
             if self.pause == True:
                 self.text_actor.SetInput('Pause')
                 obj.GetRenderWindow().Render()
@@ -70,11 +71,14 @@ class vtkTimerCallback(object):
         else:
             if record_video:
                 self.writer.End()
-            self.timer_count = 0
-            self.iren.DestroyTimer()
-            self.iren.GetRenderWindow().Finalize()
-            self.iren.TerminateApp()
-            print('Simulation End')
+                self.timer_count = 0
+                self.iren.DestroyTimer()
+                self.iren.GetRenderWindow().Finalize()
+                self.iren.TerminateApp()
+                print('Simulation End')
+
+            text = 'time = %.1fs' % (self.timer_count * self.dt)
+            self.text_actor.SetInput(text)
 
 
 def visualize(*args, directory, total_time = 25):
