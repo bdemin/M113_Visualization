@@ -131,6 +131,7 @@ def create_soil_type_arr(size):
     num_soil_types = 3 # Define how many soil types (colors) should be set
     arr_min = noise.min()
     soil_type_step = (noise.max() - arr_min)/num_soil_types
+    
     # Fill array with different soil types
     for k in range(num_soil_types):
         for i in range(size[0]):
