@@ -11,9 +11,6 @@ def trans_matrix(dx, dy, dz):
     return matrix
 
 def rot_matrix(x, y, z):
-    # [,,;...
-    # ;];
-
     sin = np.sin
     cos = np.cos
     matrix = []
