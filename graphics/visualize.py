@@ -1,4 +1,5 @@
 import numpy as np
+
 from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
     vtkOrientationMarkerWidget
