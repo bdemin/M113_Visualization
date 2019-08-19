@@ -21,13 +21,28 @@ sprockets = create_bodies(directory, 'Sprocket', side = True)
 idlers = create_bodies(directory, 'Idler', side = True)
 track_units = create_bodies(directory, 'Track_Unit')
 
-# Test trailing arm
-offset = 0.1
+#%% Temporary fixes for the visualization
+# X rotation direction for track_units
+for track_unit in track_units:
+    track_unit.path_dir[:,0] *= -1
+
+for trailing_arm in trailing_arms:
+    if trailing_arm.side == 'L':
+        trailing_arm.path_dir[:, 1] *= -1
+
+# Trailing arm y offset
+offset = 0.0
 for arm in trailing_arms:
     if arm.side == 'L':
         arm.path_loc[:,1] += offset
     else:
         arm.path_loc[:,1] -= offset
+
+
+for road_wheel in road_wheels:
+    if road_wheel.side == 'R':
+        road_wheel.actor.GetProperty().SetOpacity(0.3)
+
 
 #%% Visualize
 # Load time data
