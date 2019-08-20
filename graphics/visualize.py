@@ -23,7 +23,7 @@ class vtkTimerCallback(object):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
-        self.pause = True
+        self.pause = False
         self.camera_flag = True
         
         self.renderer = renderer
