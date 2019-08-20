@@ -12,13 +12,16 @@ from graphics.ground import visualize_elevation, visualize_soil, create_soil_typ
 color_map = False # Create elevation-based colormap for the ground
 soil_map_bool = True # Create soil-based colormap for the ground
 
-def get_3dsurface_actor(path_directory):
+def get_3dsurface_actor(path_directory, ground_surf = None):
     path_directory = path_directory
-    x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
-    y_data = np.loadtxt(path_directory + 'y.txt', delimiter = ',')
-    z_data = np.loadtxt(path_directory + 'z.txt', delimiter = ',')
-    # z_data -= 0.1 #fix ground clipping
-    
+    try:
+        x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
+        y_data = np.loadtxt(path_directory + 'y.txt', delimiter = ',')
+        z_data = np.loadtxt(path_directory + 'z.txt', delimiter = ',')
+        # z_data -= 0.1 #fix ground clipping
+    except:
+        x_data, y_data, z_data = ground_surf
+
     m = z_data.shape[0]
     n = z_data.shape[1]
     
@@ -104,5 +107,5 @@ def get_3dsurface_actor(path_directory):
     actor_loop.GetProperty().SetSpecularPower(100)
     # actor_loop.GetProperty().SetSpecularColor(0.1,0.1,0.1)
 
-    return actor_loop
+    return actor_loop, smooth_loop
     
