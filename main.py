@@ -38,10 +38,12 @@ for arm in trailing_arms:
     else:
         arm.path_loc[:,1] -= offset
 
-
+# Left side rotation direction:
 for road_wheel in road_wheels:
-    if road_wheel.side == 'R':
-        road_wheel.actor.GetProperty().SetOpacity(0.3)
+    if road_wheel.side == 'L':
+        road_wheel.path_dir[:,1] *= -1
+
+# road_wheels[7].actor.GetProperty().SetOpacity(0.4)
 
 
 #%% Visualize
