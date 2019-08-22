@@ -6,14 +6,15 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyDataMapper, vtkActor, \
     vtkNamedColors
 
-from graphics.ground import visualize_elevation, visualize_soil, create_soil_type_arr
+from graphics.ground import visualize_elevation, visualize_soil, create_soil_type_arr, get_spline_actor
 
 
-color_map = False # Create elevation-based colormap for the ground
+# Logic controls
+color_map_bool = False # Create elevation-based colormap for the ground
 soil_map_bool = True # Create soil-based colormap for the ground
+path_spline_bool = True # Render a spline marking the vehicle's drive path
 
-def get_3dsurface_actor(path_directory, ground_surf = None):
-    path_directory = path_directory
+def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     try:
         x_data = np.loadtxt(path_directory + 'x.txt', delimiter = ',')
         y_data = np.loadtxt(path_directory + 'y.txt', delimiter = ',')
@@ -74,12 +75,14 @@ def get_3dsurface_actor(path_directory, ground_surf = None):
     PolyData.SetPoints(points)
     PolyData.SetPolys(triangles)
     
-    if color_map:
+    if color_map_bool:
         visualize_elevation(PolyData)
         
     elif soil_map_bool:
         soil_type_array = create_soil_type_arr((m, n))
         visualize_soil(PolyData, soil_type_array)
+
+
 
     # Clean the polydata so that the edges are shared
     cleanPolyData = vtkCleanPolyData()
@@ -90,6 +93,11 @@ def get_3dsurface_actor(path_directory, ground_surf = None):
     smooth_loop.SetNumberOfSubdivisions(3)
     smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
     
+    if path_spline_bool:
+        line_actor = get_spline_actor(smooth_loop, chassis_cg, PolyData.GetBounds())
+    else:
+        line_actor = None
+
     # Create a mapper and actor for smoothed dataset
     mapper = vtkPolyDataMapper()
     mapper.SetInputConnection(smooth_loop.GetOutputPort())
@@ -107,5 +115,4 @@ def get_3dsurface_actor(path_directory, ground_surf = None):
     actor_loop.GetProperty().SetSpecularPower(100)
     # actor_loop.GetProperty().SetSpecularColor(0.1,0.1,0.1)
 
-    return actor_loop, smooth_loop
-    
+    return actor_loop, line_actor, smooth_loop
