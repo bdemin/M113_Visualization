@@ -45,13 +45,10 @@ def place_camera(time, data, camera, camera_distance, view):
 
     elif view == 4:
         # Top view
-        chassis_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chassis_dir = data[0][0].path_dir[time]
-
+        # NEED TO FIX
         cam_d = 10
-        camera_pos = chassis_pos + [0.001,0.001,cam_d]
-        cam_focal_point = chassis_pos
-        # camera.Roll(np.rad2deg(chassis_dir[2]))
+        cam_focal_point = [0,0,0]
+        camera_pos = [30,4,60]
 
     elif view == 5:
         # Cool side view test
