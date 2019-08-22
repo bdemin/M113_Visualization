@@ -1,6 +1,8 @@
 import numpy as np
 
-from vtk import vtkLookupTable, vtkUnsignedCharArray, vtkNamedColors
+from vtk import vtkLookupTable, vtkUnsignedCharArray, vtkNamedColors, \
+    vtkCellLocator, vtkPoints, mutable, vtkParametricSpline, vtkParametricFunctionSource, \
+        vtkPolyDataMapper, vtkActor
 
 
 def visualize_elevation(PolyData):
@@ -140,3 +142,56 @@ def create_soil_type_arr(size):
                     soil_type_arr[i,j] = k
 
     return soil_type_arr
+
+def get_spline_actor(surface_data, chassis_cg_path, surface_bounds):
+    # Iterate over chassis CG points and create a spline which marks the driving path.
+    # Return the spline as a vtkActor for being added later to the renderer.
+
+    # Update the pipeline so that vtkCellLocator finds cells
+    surface_data.Update()
+
+    # Define a cellLocator to be able to compute intersections between lines
+    # and the surface
+    locator = vtkCellLocator()
+    locator.SetDataSet(surface_data.GetOutput())
+    locator.BuildLocator()
+
+    tolerance = 0.01 # Set intersection searching tolerance 
+
+    # Make a list of points. Each point is the intersection of a vertical line
+    # defined by p1 and p2 and the surface.
+    points = vtkPoints()
+    for chassis_cg in chassis_cg_path:
+        p1 = [chassis_cg[0], chassis_cg[1], surface_bounds[4]]
+        p2 = [chassis_cg[0], chassis_cg[1], surface_bounds[5]]
+
+        t = mutable(0)
+        pos = [0.0, 0.0, 0.0]
+        pcoords = [0.0, 0.0, 0.0]
+        subId = mutable(0)
+        locator.IntersectWithLine(p1, p2, tolerance, t, pos, pcoords, subId)
+
+        # Add a slight offset in z
+        pos[2] += 0.05
+        
+        # Add the x, y, z position of the intersection
+        points.InsertNextPoint(pos)
+
+    # Create a spline and add the pointsoi
+    spline = vtkParametricSpline()
+    spline.SetPoints(points)
+    spline_function = vtkParametricFunctionSource()
+    spline_function.SetUResolution(len(chassis_cg_path))
+    spline_function.SetParametricFunction(spline)
+
+    # Map the spline
+    spline_mapper = vtkPolyDataMapper()
+    spline_mapper.SetInputConnection(spline_function.GetOutputPort())
+
+    # Define the line actor
+    spline_actor = vtkActor()
+    spline_actor.SetMapper(spline_mapper)
+    spline_actor.GetProperty().SetColor([0,0.7,0])
+    spline_actor.GetProperty().SetLineWidth(10)
+    
+    return spline_actor
