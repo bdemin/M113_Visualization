@@ -16,7 +16,7 @@ from bodies.classes import Surface
 from graphics.get_video import get_video, get_snapshots, snap
 
 
-record_video = False
+record_video_bool = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, rate):
@@ -35,7 +35,7 @@ class vtkTimerCallback(object):
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
         
-        if record_video:
+        if record_video_bool:
             self.rate = rate
             self.video_count = 1
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
@@ -51,10 +51,9 @@ class vtkTimerCallback(object):
 
         place_all_bodies(self.data, self.timer_count)
 
-        # if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
         if self.timer_count < self.num_frames - 1:
             obj.GetRenderWindow().Render()
-            if record_video:
+            if record_video_bool:
                 if self.timer_count % 500 == 0:
                     self.writer.End()
                     self.video_count += 1
@@ -70,7 +69,7 @@ class vtkTimerCallback(object):
                 self.text_actor.SetInput(text)
                 self.timer_count += 1
         else:
-            if record_video:
+            if record_video_bool:
                 self.writer.End()
                 self.timer_count = 0
                 self.iren.DestroyTimer()
@@ -109,14 +108,15 @@ def visualize(*args, directory, total_time = 25):
         for obj in args[i]:
             renderer.AddActor(obj.actor)
 
-    surface = Surface(directory)
+    surface = Surface(directory, args[0][0].path_loc)
     for actor in surface.actors:
-        renderer.AddActor(actor)
+        if actor:
+            renderer.AddActor(actor)
         
     iren.Initialize()
 
     # Sign up to receive TimerEvent
-    num_frames = args[0][0].path_dir.shape[0]
+    num_frames = args[0][0].path_loc.shape[0]
     FPS = num_frames/total_time
     FPMS = FPS/1000
     

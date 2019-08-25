@@ -44,26 +44,23 @@ def place_camera(time, data, camera, camera_distance, view):
         # camera_pos = wheel_pos + [0,-1.6,0.1]
 
     elif view == 4:
-        # Rear view
-        chs_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chs2cam = [7,0,-0.5]
-        camera_pos = chs_pos + chs2cam
-
-        cam_focal_point = chs_pos
-
+        # Top view
+        # NEED TO FIX
+        cam_d = 10
+        cam_focal_point = [0,0,0]
+        camera_pos = [30,4,60]
 
     elif view == 5:
         # Cool side view test
         chassis_pos = data[0][0].path_loc[time] # Chassis CG @ time
         chs2cam = [-7,0,-0.5]
-        # camera_pos = chassis_pos + chs2cam
+        camera_pos = chassis_pos + chs2cam
 
         # Cam direction is locked on the chassis
         chassis_dir = data[0][0].path_dir[time]
         cam_d = 7
-        camera_pos = chassis_pos + [cam_d*np.sin(chassis_dir[2]), -cam_d*np.cos(chassis_dir[2]), -np.sin(chassis_dir[0]) + 0.2]
 
-        cam_focal_point = chassis_pos
+        cam_focal_point = chassis_pos + [cam_d*np.sin(chassis_dir[2]), -cam_d*np.cos(chassis_dir[2]), -np.sin(chassis_dir[0]) + 0.2]
     
     # Place camera and set focal point:
     camera.SetPosition(camera_pos)

@@ -33,6 +33,6 @@ class Body(object):
 
 
 class Surface(object):
-    def __init__(self, path_directory):
+    def __init__(self, path_directory, chassis_cg = None):
         self.type = 'Surface'
-        self.actors = [get_3dsurface_actor(path_directory)[0]]
+        self.actors = get_3dsurface_actor(path_directory, None, chassis_cg)[0:2]
