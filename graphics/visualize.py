@@ -8,18 +8,17 @@ from graphics.place_camera import place_camera
 from graphics.place_object import place_all_bodies
 from graphics.transformations import scale_actor
 from graphics.draw_text import draw_text
+from graphics.get_video import get_video, get_snapshots, snap
 
 from helpers.event_handling import keyboard_events
 
 from bodies.classes import Surface
 
-from graphics.get_video import get_video, get_snapshots, snap
-
 
 record_video_bool = False
 
 class vtkTimerCallback(object):
-    def __init__(self, renderer, renWin, rate):
+    def __init__(self, renderer, renWin, fps):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
@@ -36,9 +35,9 @@ class vtkTimerCallback(object):
         self.renderer.AddActor(self.text_actor)
         
         if record_video_bool:
-            self.rate = rate
+            self.fps = fps
             self.video_count = 1
-            self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
+            self._filter, self.writer = get_video(renWin, self.fps, 'M113_' + str(self.video_count))
 
 
     def keypress(self, obj, event):
@@ -57,7 +56,7 @@ class vtkTimerCallback(object):
                 if self.timer_count % 500 == 0:
                     self.writer.End()
                     self.video_count += 1
-                    self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
+                    self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count))
                 self._filter.Modified()
                 self.writer.Write()
 
@@ -117,8 +116,8 @@ def visualize(*args, directory, total_time = 25):
 
     # Sign up to receive TimerEvent
     num_frames = args[0][0].path_loc.shape[0]
-    FPS = num_frames/total_time
-    FPMS = FPS/1000
+    FPS = int(round(num_frames/total_time))
+    FPMS = FPS/1000 # frames/millisecond
     
     callback = vtkTimerCallback(renderer, renWin, FPS)
     callback.data = args
@@ -130,5 +129,5 @@ def visualize(*args, directory, total_time = 25):
     iren.AddObserver('TimerEvent', callback.execute)
     iren.AddObserver('KeyPressEvent', callback.keypress)
     
-    iren.CreateRepeatingTimer(int(1/FPMS)) #ms
+    iren.CreateRepeatingTimer(round(1/FPMS)) # milliseconds between frames
     iren.Start()

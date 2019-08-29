@@ -6,7 +6,7 @@ from bodies.classes import Body
 def create_bodies(path_directory, type_, side = None):
     bodies = []
     path_data = np.loadtxt(path_directory + type_ + '.txt', delimiter = ',')
-    num_cols = int(path_data.shape[1])
+    num_cols = path_data.shape[1]
     for index in range(0, num_cols, 6):
         loc_slice = slice(index, index+3)
         dir_slice = slice(index+3, index+6)
