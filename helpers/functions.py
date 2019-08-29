@@ -13,10 +13,13 @@ def get_stl_actor(filename):
     return actor
 
 def get_directory(path):
-    # Function to return latest folder inside path
+    # Function to return latest folder directory inside path
     from os import listdir
     folder_list = listdir(path)
-    folder_list = sorted([folder for folder in folder_list])
+    if folder_list:
+        folder_list = sorted([folder for folder in folder_list])
+        print(folder_list[-1])
+        return path + folder_list[-1] + '/'
+    print('Folder has no simulation data.')
+    exit()
     
-    print(folder_list[-1])
-    return path + folder_list[-1] + '/'
