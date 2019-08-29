@@ -7,7 +7,7 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkNamedColors
 
 from graphics.ground import visualize_elevation, visualize_soil, create_soil_type_arr, get_spline_actor
-
+from graphics.create_ground_from_spheres import create_ground_from_spheres
 
 # Logic controls
 color_map_bool = False # Create elevation-based colormap for the ground
@@ -21,7 +21,10 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
         z_data = np.loadtxt(path_directory + 'z.txt', delimiter = ',')
         # z_data -= 0.1 #fix ground clipping
     except:
-        x_data, y_data, z_data = ground_surf
+        if ground_surf:
+            x_data, y_data, z_data = ground_surf
+        else:
+            x_data, y_data, z_data = create_ground_from_spheres()
 
     m = z_data.shape[0]
     n = z_data.shape[1]
