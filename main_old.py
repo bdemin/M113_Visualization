@@ -23,8 +23,7 @@ for arm in trailing_arms:
         arm.path_loc[:,1] -= offset
 
 #%% Visualize
-# Load time data
-total_time = np.loadtxt(directory + 'Time_Data.txt', delimiter = ',')
+
 
 # Visualize all bodies
 visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units,
