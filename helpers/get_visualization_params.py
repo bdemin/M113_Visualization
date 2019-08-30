@@ -5,12 +5,6 @@ def m113_novid():
 
     vehicle_type = 'M113'
 
-    logic = {
-        'record_video_flag': False,
-        'visualize_surface': True,
-        'soil_map_flag': True,
-    }
-
     bodies = {
         'Chassis': True,
         'road_wheels': True,
@@ -20,11 +14,23 @@ def m113_novid():
         'track_units': True
     }
 
+    surface = {
+        'soil_map_flag': True,
+        'color_map_flag': False,
+        'path_spline_flag': True
+    }
+
+    logic = {
+        'record_video_flag': False,
+        'visualize_surface': True
+    }
+
     visualization_params = {
         'vehicle_type': vehicle_type,
         'parent_directory': parent_directory,
-        'logic': logic,
         'bodies': bodies,
+        'surface': surface,
+        'logic': logic
     }
 
     return visualization_params
