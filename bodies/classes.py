@@ -24,16 +24,10 @@ class Body(object):
         self.actor.GetProperty().SetInterpolationToPhong()
 
     def __repr__(self): 
-        return "%r\n location: %r \n orientation: %r" % (self.type,
-                                                           self.position,
-                                                           str(np.rad2deg(self.angles)))
+        return "%r at: %r, %r" % (self.type,
+                                    str(self.position),
+                                    str(np.rad2deg(self.angles)))
 
     def Move(self, new_position, new_angles):
         self.position = new_position
         self.angles = new_angles
-
-
-class Surface(object):
-    def __init__(self, path_directory):
-        self.type = 'Surface'
-        self.actors = [get_3dsurface_actor(path_directory)]
