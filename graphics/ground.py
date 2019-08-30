@@ -1,6 +1,8 @@
 import numpy as np
 
-from vtk import vtkLookupTable, vtkUnsignedCharArray, vtkNamedColors
+from vtk import vtkLookupTable, vtkUnsignedCharArray, vtkNamedColors, \
+    vtkCellLocator, vtkPoints, mutable, vtkParametricSpline, vtkParametricFunctionSource, \
+        vtkPolyDataMapper, vtkActor
 
 
 def visualize_elevation(PolyData):
@@ -120,17 +122,18 @@ def perlin2D(m):
 
     return s
 
+
 def create_soil_type_arr(size):
     # Create an array of different soil types scatterd randomly using Perlin Noise
 
     np.random.seed(1)
-    noise = generate_perlin_noise_2d((size[0], 60), (5, 6)) # Get perlin noise
-    # noise = perlin2D(size[0])
+    noise = generate_perlin_noise_2d((size), (10, 10)) # Get perlin noise
     soil_type_arr = np.zeros(size)
 
     num_soil_types = 3 # Define how many soil types (colors) should be set
     arr_min = noise.min()
     soil_type_step = (noise.max() - arr_min)/num_soil_types
+    
     # Fill array with different soil types
     for k in range(num_soil_types):
         for i in range(size[0]):
@@ -138,11 +141,57 @@ def create_soil_type_arr(size):
                 if (noise[i,j] <= arr_min + (k+1)*soil_type_step) and (arr_min + k*soil_type_step <= noise[i,j]):
                     soil_type_arr[i,j] = k
 
-    # np.place(noise, noise < (arr_min + soil_type_step), 0)
-    # np.place(noise, (arr_min + soil_type_step < noise) * (noise < arr_min + 2*soil_type_step), 1)
-    # np.place(noise, (arr_min + 2*soil_type_step < noise) * (noise < arr_min + 3*soil_type_step), 2)
-    # np.place(noise, (arr_min + 3*soil_type_step < noise) * (noise < arr_min + 4*soil_type_step), 3)
-    # np.place(noise, (arr_min + 4*soil_type_step < noise) * (noise < arr_min + 5*soil_type_step), 4)
-    # np.place(noise, (arr_min + 5*soil_type_step < noise) * (noise < arr_min + 6*soil_type_step), 5)
-    # np.place(noise, noise.max() - soil_type_step < noise, 6)
     return soil_type_arr
+
+def get_spline_actor(surface_data, chassis_cg_path, surface_bounds):
+    # Iterate over chassis CG points and create a spline which marks the driving path.
+    # Return the spline as a vtkActor for being added later to the renderer.
+
+    # Update the pipeline so that vtkCellLocator finds cells
+    surface_data.Update()
+
+    # Define a cellLocator to be able to compute intersections between lines
+    # and the surface
+    locator = vtkCellLocator()
+    locator.SetDataSet(surface_data.GetOutput())
+    locator.BuildLocator()
+
+    tolerance = 0.01 # Set intersection searching tolerance 
+
+    # Make a list of points. Each point is the intersection of a vertical line
+    # defined by p1 and p2 and the surface.
+    points = vtkPoints()
+    for chassis_cg in chassis_cg_path:
+        p1 = [chassis_cg[0], chassis_cg[1], surface_bounds[4]]
+        p2 = [chassis_cg[0], chassis_cg[1], surface_bounds[5]]
+
+        t = mutable(0)
+        pos = [0.0, 0.0, 0.0]
+        pcoords = [0.0, 0.0, 0.0]
+        subId = mutable(0)
+        locator.IntersectWithLine(p1, p2, tolerance, t, pos, pcoords, subId)
+
+        # Add a slight offset in z
+        pos[2] += 0.05
+        
+        # Add the x, y, z position of the intersection
+        points.InsertNextPoint(pos)
+
+    # Create a spline and add the pointsoi
+    spline = vtkParametricSpline()
+    spline.SetPoints(points)
+    spline_function = vtkParametricFunctionSource()
+    spline_function.SetUResolution(len(chassis_cg_path))
+    spline_function.SetParametricFunction(spline)
+
+    # Map the spline
+    spline_mapper = vtkPolyDataMapper()
+    spline_mapper.SetInputConnection(spline_function.GetOutputPort())
+
+    # Define the line actor
+    spline_actor = vtkActor()
+    spline_actor.SetMapper(spline_mapper)
+    spline_actor.GetProperty().SetColor([0,0.7,0])
+    spline_actor.GetProperty().SetLineWidth(10)
+    
+    return spline_actor
