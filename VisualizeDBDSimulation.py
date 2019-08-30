@@ -18,9 +18,10 @@ class VisualizeDBDSimulation(object):
 
 
     def load_bodies_data(self):
+        # Need to add bodies param
         invoke_vehicle_method = getattr(bodies.vehicle, self.params['vehicle_type'])
         self.bodies = invoke_vehicle_method(self.path)
 
 
     def load_surface_data(self):
-        self.surface = Surface()
+        self.surface = Surface(self.path, self.params['surface'])
