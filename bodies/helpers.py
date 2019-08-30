@@ -23,5 +23,5 @@ def create_bodies(path_directory, type_, side = None):
     return bodies
 
 
-def find_angle(x0, y0):
-    return np.arctan(y0/x0)*180/np.pi+90
+# def find_angle(x0, y0):
+    # return np.arctan(y0/x0)*180/np.pi+90
