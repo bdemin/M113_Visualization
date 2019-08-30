@@ -6,8 +6,7 @@ class Vehicle(object):
         self.bodies = dict()
         self.bodies['Chassis'] = create_bodies(path, 'Chassis')
 
-        
-    
+
 class M113(Vehicle):
     def __init__(self, path):
         Vehicle.__init__(self, path)
@@ -21,3 +20,14 @@ class M113(Vehicle):
 class Eitan(Vehicle):
     def __init__(self):
         Vehicle.__init__(self, path)
+
+
+class MK4(Vehicle):
+    def __init__(self):
+        Vehicle.__init__(self, path)
+
+
+class D9(Vehicle):
+    def __init__(self):
+        Vehicle.__init__(self, path)
+        
