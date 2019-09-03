@@ -1,9 +1,6 @@
 import numpy as np
 
 from graphics.helpers import get_stl_actor, set_actor_visuals
-from graphics.get_surface_actor import get_surface_actor
-from graphics.get_3dsurface_actor import get_3dsurface_actor
-from graphics.place_object import place_object
 
 
 directory = 'graphics/STL_data/'
