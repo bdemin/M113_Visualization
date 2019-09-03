@@ -9,6 +9,7 @@ def main():
     vis = VisualizeDBDSimulation(visualization_params)
     vis.load_bodies_data()
     vis.load_surface_data()
+    vis.load_visualization()
 
 if __name__ == '__main__':
     main()
