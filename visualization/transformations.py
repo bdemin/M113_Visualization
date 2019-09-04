@@ -47,3 +47,4 @@ def scale_actor(actor, factor, prev_trans = None):
     transformFilter.SetTransform(transform)
     actor.SetUserTransform(transform)
     return transform #can be improved
+    

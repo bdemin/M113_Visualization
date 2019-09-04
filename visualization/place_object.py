@@ -2,7 +2,7 @@ import numpy as np
 
 from vtk import vtkTransform, vtkMatrix4x4, vtkTransformPolyDataFilter
 
-from graphics.transformations import trans_matrix, rot_matrix
+from visualization.transformations import trans_matrix, rot_matrix
 
 
 def place_all_bodies(data, timer_count):
