@@ -15,14 +15,14 @@ def m113_novid():
     }
 
     surface = {
+        'visualize_surface': True,
         'soil_map_flag': True,
         'color_map_flag': False,
         'path_spline_flag': True
     }
 
-    logic = {
+    video = {
         'record_video_flag': False,
-        'visualize_surface': True
     }
 
     visualization_params = {
@@ -30,7 +30,7 @@ def m113_novid():
         'parent_directory': parent_directory,
         'bodies': bodies,
         'surface': surface,
-        'logic': logic
+        'video': video
     }
 
     return visualization_params
