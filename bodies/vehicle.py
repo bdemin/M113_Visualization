@@ -2,12 +2,14 @@ from bodies.helpers import create_bodies
 
 
 class Vehicle(object):
+    # Metaclass to define common attributes of DBD vehicles.
     def __init__(self, path):
         self.bodies = dict()
         self.bodies['Chassis'] = create_bodies(path, 'Chassis')
 
 
 class M113(Vehicle):
+    # Inherits from Vehicle and adds all the relevant attributes for visualizing M113 DBD results.
     def __init__(self, path):
         Vehicle.__init__(self, path)
         self.bodies['road_wheels'] = create_bodies(path, 'Road_Wheel', side = True)
