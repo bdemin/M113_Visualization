@@ -1,12 +1,15 @@
 from VisualizeDBDSimulation import VisualizeDBDSimulation
 
-from helpers.get_visualization_params import m113_novid
+from helpers.get_visualization_params import VisualizationParameters
 
 
 def main():
-    visualization_params = m113_novid()
+    params = VisualizationParameters()
+    params.load_data('m113_novid')
+
+    # visualization_params = m113_novid()
     
-    vis = VisualizeDBDSimulation(visualization_params)
+    vis = VisualizeDBDSimulation(params.get_data())
     vis.load_bodies_data()
     vis.load_surface_data()
     vis.load_visualization()
