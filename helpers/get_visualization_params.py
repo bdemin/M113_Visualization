@@ -1,9 +1,5 @@
 class VisualizationParameters(object):
     # Class that deals with various visualization parameters - which bodies to include, surface filters, video recording, etc.
-    
-    # def __init__(self):
-        # pass
-
 
     def load_data(self, method_string):
         invoke_method = getattr(self, method_string)
