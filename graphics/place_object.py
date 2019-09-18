@@ -6,67 +6,61 @@ from graphics.transformations import trans_matrix, rot_matrix
 
 
 def place_all_bodies(data, timer_count):
-    data[0][0].Move(data[0][0].path_loc[timer_count],
-                data[0][0].path_dir[timer_count])
-
-    place_chassis(data[0][0].actor,
-                data[0][0].position,
-                data[0][0].angles)
-
+    for bodies in data:
+        for body in bodies:
+            body.Move(body.path_loc[timer_count],
+                body.path_dir[timer_count])
+            place_body(body, data[0][0])
     
+def place_body(body, chassis = None):
+    # if body.type == 'Idler' and body.side == 'R':
+        # print(np.linalg.norm(body.position - chassis.position))
 
-    for obj_index in range(1,len(data) - 1):
-        for _object in data[obj_index]:
-            _object.Move(_object.path_loc[timer_count],
-                _object.path_dir[timer_count])
-            place_object(_object.actor,
-                _object.position,
-                _object.angles,
-                data[0][0].path_dir[timer_count],
-                _object.side)
-
-    for link in data[-1]:
-        link.Move(link.path_loc[timer_count],
-            link.path_dir[timer_count])
-        place_chassis(link.actor,
-                link.position,
-                link.angles)
-
-
-def place_object(actor, new_pos, angles, chassis_angles, side):
-    if side == 'L':
-        first_angles = (-chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)
-        y_rotation = (0, -angles[1], 0)
-    elif side == 'R':
-        first_angles = chassis_angles[:]
-        y_rotation = (0, angles[1], 0)
-    
-    rotations_matrix = np.matmul(rot_matrix(*(first_angles[0],0,first_angles[2])), rot_matrix(*y_rotation))
-
-    final_matrix = np.matmul(trans_matrix(*new_pos), rotations_matrix)
     trans = vtkTransform()
-    vtk_matrix = vtkMatrix4x4()
-    m, n = final_matrix.shape
-    for i in range(m):
-        for j in range(n):
-            vtk_matrix.SetElement(i,j,final_matrix[i][j])
-    trans.SetMatrix(vtk_matrix)
-    transformFilter = vtkTransformPolyDataFilter()
-    transformFilter.SetTransform(trans)
-    actor.SetUserTransform(trans)
+    trans.Identity()
 
+    trans.Translate(body.position)
 
-def place_chassis(actor, new_pos, angles):
-    matrix = np.matmul(trans_matrix(*new_pos) , rot_matrix(*angles))
-    trans = vtkTransform()
-    vtk_matrix = vtkMatrix4x4()
-    m, n = matrix.shape
-    for i in range(m):
-        for j in range(n):
-            vtk_matrix.SetElement(i, j, matrix[i][j])
+    trans.RotateX(np.rad2deg(chassis.angles[0]))
+    trans.RotateY(np.rad2deg(chassis.angles[1]))
+    trans.RotateZ(np.rad2deg(chassis.angles[2]))
 
-    trans.SetMatrix(vtk_matrix)
-    transformFilter = vtkTransformPolyDataFilter()
-    transformFilter.SetTransform(trans)
-    actor.SetUserTransform(trans)
+    # if body.type == 'Chassis':
+    #     trans.RotateX(np.rad2deg(body.angles[0]))
+    #     trans.RotateY(np.rad2deg(body.angles[1]))
+    #     trans.RotateZ(np.rad2deg(body.angles[2]))
     
+    # # elif body.type in ['Idler', 'Sprocket', 'Road_Wheel', 'Track']:
+    # else:
+    #     if body.side == 'L':
+    #         rotation_dir_vec = chassis.actor.GetMatrix().MultiplyPoint((0,1,0,0))[0:3]
+    #     else:
+    #         rotation_dir_vec = chassis.actor.GetMatrix().MultiplyPoint((0,-1,0,0))[0:3]
+    #     # trans.RotateWXYZ(np.rad2deg(body.angles[1]), rotation_dir_vec)
+        
+    #     trans.RotateX(np.rad2deg(chassis.angles[0]))
+    #     trans.RotateY(np.rad2deg(chassis.angles[1]))
+    #     trans.RotateZ(np.rad2deg(chassis.angles[2]))
+    
+    body.actor.SetUserTransform(trans)
+
+    # if side == 'L':
+    #     first_angles = (-chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)
+    #     y_rotation = (0, -angles[1], 0)
+    # elif side == 'R':
+    #     first_angles = chassis_angles[:]
+    #     y_rotation = (0, angles[1], 0)
+    
+    # rotations_matrix = np.matmul(rot_matrix(*(first_angles[0],0,first_angles[2])), rot_matrix(*y_rotation))
+
+    # final_matrix = np.matmul(trans_matrix(*new_pos), rotations_matrix)
+    # trans = vtkTransform()
+    # vtk_matrix = vtkMatrix4x4()
+    # m, n = final_matrix.shape
+    # for i in range(m):
+    #     for j in range(n):
+    #         vtk_matrix.SetElement(i,j,final_matrix[i][j])
+    # trans.SetMatrix(vtk_matrix)
+    # transformFilter = vtkTransformPolyDataFilter()
+    # transformFilter.SetTransform(trans)
+    # actor.SetUserTransform(trans)
