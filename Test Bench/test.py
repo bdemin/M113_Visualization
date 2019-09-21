@@ -30,6 +30,50 @@ class Body(object):
         self.trans.PostMultiply()
         
 
+def trans_matrix(dx, dy, dz):
+    matrix = np.eye(4)
+    matrix[0,3] = dx
+    matrix[1,3] = dy
+    matrix[2,3] = dz
+    return matrix
+
+def rot_matrix(x, y, z):
+    sin = np.sin
+    cos = np.cos
+    matrix = []
+
+    Cx = cos(x)
+    Cy = cos(y)
+    Cz = cos(z)
+
+    Sx = sin(x)
+    Sy = sin(y)
+    Sz = sin(z)
+
+    matrix.append(Cy * Cz)
+    matrix.append(Cz * Sx * Sy-Cx * Sz)
+    matrix.append(Sx * Sz+Cx * Cz * Sy)
+    matrix.append(0)
+    
+    matrix.append(Cy * Sz)
+    matrix.append(Cx * Cz+Sx * Sy * Sz)
+    matrix.append(Cx * Sy * Sz-Cz * Sx)
+    matrix.append(0)
+    
+    matrix.append(-Sy)
+    matrix.append(Cy * Sx)
+    matrix.append(Cx * Cy)
+    matrix.append(0)
+    
+    matrix.append(0)
+    matrix.append(0)
+    matrix.append(0)
+    matrix.append(1)
+    
+    matrix = np.asarray(matrix).reshape(4,4)
+    return matrix
+
+
 def create_bodies(directory, type_, side = None):
     bodies = []
     path_data = np.loadtxt(directory + type_ + '.txt', delimiter = ',')
@@ -62,16 +106,33 @@ class vtkTimerCallback(object):
     def execute(self, obj, event):
         for body_type in self.data:
             for body in body_type:
-                body.trans.Identity()
+                rot_mat = rot_matrix(*body.angles)
+                trans = vtk.vtkTransform()
+                vtk_matrix = vtk.vtkMatrix4x4()
+
+
+                    # rotations_matrix = np.matmul(rot_matrix(*(first_angles[0],0,first_angles[2])), rot_matrix(*y_rotation))
+
+                    # final_matrix = np.matmul(trans_matrix(*new_pos), rotations_matrix)
+                    
+                m, n = rot_mat.shape
+                for i in range(m):
+                    for j in range(n):
+                        vtk_matrix.SetElement(i, j, rot_mat[i][j])
+                trans.SetMatrix(vtk_matrix)
+                # transformFilter = vtk.vtkTransformPolyDataFilter()
+                # transformFilter.SetTransform(trans)
+                body.actor.SetUserTransform(trans)
+                # body.trans.Identity()
                 # body.trans.Translate(body.position)
                 # body.trans.RotateX(np.rad2deg(body.angles[0]))
                 # body.trans.RotateY(np.rad2deg(body.angles[1]))
                 # body.trans.RotateZ(np.rad2deg(body.angles[2]))
-                body.trans.RotateWXYZ(np.rad2deg(body.angles[0]), 1, 0, 0)
-                body.trans.RotateWXYZ(np.rad2deg(body.angles[1]), 0, 1, 0)
-                body.trans.RotateWXYZ(np.rad2deg(body.angles[2]), 0, 0, 1)
-                body.actor.SetUserTransform(body.trans)
-        print(body.angles,'\n')
+                # body.trans.RotateWXYZ(np.rad2deg(body.angles[0]), 1, 0, 0)
+                # body.trans.RotateWXYZ(np.rad2deg(body.angles[1]), 0, 1, 0)
+                # body.trans.RotateWXYZ(np.rad2deg(body.angles[2]), 0, 0, 1)
+                # body.actor.SetUserTransform(body.trans)
+        # print(body.angles,'\n')
         obj.GetRenderWindow().Render()
 
 
