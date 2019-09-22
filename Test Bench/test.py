@@ -1,4 +1,5 @@
 import numpy as np
+import quaternion
 import vtk
 
 
@@ -27,7 +28,8 @@ class Body(object):
 
         self.actor = get_stl_actor(directory + self.type + '.STL')
         self.trans = vtk.vtkTransform()
-        self.trans.PostMultiply()
+        # self.trans.PostMultiply()
+        self.actor.SetUserTransform(self.trans)
         
 
 def create_bodies(directory, type_, side = None):
@@ -52,8 +54,15 @@ class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, data):
         self.time = 1
         self.renderer = renderer
-        self.camera = self.renderer.GetActiveCamera()
-        self.camera.SetViewUp(0,1,1)
+
+        cam_distance = (6, 6, 6)
+        self.camera = vtk.vtkCamera()
+        self.renderer.SetActiveCamera(self.camera)
+        self.camera.SetViewUp(0,0,1)
+        self.camera.SetFocalPoint(0, 0, 0)
+        self.camera.SetPosition(cam_distance)
+
+
         for body_type in data:
             for body in body_type:
                 self.renderer.AddActor(body.actor)
@@ -63,14 +72,43 @@ class vtkTimerCallback(object):
         for body_type in self.data:
             for body in body_type:
                 body.trans.Identity()
-                # body.trans.Translate(body.position)
-                # body.trans.RotateX(np.rad2deg(body.angles[0]))
-                # body.trans.RotateY(np.rad2deg(body.angles[1]))
-                # body.trans.RotateZ(np.rad2deg(body.angles[2]))
-                body.trans.RotateWXYZ(np.rad2deg(body.angles[0]), 1, 0, 0)
-                body.trans.RotateWXYZ(np.rad2deg(body.angles[1]), 0, 1, 0)
-                body.trans.RotateWXYZ(np.rad2deg(body.angles[2]), 0, 0, 1)
+
+                # Quaternion stuff
+                yaw = body.angles[2]
+                pitch = body.angles[1]
+                roll = body.angles[0]
+
+                cy = np.cos(yaw * 0.5)
+                sy = np.sin(yaw * 0.5)
+                cp = np.cos(pitch * 0.5)
+                sp = np.sin(pitch * 0.5)
+                cr = np.cos(roll * 0.5)
+                sr = np.sin(roll * 0.5)
+
+                w = cy * cp * cr + sy * sp * sr
+                x = cy * cp * sr - sy * sp * cr
+                y = sy * cp * sr + cy * sp * cr
+                z = sy * cp * cr - cy * sp * sr
+
+                body_quaternion = np.quaternion(w, x, y, z)
+
+                # Convert to 4x4 vtkMatrix
+                vtkmath = vtk.vtkMath()
+                rot_mat_3x3 = np.zeros((3,3))
+                vtkmath.QuaternionToMatrix3x3(body_quaternion.components, rot_mat_3x3)
+                rot_mat_4x4 = np.zeros((4,4))
+                rot_mat_4x4[0:3,0:3] = rot_mat_3x3[:,:]
+                rot_mat_4x4[-1,-1] = 1
+                
+                vtk_matrix = vtk.vtkMatrix4x4()
+                m, n = rot_mat_4x4.shape
+                for i in range(m):
+                    for j in range(n):
+                        vtk_matrix.SetElement(i,j, rot_mat_4x4[i][j])
+
+                body.trans.SetMatrix(vtk_matrix)
                 body.actor.SetUserTransform(body.trans)
+
         print(body.angles,'\n')
         obj.GetRenderWindow().Render()
 
@@ -78,15 +116,12 @@ class vtkTimerCallback(object):
     def keypress(self, obj, event):
         key = obj.GetKeySym()
 
-        if key == 'c':
-            for body_type in self.data:
-                for body in body_type:
-                    body.position[0] += 0.5
-        
+
         if key == 'v':
             for body_type in self.data:
                 for body in body_type:
-                    body.position[0] -= 0.5
+                    body.angles[:] = 0
+
 
         if key == 'x':
             for body_type in self.data:
@@ -143,19 +178,7 @@ def main():
     renderer.AddActor(axesActor)
 
     directory = 'Test Bench/'
-    chassis = create_bodies(directory, 'Chassis')
-    road_wheels = create_bodies(directory, 'Road_Wheel', side = True)
-    trailing_arms = create_bodies(directory, 'Trailing_Arm', side = True)
-    sprockets = create_bodies(directory, 'Sprocket', side = True)
-    idlers = create_bodies(directory, 'Idler', side = True)
-    track_units = create_bodies(directory, 'Track_Unit')
-
-    # data = [chassis, road_wheels, trailing_arms, sprockets, idlers, track_units]
-    data = [chassis]
-
-    # trans = vtk.vtkTransform()
-    # trans.Identity()
-    # actor.SetUserTransform(trans)
+    data = [create_bodies(directory, 'Chassis')]
 
     renderer.GradientBackgroundOn()
     renderer.SetBackground(0,0,0.5)
