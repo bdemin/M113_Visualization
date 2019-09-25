@@ -38,11 +38,6 @@ for arm in trailing_arms:
     else:
         arm.path_loc[:,1] -= offset
 
-# Left side rotation direction:
-for road_wheel in road_wheels:
-    if road_wheel.side == 'L':
-        road_wheel.path_dir[:,1] *= -1
-
 # road_wheels[7].actor.GetProperty().SetOpacity(0.4)
 
 
@@ -51,7 +46,7 @@ for road_wheel in road_wheels:
 total_time = np.loadtxt(directory + 'Time_Data.txt', delimiter = ',')
 
 # Visualize all bodies
-visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units,
+visualize(chassis, road_wheels, sprockets, idlers, track_units,
             directory = directory, total_time = total_time)
 
 # Visualize specific bodies
