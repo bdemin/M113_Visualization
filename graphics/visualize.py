@@ -81,6 +81,8 @@ class vtkTimerCallback(object):
 
 
 def visualize(*args, directory, total_time = 25):
+    from win32api import GetSystemMetrics
+
     # create renderer, figure and axes:
     renderer = vtkRenderer()
     renWin = vtkRenderWindow()
@@ -100,9 +102,7 @@ def visualize(*args, directory, total_time = 25):
     renderer.GradientBackgroundOn()
     renderer.SetBackground(0,0,0.5)
     renderer.SetBackground2(0.2,0.2,0.6)
-    scale_f = 0.7
-    resolution = (int(scale_f * 1920), int(scale_f * 1080))
-    renWin.SetSize(resolution)
+    renWin.SetSize((GetSystemMetrics(0),  GetSystemMetrics(1)))
 
     # add all actors to the renderer
     for i in range(len(args)):
