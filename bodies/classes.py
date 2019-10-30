@@ -1,5 +1,7 @@
 import numpy as np
 
+# from vtk import vtkTransform
+
 from graphics.helpers import get_stl_actor, set_actor_visuals
 from graphics.get_surface_actor import get_surface_actor
 from graphics.get_3dsurface_actor import get_3dsurface_actor
@@ -20,6 +22,9 @@ class Body(object):
         self.actor = get_stl_actor(directory + self.type + '.STL')
         set_actor_visuals(self.actor, self.type)
         self.actor.GetProperty().SetInterpolationToPhong()
+
+        # self.trans = vtkTransform()
+        # self.actor.SetUserTransform(self.trans)
 
     def __repr__(self): 
         return "%r\n location: %r \n orientation: %r" % (self.type,

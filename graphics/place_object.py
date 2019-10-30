@@ -1,6 +1,7 @@
 import numpy as np
 
-from vtk import vtkTransform, vtkMatrix4x4, vtkTransformPolyDataFilter
+from vtk import vtkTransform, vtkMatrix4x4, vtkTransformPolyDataFilter, \
+    vtkMath
 
 from graphics.transformations import trans_matrix, rot_matrix
 
@@ -8,41 +9,41 @@ from graphics.transformations import trans_matrix, rot_matrix
 def place_all_bodies(data, timer_count):
     for bodies in data:
         for body in bodies:
-            body.Move(body.path_loc[timer_count],
-                body.path_dir[timer_count])
-            place_body(body, data[0][0])
-    
+            if body.type == 'Chassis':
+                body.Move(body.path_loc[timer_count],
+                        body.path_dir[timer_count])
+                place_body(body)
+            else:
+                body.Move(body.path_loc[timer_count],
+                    body.path_dir[timer_count])
+                place_body(body, data[0][0])
+
 def place_body(body, chassis = None):
-    # if body.type == 'Idler' and body.side == 'R':
-        # print(np.linalg.norm(body.position - chassis.position))
+    body.trans.Identity()
+    body.trans.PreMultiply()
+    body.trans.Translate(body.position)
 
-    trans = vtkTransform()
-    trans.Identity()
+    if body.side == 'L':
+        chassis_angles = (chassis.angles[0], chassis.angles[1], chassis.angles[2] - np.pi)
+        rotating_angles = (0, -body.angles[1], 0)
+    elif body.side == 'R':
+        chassis_angles = chassis.angles[:]
+        rotating_angles = (0, body.angles[1], 0)
+    elif body.type == 'Chassis':
+        chassis_angles = body.angles
 
-    trans.Translate(body.position)
-
-    trans.RotateX(np.rad2deg(chassis.angles[0]))
-    trans.RotateY(np.rad2deg(chassis.angles[1]))
-    trans.RotateZ(np.rad2deg(chassis.angles[2]))
-
-    # if body.type == 'Chassis':
-    #     trans.RotateX(np.rad2deg(body.angles[0]))
-    #     trans.RotateY(np.rad2deg(body.angles[1]))
-    #     trans.RotateZ(np.rad2deg(body.angles[2]))
+    body.trans.RotateX(np.rad2deg(chassis_angles[0]))
+    body.trans.RotateY(np.rad2deg(chassis_angles[1]))
+    body.trans.RotateZ(np.rad2deg(chassis_angles[2]))
     
-    # # elif body.type in ['Idler', 'Sprocket', 'Road_Wheel', 'Track']:
-    # else:
-    #     if body.side == 'L':
-    #         rotation_dir_vec = chassis.actor.GetMatrix().MultiplyPoint((0,1,0,0))[0:3]
-    #     else:
-    #         rotation_dir_vec = chassis.actor.GetMatrix().MultiplyPoint((0,-1,0,0))[0:3]
-    #     # trans.RotateWXYZ(np.rad2deg(body.angles[1]), rotation_dir_vec)
-        
-    #     trans.RotateX(np.rad2deg(chassis.angles[0]))
-    #     trans.RotateY(np.rad2deg(chassis.angles[1]))
-    #     trans.RotateZ(np.rad2deg(chassis.angles[2]))
+
+    if body.type != 'Chassis':
+        body.trans.RotateX(np.rad2deg(rotating_angles[0]))
+        body.trans.RotateY(np.rad2deg(rotating_angles[1]))
+        body.trans.RotateZ(np.rad2deg(rotating_angles[2]))
+            
     
-    body.actor.SetUserTransform(trans)
+    body.actor.SetUserTransform(body.trans)
 
     # if side == 'L':
     #     first_angles = (-chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)

@@ -15,28 +15,28 @@ show_description(directory)
 
 #%% Create bodies
 chassis = create_bodies(directory, 'Chassis')
-# road_wheels = create_bodies(directory, 'Road_Wheel', side = True)
-# trailing_arms = create_bodies(directory, 'Trailing_Arm', side = True)
-# sprockets = create_bodies(directory, 'Sprocket', side = True)
+road_wheels = create_bodies(directory, 'Road_Wheel', side = True)
+trailing_arms = create_bodies(directory, 'Trailing_Arm', side = True)
+sprockets = create_bodies(directory, 'Sprocket', side = True)
 idlers = create_bodies(directory, 'Idler', side = True)
-# track_units = create_bodies(directory, 'Track_Unit')
+track_units = create_bodies(directory, 'Track_Unit')
 
 #%% Temporary fixes for the visualization
 # X rotation direction for track_units
-# for track_unit in track_units:
-#     track_unit.path_dir[:,0] *= -1
+for track_unit in track_units:
+    track_unit.path_dir[:,0] *= -1
 
-# for trailing_arm in trailing_arms:
-#     if trailing_arm.side == 'L':
-#         trailing_arm.path_dir[:, 1] *= -1
+for trailing_arm in trailing_arms:
+    if trailing_arm.side == 'L':
+        trailing_arm.path_dir[:, 1] *= -1
 
 # Trailing arm y offset
-# offset = 0.0
-# for arm in trailing_arms:
-#     if arm.side == 'L':
-#         arm.path_loc[:,1] += offset
-#     else:
-#         arm.path_loc[:,1] -= offset
+offset = 0.0
+for arm in trailing_arms:
+    if arm.side == 'L':
+        arm.path_loc[:,1] += offset
+    else:
+        arm.path_loc[:,1] -= offset
 
 # sprockets[0].path_dir[:,1] *= -1
 # idlers[0].path_dir[:,1] *= -1
@@ -49,9 +49,8 @@ idlers = create_bodies(directory, 'Idler', side = True)
 total_time = np.loadtxt(directory + 'Time_Data.txt', delimiter = ',')
 
 # Visualize all bodies
-# visualize(chassis, road_wheels, trailing_arms, sprockets, idlers, track_units,
-        #     directory = directory, total_time = total_time)
+visualize(chassis, road_wheels, sprockets, idlers, track_units,
+            directory = directory, total_time = total_time)
 
 # Visualize specific bodies
-visualize(chassis, idlers,
-                directory = directory, total_time = total_time)
+# visualize(chassis, road_wheels, sprockets, idlers, track_units, obstacles, total_time = total_time, directory = directory)
