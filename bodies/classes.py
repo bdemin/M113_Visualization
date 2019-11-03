@@ -1,4 +1,5 @@
 import numpy as np
+from vtk import vtkTransform, vtkTransformPolyDataFilter
 
 from graphics.helpers import get_stl_actor, set_actor_visuals
 
@@ -13,14 +14,19 @@ class Body(object):
 
         self.position = path_loc[0]
         self.angles = path_dir[0]
-        if side:
-            self.side = side
+        
+        self.side = side
 
         self.actor = get_stl_actor(directory + self.type + '.STL')
         set_actor_visuals(self.actor, self.type)
         self.actor.GetProperty().SetInterpolationToPhong()
 
-    def __repr__(self): 
+        if self.side:
+            return Asymmetrical()
+        else:
+            return Symmetrical()
+
+    def __repr__(self):
         return "%r at: %r, %r" % (self.type,
                                     str(self.position),
                                     str(np.rad2deg(self.angles)))
