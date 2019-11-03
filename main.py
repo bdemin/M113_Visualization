@@ -40,9 +40,7 @@ for arm in trailing_arms:
 
 # sprockets[0].path_dir[:,1] *= -1
 # idlers[0].path_dir[:,1] *= -1
-
 # road_wheels[7].actor.GetProperty().SetOpacity(0.4)
-
 
 #%% Visualize
 # Load time data

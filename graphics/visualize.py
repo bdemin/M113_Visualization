@@ -1,4 +1,5 @@
 import numpy as np
+from ctypes import windll
 
 from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
@@ -98,7 +99,10 @@ def visualize(*args, directory, total_time = 25):
     renderer.GradientBackgroundOn()
     renderer.SetBackground(0,0,0.5)
     renderer.SetBackground2(0.2,0.2,0.6)
-    renWin.SetSize(1920, 1080)
+
+    user32 = windll.user32
+    resolution = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+    renWin.SetSize(resolution)
 
     # add all actors to the renderer
     for i in range(len(args)):
