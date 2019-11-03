@@ -1,4 +1,4 @@
-from bodies.helpers import create_bodies
+import numpy as np
 
 
 class Vehicle(object):
