@@ -1,15 +1,5 @@
-class VisualizationParameters(object):
-    # Class that deals with various visualization parameters - which bodies to include, surface filters, video recording, etc.
-
-    def load_data(self, method_string):
-        invoke_method = getattr(self, method_string)
-        invoke_method()
-
-
-    def get_data(self):
-        # Return all parameters regarding the visualization
-        return self.params
-
+class SimulationTypes(object):
+    # Class for holding various sets of simulation parameters
 
     def m113_novid(self):
         # M113 visualization with all bodies, surface and no video recording
@@ -45,7 +35,6 @@ class VisualizationParameters(object):
             'surface': surface,
             'video': video
         }
-        
 
     def m113_vid(self):
         # M113 visualization with all bodies, surface and video recording
@@ -82,3 +71,14 @@ class VisualizationParameters(object):
             'video': video
         }
         
+
+class VisualizationParameters(SimulationTypes):
+    # Class that deals with various visualization parameters - which bodies to include, surface filters, video recording, etc.
+
+    def load_data(self, method_string):
+        invoke_method = getattr(self, method_string)
+        invoke_method()
+
+    def get_data(self):
+        # Return all parameters regarding the visualization
+        return self.params
