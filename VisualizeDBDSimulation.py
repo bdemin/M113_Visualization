@@ -7,7 +7,6 @@ from surface.classes import Surface
 
 from visualization.visualizer import Visualizer
 
-# from simulation_description import show_description
 
 
 class VisualizeDBDSimulation(object):
