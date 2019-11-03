@@ -21,15 +21,14 @@ class M113(Vehicle):
 
 class Eitan(Vehicle):
     def __init__(self):
-        Vehicle.__init__(self, path)
+        Vehicle.__init__(self)
 
 
 class MK4(Vehicle):
     def __init__(self):
-        Vehicle.__init__(self, path)
+        Vehicle.__init__(self)
 
 
 class D9(Vehicle):
     def __init__(self):
-        Vehicle.__init__(self, path)
-        
+        Vehicle.__init__(self)
