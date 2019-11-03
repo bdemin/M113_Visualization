@@ -19,9 +19,5 @@ def create_bodies(path_directory, type_, side = None):
                 path_dir[:,0] = -path_dir[:,0]
             else:
                 side = 'R'
-        bodies.append(Body(type_, path_loc, path_dir, side))    
+        bodies.append(Body(type_, path_loc, path_dir, side))
     return bodies
-
-
-def find_angle(x0, y0):
-    return np.arctan(y0/x0)*180/np.pi+90

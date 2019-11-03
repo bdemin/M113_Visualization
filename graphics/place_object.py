@@ -1,8 +1,7 @@
 import numpy as np
 
-from vtk import vtkTransform, vtkMatrix4x4, vtkTransformPolyDataFilter
+from vtk import vtkTransform, vtkTransformPolyDataFilter
 
-from graphics.transformations import trans_matrix, rot_matrix
 
 
 def place_all_bodies(data, timer_count):
@@ -34,10 +33,10 @@ def place_all_bodies(data, timer_count):
 def place_object(actor, new_pos, angles, chassis_angles, side):
     if side == 'L':
         first_angles = (chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)
-        y_rotation = (0, -angles[1], 0)
+        y_rotation = -angles[1]
     elif side == 'R':
         first_angles = chassis_angles[:]
-        y_rotation = (0, angles[1], 0)
+        y_rotation = angles[1]
     
     trans = vtkTransform()
     trans.PreMultiply()
@@ -47,24 +46,19 @@ def place_object(actor, new_pos, angles, chassis_angles, side):
     trans.RotateY(np.rad2deg(first_angles[1]))
     trans.RotateZ(np.rad2deg(first_angles[2]))
     
-    trans.RotateX(np.rad2deg(y_rotation[0]))
-    trans.RotateY(np.rad2deg(y_rotation[1]))
-    trans.RotateZ(np.rad2deg(y_rotation[2]))
+    trans.RotateY(np.rad2deg(y_rotation))
 
     actor.SetUserTransform(trans)
 
 
 def place_chassis(actor, new_pos, angles):
-    matrix = np.matmul(trans_matrix(*new_pos) , rot_matrix(*angles))
     trans = vtkTransform()
-    vtk_matrix = vtkMatrix4x4()
-    m, n = matrix.shape
-    for i in range(m):
-        for j in range(n):
-            vtk_matrix.SetElement(i, j, matrix[i][j])
+    trans.PreMultiply()
 
-    trans.SetMatrix(vtk_matrix)
-    transformFilter = vtkTransformPolyDataFilter()
-    transformFilter.SetTransform(trans)
-    actor.SetUserTransform(trans)
+    trans.Translate(*new_pos)
     
+    trans.RotateZ(np.rad2deg(angles[2]))
+    trans.RotateY(np.rad2deg(angles[1]))
+    trans.RotateX(np.rad2deg(angles[0]))
+
+    actor.SetUserTransform(trans)

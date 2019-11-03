@@ -3,11 +3,10 @@ from ctypes import windll
 
 from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
-    vtkOrientationMarkerWidget
+    vtkOrientationMarkerWidget, vtkTransform
 
 from graphics.place_camera import place_camera
 from graphics.place_object import place_all_bodies
-from graphics.transformations import scale_actor
 from graphics.draw_text import draw_text
 from graphics.get_video import get_video, get_snapshots, snap
 
@@ -91,7 +90,6 @@ def visualize(*args, directory, total_time = 25):
 
     # add stationary axes:    
     axesActor = vtkAxesActor()
-    scale_actor(axesActor, 4)
     widget = vtkOrientationMarkerWidget()
     widget.SetOrientationMarker(axesActor)
     widget.SetInteractor(iren)

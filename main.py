@@ -38,8 +38,9 @@ for arm in trailing_arms:
     else:
         arm.path_loc[:,1] -= offset
 
+# sprockets[0].path_dir[:,1] *= -1
+# idlers[0].path_dir[:,1] *= -1
 # road_wheels[7].actor.GetProperty().SetOpacity(0.4)
-
 
 #%% Visualize
 # Load time data
