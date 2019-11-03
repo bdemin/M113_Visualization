@@ -34,3 +34,48 @@ class Body(object):
     def Move(self, new_position, new_angles):
         self.position = new_position
         self.angles = new_angles
+
+
+
+class Symmetrical(Body):
+    def __init__(self):
+        pass
+
+    def place_object(self):
+        print('sym')
+        # Can remove this
+        trans = vtkTransform()
+        trans.PreMultiply()
+
+        trans.Translate(*self.position)
+
+        trans.RotateZ(np.rad2deg(self.angles[2]))
+        trans.RotateY(np.rad2deg(self.angles[1]))
+        trans.RotateX(np.rad2deg(self.angles[0]))
+
+        self.actor.SetUserTransform(trans)
+
+class Asymmetrical(Body):
+    def __init__(self):
+        pass
+
+    def place_object(self):
+        print('asym')
+        if self.side == 'L':
+            first_angles = (chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)
+            y_rotation = -self.angles[1]
+        elif self.side == 'R':
+            first_angles = chassis_angles[:]
+            y_rotation = self.angles[1]
+        
+        trans = vtkTransform()
+        trans.PreMultiply()
+        trans.Translate(*self.position)
+        
+        trans.RotateX(np.rad2deg(first_angles[0]))
+        trans.RotateY(np.rad2deg(first_angles[1]))
+        trans.RotateZ(np.rad2deg(first_angles[2]))
+        
+        trans.RotateY(np.rad2deg(y_rotation))
+
+        self.actor.SetUserTransform(trans)
