@@ -1,7 +1,6 @@
 from vtk import vtkCamera
 
 from visualization.place_camera import place_camera
-from visualization.place_object import place_all_bodies
 from visualization.transformations import scale_actor
 from visualization.draw_text import draw_text
 from visualization.get_video import get_video, get_snapshots, snap
@@ -39,9 +38,9 @@ class vtkTimerCallback(object):
 
     def execute(self, obj, event):
         if self.camera_flag:
-            place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view)
+            place_camera(self.timer_count, self.vehicle.data, self.camera, self.camera_distance, self.view)
 
-        place_all_bodies(self.data, self.timer_count)
+        self.vehicle.update(self.timer_count)
 
         # if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
         if self.timer_count < self.num_frames - 1:
