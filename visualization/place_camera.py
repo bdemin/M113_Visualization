@@ -34,3 +34,4 @@ def place_camera(time, data, camera, camera_distance, view):
     camera.SetViewUp([0,0,1])
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)
+    
