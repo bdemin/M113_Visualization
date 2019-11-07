@@ -43,8 +43,9 @@ class Visualizer(object):
         for actor in surface.actors:
             self.renderer.AddActor(actor)
 
-
     def init_callback(self, bodies, total_time, num_frames):
+        self.iren.Initialize()
+        
         # Sign up to receive TimerEvent
         FPS = num_frames/total_time
         FPMS = FPS/1000
