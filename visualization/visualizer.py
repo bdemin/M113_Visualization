@@ -6,7 +6,10 @@ from visualization.callback import vtkTimerCallback
 
 
 class Visualizer(object):
-    def __init__(self, logic):
+    def __init__(self, logic, vehicle = None, surface = None):
+        self.vehicle = vehicle
+        self.surface = surface
+
         self.video_record_flag = logic['record_video_flag']
 
         # Create renderer, figure and axes
