@@ -28,25 +28,25 @@ class Body(object):
         if side:
             return Asymmetrical(type_, path_loc, path_dir, side)
         else:
-            return Symmetrical(type_, path_loc, path_dir, side)
+            return Symmetrical(type_, path_loc, path_dir)
 
     def __repr__(self):
         return "%r at: %r, %r" % (self.type,
                                     str(self.position),
                                     str(np.rad2deg(self.angles)))
 
-    def Move(self, new_position, new_angles):
-        self.position = new_position
-        self.angles = new_angles
-
+    def update(self, timer_count):
+        self.position = self.path_loc[timer_count]
+        self.angles = self.path_dir[timer_count]
 
 
 class Symmetrical(Body):
-    def __init__(self):
-        pass
+    # Class definition for bodies which are symmetrical
 
-    def place_object(self):
-        print('sym')
+    def __init__(self, type_, path_loc, path_dir):
+        Body.__init__(self, type_, path_loc, path_dir) #remove side
+
+    def place(self, chassis_angles):
         # Can remove this
         trans = vtkTransform()
         trans.PreMultiply()
@@ -60,13 +60,14 @@ class Symmetrical(Body):
         self.actor.SetUserTransform(trans)
 
 class Asymmetrical(Body):
-    def __init__(self):
-        pass
+    # Class definition for bodies which are asymmetrical
 
-    def place_object(self):
-        print('asym')
+    def __init__(self, type_, path_loc, path_dir, side = None):
+        Body.__init__(self, type_, path_loc, path_dir, side)
+
+    def place(self, chassis_angles):
         if self.side == 'L':
-            first_angles = (chassis_angles[0], chassis_angles[1], chassis_angles[2]-np.pi)
+            first_angles = (chassis_angles[0], chassis_angles[1], chassis_angles[2] - np.pi)
             y_rotation = -self.angles[1]
         elif self.side == 'R':
             first_angles = chassis_angles[:]
