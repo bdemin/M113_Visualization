@@ -10,6 +10,13 @@ class Vehicle(object):
         self.data['Chassis'] = create_bodies(path, 'Chassis')
         # can be improved (inputs, func rather than method, path, etc)
 
+    def update(self, timer_count):
+        chassis_angles = self.data['Chassis'][0].angles
+        for bodies in self.data.values():
+            for body in bodies:
+                body.update(timer_count)
+                body.place(chassis_angles)
+
 
 class M113(Vehicle):
     # Inherits from Vehicle and adds all the relevant attributes for visualizing M113 DBD results.
