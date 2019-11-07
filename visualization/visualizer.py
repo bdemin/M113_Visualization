@@ -33,17 +33,18 @@ class Visualizer(object):
         # widget.SetEnabled(1)
         # widget.InteractiveOff()
 
-    def add_actors(self, bodies, surface):
-        # add all actors to the renderer
-        if bodies:
-            for body_type in bodies.values():
+    def add_actors(self):
+        # Add all actors to the renderer
+
+        if self.vehicle:
+            for body_type in self.vehicle.data.values():
                 for body in body_type:
                     self.renderer.AddActor(body.actor)
 
-        for actor in surface.actors:
+        for actor in self.surface.actors:
             self.renderer.AddActor(actor)
 
-    def init_callback(self, bodies, total_time, num_frames):
+    def init_callback(self, total_time, num_frames):
         self.iren.Initialize()
         
         # Sign up to receive TimerEvent
@@ -51,7 +52,7 @@ class Visualizer(object):
         FPMS = FPS/1000
         
         callback = vtkTimerCallback(self.renderer, self.renWin, FPS, self.video_record_flag)
-        callback.data = bodies
+        callback.vehicle = self.vehicle
         callback.ren = self.renderer
         callback.num_frames = num_frames
         callback.iren = self.iren
