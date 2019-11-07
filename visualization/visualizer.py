@@ -24,15 +24,14 @@ class Visualizer(object):
         win_size = (int(win_scale*1920), int(win_scale*1080))
         self.renWin.SetSize(win_size)
 
-        # Add stationary axes
-        axesActor = vtkAxesActor()
-        scale_actor(axesActor, 4)
-        widget = vtkOrientationMarkerWidget()
-        widget.SetOrientationMarker(axesActor)
-        widget.SetInteractor(self.iren)
-        widget.SetEnabled(1)
-        widget.InteractiveOff()
-
+        # Add stationary axes (Currently breaks the code)
+        # axesActor = vtkAxesActor()
+        # scale_actor(axesActor, 4)
+        # widget = vtkOrientationMarkerWidget()
+        # widget.SetOrientationMarker(axesActor)
+        # widget.SetInteractor(self.iren)
+        # widget.SetEnabled(1)
+        # widget.InteractiveOff()
 
     def add_actors(self, bodies, surface):
         # add all actors to the renderer
