@@ -7,17 +7,6 @@ from visualization.callback import vtkTimerCallback
 
 class Visualizer(object):
     def __init__(self, logic):
-        def scale_actor(actor, factor, prev_trans = None):
-            from vtk import vtkTransform, vtkTransformPolyDataFilter
-            transform = vtkTransform()
-            if prev_trans != None:
-                transform.Concatenate(prev_trans)
-            transform.Scale(tuple(3*[factor]))
-            transformFilter = vtkTransformPolyDataFilter()
-            transformFilter.SetTransform(transform)
-            actor.SetUserTransform(transform)
-            return transform #can be improved
-            
         self.video_record_flag = logic['record_video_flag']
 
         # Create renderer, figure and axes
