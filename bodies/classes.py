@@ -6,6 +6,8 @@ from graphics.helpers import get_stl_actor, set_actor_visuals
 
 directory = 'graphics/STL_data/'
 class Body(object):
+    # Metaclass to define a general body object
+
     def __init__(self, type_, path_loc, path_dir, side = None):
         self.type = type_
 
@@ -21,10 +23,12 @@ class Body(object):
         set_actor_visuals(self.actor, self.type)
         self.actor.GetProperty().SetInterpolationToPhong()
 
-        if self.side:
-            return Asymmetrical()
+    @staticmethod
+    def factory(type_, path_loc, path_dir, side = None):
+        if side:
+            return Asymmetrical(type_, path_loc, path_dir, side)
         else:
-            return Symmetrical()
+            return Symmetrical(type_, path_loc, path_dir, side)
 
     def __repr__(self):
         return "%r at: %r, %r" % (self.type,
