@@ -26,7 +26,8 @@ class vtkTimerCallback(object):
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
         
-        if video_record_flag:
+        self.video_record_flag = video_record_flag
+        if self.video_record_flag:
             self.rate = rate
             self.video_count = 1
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
@@ -45,7 +46,7 @@ class vtkTimerCallback(object):
         # if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
         if self.timer_count < self.num_frames - 1:
             obj.GetRenderWindow().Render()
-            if video_record_flag:
+            if self.video_record_flag:
                 if self.timer_count % 500 == 0:
                     self.writer.End()
                     self.video_count += 1
@@ -60,7 +61,7 @@ class vtkTimerCallback(object):
                 self.text_actor.SetInput(text)
                 self.timer_count += 1
         else:
-            if video_record_flag:
+            if self.video_record_flag:
                 self.writer.End()
             self.timer_count = 0
             self.iren.DestroyTimer()
