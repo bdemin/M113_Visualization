@@ -27,8 +27,7 @@ class Body(object):
     def factory(type_, path_loc, path_dir, side = None):
         if side:
             return Asymmetrical(type_, path_loc, path_dir, side)
-        else:
-            return Symmetrical(type_, path_loc, path_dir)
+        return Symmetrical(type_, path_loc, path_dir)
 
     def __repr__(self):
         return "%r at: %r, %r" % (self.type,
