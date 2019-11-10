@@ -22,14 +22,14 @@ class VisualizeDBDSimulation(object):
 
 
     def load_surface_data(self):
-        self.surface = Surface(self.path, None, self.params['surface'], self.vehicle.bodies['Chassis'][0].path_loc)
+        self.surface = Surface(self.path, None, self.params['surface'], self.vehicle.data['Chassis'][0].path_loc)
     
 
     def load_visualization(self):
         total_time = np.loadtxt(self.path + 'Time_Data.txt', delimiter = ',')
-        num_frames = self.vehicle.bodies['Chassis'][0].path_dir.shape[0]
+        num_frames = self.vehicle.data['Chassis'][0].path_dir.shape[0]
 
-        visualizer = Visualizer(self.params['video'])
-        visualizer.add_actors(self.vehicle.bodies, self.surface)
-        visualizer.init_callback(self.vehicle.bodies, total_time, num_frames)
+        visualizer = Visualizer(self.params['video'], self.vehicle, self.surface)
+        visualizer.add_actors()
+        visualizer.init_callback(total_time, num_frames)
         
