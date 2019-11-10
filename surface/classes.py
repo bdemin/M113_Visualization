@@ -29,7 +29,9 @@ class Surface(object):
 
 
     def get_xyz_data(self, path, surface_data):
-        # Surface data supplied inside a folder
+        # Return np arrays representing surface x,y,z data
+
+        # Surface x,y,z data supplied from a folder
         if path:
             x_data = np.loadtxt(path + 'x.txt', delimiter = ',')
             y_data = np.loadtxt(path + 'y.txt', delimiter = ',')
@@ -58,6 +60,39 @@ class Surface(object):
         triangles = vtkCellArray()
         
         # Build the meshgrid (need to try Delauney)
+
+        profile = vtk.vtkPolyData()
+        profile.SetPoints(points)
+
+        # Delaunay3D is used to triangulate the points. The Tolerance is the
+        # distance that nearly coincident points are merged
+        # together. (Delaunay does better if points are well spaced.) The
+        # alpha value is the radius of circumcircles, circumspheres. Any mesh
+        # entity whose circumcircle is smaller than this value is output.
+        from vtk import vtkDelaunay3D
+        delny = vtkDelaunay3D()
+        delny.SetInputData(profile)
+        delny.SetTolerance(0.01)
+        delny.SetAlpha(0.2)
+        delny.BoundingTriangulationOff()
+
+        # Shrink the result to help see it better.
+        shrink = vtk.vtkShrinkFilter()
+        shrink.SetInputConnection(delny.GetOutputPort())
+        shrink.SetShrinkFactor(0.9)
+
+        map = vtk.vtkDataSetMapper()
+        map.SetInputConnection(shrink.GetOutputPort())
+
+        triangulation = vtk.vtkActor()
+        triangulation.SetMapper(map)
+        triangulation.GetProperty().SetColor(1, 0, 0)
+
+        ren.AddActor(triangulation)
+
+
+
+
         count = 0
         for i in range(self.m-1):
             for j in range(self.n-1):
@@ -81,7 +116,7 @@ class Surface(object):
                 z2 = z_data[i+1][j+1]
                 z3 = z_data[i+1][j]
         
-                # Triangle 2  
+                # Triangle 2
                 points.InsertNextPoint(x_data[i], y_data[j+1], z1)
                 points.InsertNextPoint(x_data[i+1], y_data[j+1], z2)
                 points.InsertNextPoint(x_data[i+1], y_data[j], z3)
