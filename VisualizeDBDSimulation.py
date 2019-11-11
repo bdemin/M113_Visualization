@@ -8,22 +8,18 @@ from surface.classes import Surface
 from visualization.visualizer import Visualizer
 
 
-
 class VisualizeDBDSimulation(object):
     def __init__(self, visualization_params):
         self.params = visualization_params
         self.path = get_latest_directory(visualization_params['parent_directory'])
-
 
     def load_bodies_data(self):
         # Need to add bodies param
         invoke_vehicle_method = getattr(bodies.vehicle, self.params['vehicle_type'])
         self.vehicle = invoke_vehicle_method(self.path)
 
-
     def load_surface_data(self):
         self.surface = Surface(self.path, None, self.params['surface'], self.vehicle.data['Chassis'][0].path_loc)
-    
 
     def load_visualization(self):
         total_time = np.loadtxt(self.path + 'Time_Data.txt', delimiter = ',')
