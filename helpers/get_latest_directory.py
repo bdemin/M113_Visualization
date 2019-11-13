@@ -4,5 +4,6 @@ def get_latest_directory(path):
     folder_list = listdir(path)
     folder_list = sorted([folder for folder in folder_list])
     if folder_list:
+        print(folder_list[-1])
         return path + folder_list[-1] + '/'
-    return None
+    raise FileNotFoundError('No simulation data found in: ' + path)
