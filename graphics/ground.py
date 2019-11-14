@@ -77,7 +77,12 @@ def visualize_soil(PolyData, soil_type_array):
 
 def generate_perlin_noise_2d(size, res):
     # Return Perlin Noise
-    
+
+    def factors(n):
+        from functools import reduce
+        return list(reduce(list.__add__,
+                    ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
+
     def f(t):
         return 6*t**5 - 15*t**4 + 10*t**3
     
