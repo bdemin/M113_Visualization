@@ -14,8 +14,7 @@ def get_stl_actor(filename):
 
 def get_directory(path):
     # Function to return latest folder directory inside path
-    return path + 'Slope/'
-    # return path + 'Step/'
+    
     from os import listdir
     folder_list = listdir(path)
     if folder_list:
