@@ -21,7 +21,7 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
         z_data = np.loadtxt(path_directory + 'z.txt', delimiter = ',')
         # z_data -= 0.1 #fix ground clipping
     except:
-        if ground_surf:
+        if ground_surf != None:
             x_data, y_data, z_data = ground_surf
         else:
             x_data, y_data, z_data = create_ground_from_spheres()
@@ -119,3 +119,4 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     # actor_loop.GetProperty().SetSpecularColor(0.1,0.1,0.1)
 
     return actor_loop, line_actor, smooth_loop
+    
