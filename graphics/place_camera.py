@@ -7,6 +7,23 @@ def place_camera(time, data, camera, camera_distance, view):
     camera.SetViewUp([0,0,1])
 
     if view == 1:
+        camera.SetViewUp([0,0,1])
+
+        chs_pos = data[0][0].path_loc[time] # Chassis CG @ time
+        chs2cam = [0 , -20, 0] # vector from chassis to camera position
+        camera_pos = chs_pos + chs2cam
+
+        cam_focal_point = chs_pos
+        
+        # Place camera and set focal point:
+        camera.SetPosition(camera_pos)
+        camera.SetFocalPoint(cam_focal_point)
+
+        factor = 0.005
+        roll_angle = time * factor
+        camera.SetRoll(roll_angle)
+
+    elif view == 2:
         # General view
         chs_pos = data[0][0].path_loc[time] # Chassis CG @ time
         cam_d = 12 # [m]
@@ -16,52 +33,8 @@ def place_camera(time, data, camera, camera_distance, view):
         camera_pos = chs_pos + chs2cam
 
         cam_focal_point = chs_pos
-
-    elif view == 2:
-        # Rear view
-        chassis_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chs2cam = [-7,0,-0.5]
-        # camera_pos = chassis_pos + chs2cam
-
-        # Cam direction is locked on the chassis
-        chassis_dir = data[0][0].path_dir[time]
-        cam_d = 10
-        camera_pos = chassis_pos + [-cam_d*np.cos(chassis_dir[2]), -cam_d*np.sin(chassis_dir[2]), cam_d*np.sin(chassis_dir[1]) + 1.5]
-        camera.Roll(np.rad2deg(chassis_dir[0]))
-
-        cam_focal_point = chassis_pos
-
-    elif view == 3:
-        # Wheel view
-        wheel_pos = data[1][7].path_loc[time] # Wheel #7 CG @ time
-
-        # Cam direction is locked on the wheel
-        wheel_dir = data[1][7].path_dir[time]
-        cam_d = 1.5
-        camera_pos = wheel_pos + [cam_d*np.sin(wheel_dir[2]), -cam_d*np.cos(wheel_dir[2]), -np.sin(wheel_dir[0]) + 0.2]
-
-        cam_focal_point = wheel_pos
-        # camera_pos = wheel_pos + [0,-1.6,0.1]
-
-    elif view == 4:
-        # Top view
-        # NEED TO FIX
-        cam_d = 10
-        cam_focal_point = [0,0,0]
-        camera_pos = [30,4,60]
-
-    elif view == 5:
-        # Cool side view test
-        chassis_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chs2cam = [-7,0,-0.5]
-        camera_pos = chassis_pos + chs2cam
-
-        # Cam direction is locked on the chassis
-        chassis_dir = data[0][0].path_dir[time]
-        cam_d = 7
-
-        cam_focal_point = chassis_pos + [cam_d*np.sin(chassis_dir[2]), -cam_d*np.cos(chassis_dir[2]), -np.sin(chassis_dir[0]) + 0.2]
     
     # Place camera and set focal point:
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)
+    
