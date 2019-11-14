@@ -18,16 +18,16 @@ def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
         camera_distance -= 1
 
     if key == 'v':
-        if view == 5:
+        if view == 2:
             view = 1
         else:
             view += 1
 
     if key == 'bracketright':
-        timer += 10
+        timer += 100
     elif key == 'bracketleft':
-        if timer > 10:
-            timer -= 10
+        if timer > 100:
+            timer -= 100
 
     if key == 'backslash':
         timer = 0
