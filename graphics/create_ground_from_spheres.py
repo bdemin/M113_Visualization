@@ -32,3 +32,4 @@ def create_ground_from_spheres():
     
     size = 101
     return ground_surf[:size,0], ground_surf[0,:size], ground_surf[1:size,1:size]
+    
