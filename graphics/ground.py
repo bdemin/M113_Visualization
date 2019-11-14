@@ -81,6 +81,12 @@ def generate_perlin_noise_2d(size, res):
     def f(t):
         return 6*t**5 - 15*t**4 + 10*t**3
     
+    m_factors = sorted(factors(size[0]))
+    n_factors = sorted(factors(size[1]))
+    m_mid_index = (len(m_factors) - 1) // 2
+    n_mid_index = (len(n_factors) - 1) // 2
+    res = (m_factors[m_mid_index], n_factors[n_mid_index])
+
     delta = (res[0] / size[0], res[1] / size[1])
     d = (size[0] // res[0], size[1] // res[1])
     grid = np.mgrid[0:res[0]:delta[0],0:res[1]:delta[1]].transpose(1, 2, 0) % 1
