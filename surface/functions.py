@@ -230,6 +230,7 @@ def create_ground_from_spheres():
     ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
     ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
     
-    size = 101
-    return ground_surf[:size,0], ground_surf[0,:size], ground_surf[1:size,1:size]
+    return ground_surf[:,0], ground_surf[0,:], ground_surf[1:,1:]
+    # size = 101
+    # return ground_surf[:size,0], ground_surf[0,:size], ground_surf[1:size,1:size]
     
