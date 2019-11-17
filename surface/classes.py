@@ -18,16 +18,18 @@ class Surface(object):
         # path_spline_flag = logic['path_spline_flag'] # Render a spline marking the vehicle's drive path
 
         surface_data = self.get_xyz_data(path, surface_data)
-        surface_polydata = self.get_surface_polydata(surface_data)
+        self.surface_polydata = self.get_surface_polydata(surface_data)
+
+        self.actors = []
 
         if logic:
             surface_polydata = self.apply_surface_filters(surface_polydata, logic)
 
-        self.actors = [self.get_surface_actor(surface_polydata)]
-        if logic['path_spline_flag']:
-            self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
+            if logic['path_spline_flag']:
+                self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
 
-
+        self.actors.append(self.get_surface_actor(self.surface_polydata))
+        
     def get_xyz_data(self, path, surface_data):
         # Return np arrays representing surface x,y,z data
 
@@ -163,7 +165,8 @@ class Surface(object):
     def get_surface_actor(self, smooth_loop):
         # Create a mapper and actor for smoothed dataset
         mapper = vtkPolyDataMapper()
-        mapper.SetInputConnection(smooth_loop.GetOutputPort())
+        # mapper.SetInputConnection(smooth_loop.GetOutputPort())
+        mapper.SetInputData(smooth_loop)
         
         actor_loop = vtkActor()
         actor_loop.SetMapper(mapper)
