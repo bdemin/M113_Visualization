@@ -7,7 +7,7 @@ from surface.classes import Surface
 surface = Surface(None, None, None, None)
 num_points = surface.surface_polydata.GetNumberOfPoints()
 
-im_file = 'ground1.jpg'
+im_file = 'ground2.jpg'
 im = Image.open(im_file, 'r')
 im = im.resize((699, 299))
 pix_val = list(im.getdata())
@@ -17,7 +17,7 @@ soil_color_map.SetNumberOfComponents(3)
 soil_color_map.SetName("Colors")
 
 for i in range(299*699):
-    for _ in range(3):
+    for _ in range(6):
         soil_color_map.InsertNextTypedTuple(pix_val[i])
 
 surface.surface_polydata.GetPointData().SetScalars(soil_color_map)
