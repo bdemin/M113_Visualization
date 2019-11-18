@@ -67,6 +67,11 @@ class vtkTimerCallback(object):
                 text = 'time = %.1fs' % (self.timer_count * self.dt)
                 self.text_actor.SetInput(text)
                 self.timer_count += 1
+                    if 'Slope' in self.dir:
+                        slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
+                    else:
+                        slope = 0
+                    place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view, slope)
         else:
             if record_video_bool:
                 self.writer.End()

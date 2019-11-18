@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def place_camera(time, data, camera, camera_distance, view):
+def place_camera(time, data, camera, camera_distance, view, slope):
     # Define camera parameters
     
     camera.SetViewUp([0,0,1])
@@ -19,9 +19,9 @@ def place_camera(time, data, camera, camera_distance, view):
         camera.SetPosition(camera_pos)
         camera.SetFocalPoint(cam_focal_point)
 
-        factor = 0.005
-        roll_angle = time * factor
-        camera.SetRoll(roll_angle)
+        # factor = 0.005
+        # roll_angle = time * factor
+        camera.SetRoll(slope)
 
     elif view == 2:
         # General view
