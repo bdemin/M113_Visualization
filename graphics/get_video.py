@@ -5,6 +5,8 @@ def get_video(renWin, fps, filename):
     _filter = vtkWindowToImageFilter()
     _filter.SetInput(renWin)
     _filter.SetInputBufferTypeToRGB()
+    _filter.ReadFrontBufferOff()
+    _filter.Update()
     
     writer = vtkAVIWriter()
     writer.SetRate(fps)
