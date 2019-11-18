@@ -18,7 +18,7 @@ def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
         camera_distance -= 1
 
     if key == 'v':
-        if view == 2:
+        if view == 3:
             view = 1
         else:
             view += 1
