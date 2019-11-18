@@ -63,10 +63,10 @@ class vtkTimerCallback(object):
             if self.pause == True:
                 self.text_actor.SetInput('Pause')
                 obj.GetRenderWindow().Render()
+
             else:
-                text = 'time = %.1fs' % (self.timer_count * self.dt)
-                self.text_actor.SetInput(text)
-                self.timer_count += 1
+
+                if self.camera_flag:
                     if 'Slope' in self.dir:
                         slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
                     else:
@@ -81,8 +81,9 @@ class vtkTimerCallback(object):
                 self.iren.TerminateApp()
                 print('Simulation End')
 
-            text = 'time = %.1fs' % (self.timer_count * self.dt)
-            self.text_actor.SetInput(text)
+            
+            # text = 'time = %.1fs' % (self.timer_count * self.dt)
+            # self.text_actor.SetInput(text)
 
 
 def visualize(*args, directory, total_time = 25):
