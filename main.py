@@ -9,8 +9,8 @@ from simulation_description import show_description
 
 
 path = '../M113_tests/Data_Movies/'
-# directory = path + 'Step/'
-directory = path + 'Slope/'
+directory = path + 'Step/'
+# directory = path + 'Slope/'
 
 show_description(directory)
 
