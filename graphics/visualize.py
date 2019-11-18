@@ -29,7 +29,7 @@ class vtkTimerCallback(object):
         self.camera = vtkCamera()
         self.camera_distance = 14
         self.renderer.SetActiveCamera(self.camera)
-        self.view = 1
+        self.view = 3
         
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
@@ -48,11 +48,6 @@ class vtkTimerCallback(object):
 
     def execute(self, obj, event):
         if self.timer_count < self.num_frames - 1:
-           
-
-            
-
-
             if self.pause == True:
                 self.text_actor.SetInput('Pause')
                 obj.GetRenderWindow().Render()
@@ -62,28 +57,31 @@ class vtkTimerCallback(object):
                 if self.camera_flag:
                     if 'Slope' in self.dir:
                         slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
+                        text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
+                        self.text_actor.SetInput(text + '\n' + 'Slope Angle: ' + '{:.2f}'.format(slope) + '[deg]')
                     else:
                         slope = 0
+                        text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
+                        self.text_actor.SetInput(text)
+
                     place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view, slope)
 
                 place_all_bodies(self.data, self.timer_count)
 
                 obj.GetRenderWindow().Render()
-
-                    
-                text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
-                self.text_actor.SetInput(text + '\n' + 'Slope Angle: ' + '{:.2f}'.format(slope) + '[deg]')
-                # if self.timer_count < 2352:
-                    # self.timer_count += 30
+                
+                # if self.timer_count > 5700:
+                #     self.timer_count += 1
+                #     self.total_frame_counter += 1
                 # else:
-                self.timer_count += 100
+                self.timer_count += 1
                 self.total_frame_counter += 1
 
                 if record_video_bool:
-                    # if self.total_frame_counter % 500 == 0:
-                    #     self.writer.End()
-                    #     self.video_count += 1
-                    #     self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count))
+                    if self.total_frame_counter % 500 == 0:
+                        self.writer.End()
+                        self.video_count += 1
+                        self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count))
                     self._filter.Modified()
                     self.writer.Write()
 
@@ -96,10 +94,6 @@ class vtkTimerCallback(object):
                 self.iren.TerminateApp()
                 print('Simulation End')
                 return
-
-            
-            # text = 'time = %.1fs' % (self.timer_count * self.dt)
-            # self.text_actor.SetInput(text)
 
 
 def visualize(*args, directory, total_time = 25):
