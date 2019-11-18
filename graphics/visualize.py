@@ -85,7 +85,7 @@ def visualize(*args, directory, total_time = 25):
     iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    # add stationary axes:    
+    # add stationary axes:
     axesActor = vtkAxesActor()
     scale_actor(axesActor, 4)
     widget = vtkOrientationMarkerWidget()

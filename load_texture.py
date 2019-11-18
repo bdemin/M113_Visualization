@@ -7,7 +7,7 @@ from surface.classes import Surface
 surface = Surface(None, None, None, None)
 num_points = surface.surface_polydata.GetNumberOfPoints()
 
-im_file = 'ground2.jpg'
+im_file = 'ground1.jpg'
 im = Image.open(im_file, 'r')
 im = im.resize((699, 299))
 pix_val = list(im.getdata())
