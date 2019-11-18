@@ -15,14 +15,14 @@ from helpers.event_handling import keyboard_events
 from bodies.classes import Surface
 
 
-record_video_bool = False
+record_video_bool = True
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, fps):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
-        self.pause = False
+        self.pause = True
         self.camera_flag = True
         
         self.renderer = renderer
@@ -39,26 +39,19 @@ class vtkTimerCallback(object):
             self.video_count = 1
             self._filter, self.writer = get_video(renWin, self.fps, 'M113_' + str(self.video_count))
 
+        self.total_frame_counter = 1
+
 
     def keypress(self, obj, event):
         self.pause, self.camera_flag, self.camera_distance ,self.view, self.timer_count = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view, self.timer_count)
 
 
     def execute(self, obj, event):
-        if self.camera_flag:
-            place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view)
-
-        place_all_bodies(self.data, self.timer_count)
-
         if self.timer_count < self.num_frames - 1:
-            obj.GetRenderWindow().Render()
-            if record_video_bool:
-                if self.timer_count % 500 == 0:
-                    self.writer.End()
-                    self.video_count += 1
-                    self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count))
-                self._filter.Modified()
-                self.writer.Write()
+           
+
+            
+
 
             if self.pause == True:
                 self.text_actor.SetInput('Pause')
@@ -72,14 +65,37 @@ class vtkTimerCallback(object):
                     else:
                         slope = 0
                     place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view, slope)
+
+                place_all_bodies(self.data, self.timer_count)
+
+                obj.GetRenderWindow().Render()
+
+                    
+                text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
+                self.text_actor.SetInput(text + '\n' + 'Slope Angle: ' + '{:.2f}'.format(slope) + '[deg]')
+                # if self.timer_count < 2352:
+                    # self.timer_count += 30
+                # else:
+                self.timer_count += 100
+                self.total_frame_counter += 1
+
+                if record_video_bool:
+                    # if self.total_frame_counter % 500 == 0:
+                    #     self.writer.End()
+                    #     self.video_count += 1
+                    #     self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count))
+                    self._filter.Modified()
+                    self.writer.Write()
+
         else:
+            self.timer_count = 0
             if record_video_bool:
                 self.writer.End()
-                self.timer_count = 0
                 self.iren.DestroyTimer()
                 self.iren.GetRenderWindow().Finalize()
                 self.iren.TerminateApp()
                 print('Simulation End')
+                return
 
             
             # text = 'time = %.1fs' % (self.timer_count * self.dt)
@@ -94,7 +110,7 @@ def visualize(*args, directory, total_time = 25):
     iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 
-    # add stationary axes:    
+    # add stationary axes:
     axesActor = vtkAxesActor()
     widget = vtkOrientationMarkerWidget()
     widget.SetOrientationMarker(axesActor)
@@ -133,6 +149,8 @@ def visualize(*args, directory, total_time = 25):
     callback.num_frames = args[0][0].path_dir.shape[0]
     callback.iren = iren
     callback.dt = total_time/callback.num_frames
+
+    callback.dir = directory
     
     iren.AddObserver('TimerEvent', callback.execute)
     iren.AddObserver('KeyPressEvent', callback.keypress)

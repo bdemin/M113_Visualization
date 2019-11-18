@@ -26,7 +26,7 @@ class Body(object):
         # self.trans = vtkTransform()
         # self.actor.SetUserTransform(self.trans)
 
-    def __repr__(self): 
+    def __repr__(self):
         return "%r\n location: %r \n orientation: %r" % (self.type,
                                                            self.position,
                                                            str(np.rad2deg(self.angles)))
@@ -44,7 +44,7 @@ class Surface(object):
 
         if 'Slope' in path_directory:
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
-            ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
+            ground_surf[0,:] = np.arange(-23, -23 + size_y*0.2, 0.2)
         elif 'Step' in path_directory:
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
             ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
@@ -57,5 +57,7 @@ class Surface(object):
             # ground_surf[step_start_ind:step_end_ind, :] = np.linspace(size_y*[-0.6], size_y*[0], step_end_ind-step_start_ind)
             # ground_surf[step_start_ind:step_end_ind, :] = np.mgrid(-0.6: 0.6 , size_y)
 
-        ground_surf = (ground_surf[:,0], ground_surf[0,:], ground_surf[1:,1:])
+
+        surface_w = 200
+        ground_surf = (ground_surf[:,0], ground_surf[0,51:surface_w], ground_surf[1:,51:surface_w])
         self.actors = get_3dsurface_actor(path_directory, ground_surf, chassis_cg)[0:2]
