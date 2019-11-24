@@ -18,8 +18,8 @@ class VisualizeDBDSimulation(object):
         invoke_vehicle_method = getattr(bodies.vehicle, self.params['vehicle_type'])
         self.vehicle = invoke_vehicle_method(self.path)
 
-    def load_surface_data(self):
-        self.surface = Surface(self.path, None, self.params['surface'], self.vehicle.data['Chassis'][0].path_loc)
+    def load_surface_data(self, surface_xyz_data = None):
+        self.surface = Surface(self.path, surface_xyz_data, self.params['surface'], self.vehicle.data['Chassis'][0].path_loc)
 
     def load_visualization(self):
         total_time = np.loadtxt(self.path + 'Time_Data.txt', delimiter = ',')

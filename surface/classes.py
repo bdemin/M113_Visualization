@@ -1,4 +1,5 @@
 import numpy as np
+import os.path
 
 from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyData, vtkLookupTable, vtkCleanPolyData, \
@@ -10,27 +11,36 @@ from surface.functions import visualize_elevation, visualize_soil, create_soil_t
 
 
 class Surface(object):
-    def __init__(self, path = None, surface_data = None, logic = None, chassis_cg_path = None):
+    def __init__(self, path = None, surface_xyz_data = None, logic = None, chassis_cg_path = None):
 
         # Load logic controls
         # color_map_flag = logic['color_map_flag'] # Create elevation-based colormap for the ground
         # soil_map_flag = logic['soil_map_flag'] # Create soil-based colormap for the ground
         # path_spline_flag = logic['path_spline_flag'] # Render a spline marking the vehicle's drive path
 
-        surface_data = self.get_xyz_data(path, surface_data)
+        self.path = path
+
+        if surface_xyz_data:
+            self.surface_polydata = self.get_surface_polydata(surface_xyz_data)
+        else:
+            if all((
+                os.path.exists(path + 'x.txt'),
+                os.path.exists(path + 'y.txt'),
+                os.path.exists(path + 'z.txt'))):
+                    self.surface_polydata = self.get_surface_polydata(get_xyz_data(path, surface_data = None)
         self.surface_polydata = self.get_surface_polydata(surface_data)
 
         self.actors = []
 
         if logic:
-            surface_polydata = self.apply_surface_filters(surface_polydata, logic)
+            surface_polydata = self.apply_surface_filters(self.surface_polydata, logic)
 
             if logic['path_spline_flag']:
                 self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
 
         self.actors.append(self.get_surface_actor(self.surface_polydata))
         
-    def get_xyz_data(self, path, surface_data):
+    def get_xyz_data(self):
         # Return np arrays representing surface x,y,z data
 
         # Surface x,y,z data supplied from a folder
@@ -42,8 +52,8 @@ class Surface(object):
             return x_data, y_data, z_data
 
         # Surface data supplied directly
-        elif surface_data:
-            return surface_data
+        # elif surface_data:
+            # return surface_data
 
         # Otherwise create surface data using external function
         from surface.functions import create_ground_from_spheres
