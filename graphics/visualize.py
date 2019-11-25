@@ -18,7 +18,7 @@ from bodies.classes import Surface
 record_video_bool = True
 
 class vtkTimerCallback(object):
-    def __init__(self, renderer, renWin, fps):
+    def __init__(self, renderer, renWin, fps, _dir):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
@@ -37,7 +37,7 @@ class vtkTimerCallback(object):
         if record_video_bool:
             self.fps = fps
             self.video_count = 1
-            self._filter, self.writer = get_video(renWin, self.fps, 'M113_' + str(self.video_count))
+            self._filter, self.writer = get_video(renWin, self.fps, 'M113_' + str(self.video_count), _dir)
 
         self.total_frame_counter = 1
 
@@ -81,7 +81,7 @@ class vtkTimerCallback(object):
                     if self.total_frame_counter % 500 == 0:
                         self.writer.End()
                         self.video_count += 1
-                        self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count))
+                        self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.fps, 'M113_' + str(self.video_count), self.dir)
                     self._filter.Modified()
                     self.writer.Write()
 
@@ -137,7 +137,7 @@ def visualize(*args, directory, total_time = 25):
     FPS = int(round(num_frames/total_time))
     FPMS = FPS/1000 # frames/millisecond
     
-    callback = vtkTimerCallback(renderer, renWin, FPS)
+    callback = vtkTimerCallback(renderer, renWin, FPS, directory)
     callback.data = args
     callback.ren = renderer
     callback.num_frames = args[0][0].path_dir.shape[0]
