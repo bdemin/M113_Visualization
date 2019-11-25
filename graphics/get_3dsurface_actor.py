@@ -58,7 +58,7 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
             z2 = z_data[i+1][j+1]
             z3 = z_data[i+1][j]
     
-            # Triangle 2  
+            # Triangle 2
             points.InsertNextPoint(x_data[i], y_data[j+1], z1)
             points.InsertNextPoint(x_data[i+1], y_data[j+1], z2)
             points.InsertNextPoint(x_data[i+1], y_data[j], z3)
@@ -84,8 +84,6 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     elif soil_map_bool:
         soil_type_array = create_soil_type_arr((m, n))
         visualize_soil(PolyData, soil_type_array)
-
-
 
     # Clean the polydata so that the edges are shared
     cleanPolyData = vtkCleanPolyData()
