@@ -16,6 +16,7 @@ from bodies.classes import Surface
 
 
 record_video_bool = True
+record_video_bool = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, fps, _dir):
@@ -29,7 +30,7 @@ class vtkTimerCallback(object):
         self.camera = vtkCamera()
         self.camera_distance = 14
         self.renderer.SetActiveCamera(self.camera)
-        self.view = 3
+        self.view = 2
         
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
