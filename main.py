@@ -9,8 +9,9 @@ from simulation_description import show_description
 
 
 path = '../M113_tests/Data_Movies/'
-directory = path + 'Step/'
-# directory = path + 'Slope/'
+# directory = path + 'Step/' + 'Step0.6_A/'
+# directory = path + 'Slope/' + 'Slope31deg_Friction0.9/'
+directory = path + 'Brake/' + 'Brake10__LowFriction/'
 
 show_description(directory)
 
@@ -30,6 +31,19 @@ for track_unit in track_units:
 for trailing_arm in trailing_arms:
     if trailing_arm.side == 'L':
         trailing_arm.path_dir[:, 1] *= -1
+
+# Temporary fix for chassis position
+# x_add = 0.12
+# x_offset = -1.9888 - chassis[0].path_loc[0,0] + x_add
+# chassis[0].path_loc[:,0] += x_offset
+
+# chassis[0].path_loc[:,2] -= 0.04
+
+# Fix rotations
+for idler in idlers:
+    idler.path_dir[:,1] = sprockets[0].path_dir[:,1]
+for road_wheel in road_wheels:
+    road_wheel.path_dir[:,1] = sprockets[0].path_dir[:,1]
 
 # Trailing arm y offset
 offset = 0.0
