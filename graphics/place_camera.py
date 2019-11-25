@@ -35,13 +35,14 @@ def place_camera(time, data, camera, camera_distance, view, slope):
     elif view == 3:
         # Rear view
         chassis_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chs2cam = [-7,0,-0.5]
+        # chs2cam = [-9,0,3]
         # camera_pos = chassis_pos + chs2cam
 
         # Cam direction is locked on the chassis
         chassis_dir = data[0][0].path_dir[time]
         cam_d = 10
-        camera_pos = chassis_pos + [-cam_d*np.cos(chassis_dir[2]), -cam_d*np.sin(chassis_dir[2]), cam_d*np.sin(chassis_dir[1]) + 1.5]
+        camera_pos = chassis_pos + [-cam_d*np.cos(chassis_dir[2]), -cam_d*np.sin(chassis_dir[2]), cam_d*np.sin(chassis_dir[1]) + 2.5]
+        # camera_pos = chassis_pos + chs2cam
         camera.Roll(np.rad2deg(chassis_dir[0]))
 
         cam_focal_point = chassis_pos
