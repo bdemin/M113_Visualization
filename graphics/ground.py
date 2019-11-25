@@ -53,13 +53,13 @@ def visualize_soil(PolyData, soil_type_array):
     # Create a color dictionary
     colors = vtkNamedColors()
     colors_dict = {
-        0: colors.HTMLColorToRGB('DarkKhaki'),
-        1: colors.HTMLColorToRGB('Wheat'),
-        2: colors.HTMLColorToRGB('BurlyWood'),
-        3: colors.HTMLColorToRGB('SandyBrown'),
-        4: colors.HTMLColorToRGB('Khaki'),
+        3: colors.HTMLColorToRGB('DarkKhaki'),
+        0: colors.HTMLColorToRGB('Wheat'),
+        4: colors.HTMLColorToRGB('BurlyWood'),
+        6: colors.HTMLColorToRGB('SandyBrown'),
+        2: colors.HTMLColorToRGB('Khaki'),
         5: colors.HTMLColorToRGB('DarkOliveGreen'),
-        6: colors.HTMLColorToRGB('DarkGreen')}
+        1: colors.HTMLColorToRGB('tan')}
 
     m, n = soil_type_array.shape
     soil_color_map = vtkUnsignedCharArray()
@@ -141,7 +141,7 @@ def create_soil_type_arr(size):
     noise = generate_perlin_noise_2d((size), (10, 10)) # Get perlin noise
     soil_type_arr = np.zeros(size)
 
-    num_soil_types = 3 # Define how many soil types (colors) should be set
+    num_soil_types = 2 # Define how many soil types (colors) should be set
     arr_min = noise.min()
     soil_type_step = (noise.max() - arr_min)/num_soil_types
     
