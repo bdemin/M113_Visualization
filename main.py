@@ -34,12 +34,32 @@ for trailing_arm in trailing_arms:
     if trailing_arm.side == 'L':
         trailing_arm.path_dir[:, 1] *= -1
 
-# Temporary fix for chassis position
-# x_add = 0.12
-# x_offset = -1.9888 - chassis[0].path_loc[0,0] + x_add
-# chassis[0].path_loc[:,0] += x_offset
+if 'Slope' in directory or 'OverSteering' in directory:
+    # Temporary fix for chassis position
+    x_add = 0.12
+    x_offset = -1.9888 - chassis[0].path_loc[0,0] + x_add
 
-# chassis[0].path_loc[:,2] -= 0.04
+    for body in chassis:
+        body.path_loc[480:,:] = body.path_loc[479,:]
+        body.path_dir[480:,:] = body.path_dir[479,:]
+    for body in road_wheels:
+        body.path_loc[480:,:] = body.path_loc[479,:]
+        body.path_dir[480:,:] = body.path_dir[479,:]
+    for body in trailing_arms:
+        body.path_loc[480:,:] = body.path_loc[479,:]
+        body.path_dir[480:,:] = body.path_dir[479,:]
+    for body in sprockets:
+        body.path_loc[480:,:] = body.path_loc[479,:]
+        body.path_dir[480:,:] = body.path_dir[479,:]
+    for body in idlers:
+        body.path_loc[480:,:] = body.path_loc[479,:]
+        body.path_dir[480:,:] = body.path_dir[479,:]
+    for body in track_units:
+        body.path_loc[480:,:] = body.path_loc[479,:]
+        body.path_dir[480:,:] = body.path_dir[479,:]
+    # chassis[0].path_loc[:,0] += x_offset
+
+    # chassis[0].path_loc[:,2] -= 0.04
 
 # Fix rotations
 for idler in idlers:
