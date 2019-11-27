@@ -167,14 +167,16 @@ def get_spline_actor(surface_data, chassis_cg_path, surface_bounds):
     locator.SetDataSet(surface_data.GetOutput())
     locator.BuildLocator()
 
-    tolerance = 0.01 # Set intersection searching tolerance 
+    tolerance = 0.01 # Set intersection searching tolerance
 
     # Make a list of points. Each point is the intersection of a vertical line
     # defined by p1 and p2 and the surface.
     points = vtkPoints()
     for chassis_cg in chassis_cg_path:
-        p1 = [chassis_cg[0], chassis_cg[1], surface_bounds[4]]
-        p2 = [chassis_cg[0], chassis_cg[1], surface_bounds[5]]
+        # p1 = [chassis_cg[0], chassis_cg[1], surface_bounds[4]]
+        p1 = [chassis_cg[0], chassis_cg[1], -1]
+        # p2 = [chassis_cg[0], chassis_cg[1], surface_bounds[5]]
+        p2 = [chassis_cg[0], chassis_cg[1], 1]
 
         t = mutable(0)
         pos = [0.0, 0.0, 0.0]
