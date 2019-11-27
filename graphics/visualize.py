@@ -16,7 +16,7 @@ from bodies.classes import Surface
 
 
 record_video_bool = True
-record_video_bool = False
+# record_video_bool = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, fps, _dir):
@@ -30,7 +30,7 @@ class vtkTimerCallback(object):
         self.camera = vtkCamera()
         self.camera_distance = 14
         self.renderer.SetActiveCamera(self.camera)
-        self.view = 2
+        self.view = 1
         
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
@@ -57,7 +57,8 @@ class vtkTimerCallback(object):
 
                 if self.camera_flag:
                     if 'Slope' in self.dir:
-                        slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
+                        # slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
+                        slope = 31
                         text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
                         self.text_actor.SetInput(text + '\n' + 'Slope Angle: ' + '{:.2f}'.format(slope) + '[deg]')
                     else:
