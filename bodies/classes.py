@@ -19,7 +19,11 @@ class Body(object):
         self.angles = path_dir[0]
         self.side = side
 
-        self.actor = get_stl_actor(directory + self.type + '.STL')
+        if type_ == 'Chassis':
+            # self.actor = get_stl_actor(directory + self.type + '_fix.STL')
+            self.actor = get_stl_actor(directory + self.type + '.STL')
+        else:
+            self.actor = get_stl_actor(directory + self.type + '.STL')
         set_actor_visuals(self.actor, self.type)
         self.actor.GetProperty().SetInterpolationToPhong()
 
@@ -42,22 +46,32 @@ class Surface(object):
         size_x = 301; size_y = 701
         ground_surf = -0.6 * np.ones((size_x, size_y))
 
+        strings = ['Brake', 'OverSteering']
         if 'Slope' in path_directory:
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
             ground_surf[0,:] = np.arange(-23, -23 + size_y*0.2, 0.2)
+
         elif 'Step' in path_directory:
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
             ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
             
-            step_x_loc = 2
+            step_x_loc = 7
             step_start_ind = np.abs(np.asarray(ground_surf[:,0]) - step_x_loc).argmin()
             step_end_ind = np.abs(np.asarray(ground_surf[:,0]) - 11).argmin()
-
             ground_surf[step_start_ind:, 1:] = 0
-            # ground_surf[step_start_ind:step_end_ind, :] = np.linspace(size_y*[-0.6], size_y*[0], step_end_ind-step_start_ind)
-            # ground_surf[step_start_ind:step_end_ind, :] = np.mgrid(-0.6: 0.6 , size_y)
+        
+        elif any(x in path_directory for x in strings):
+            ground_surf[:,0] = np.arange(-20, -20 + size_x*0.35, 0.35)
+            ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
 
+        elif 'Turning' in path_directory:
+            # need to find slope?
+            # ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
+            step = 0.5
+            ground_surf[:,0] = np.arange(-40, -40 + size_x*step, step)
+            # ground_surf[0,:] = np.arange(-23, -23 + size_y*0.2, 0.2)
+            ground_surf[0,:] = np.arange(-40, -40 + size_y*step, step)
 
-        surface_w = 200
+        surface_w = 150
         ground_surf = (ground_surf[:,0], ground_surf[0,51:surface_w], ground_surf[1:,51:surface_w])
         self.actors = get_3dsurface_actor(path_directory, ground_surf, chassis_cg)[0:2]
