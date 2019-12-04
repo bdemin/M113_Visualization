@@ -20,8 +20,8 @@ class Body(object):
         self.side = side
 
         if type_ == 'Chassis':
-            # self.actor = get_stl_actor(directory + self.type + '_fix.STL')
-            self.actor = get_stl_actor(directory + self.type + '.STL')
+            self.actor = get_stl_actor(directory + self.type + '_fix.STL')
+            # self.actor = get_stl_actor(directory + self.type + '.STL')
         else:
             self.actor = get_stl_actor(directory + self.type + '.STL')
         set_actor_visuals(self.actor, self.type)
@@ -55,7 +55,7 @@ class Surface(object):
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
             ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
             
-            step_x_loc = 7
+            step_x_loc = 7.1
             step_start_ind = np.abs(np.asarray(ground_surf[:,0]) - step_x_loc).argmin()
             step_end_ind = np.abs(np.asarray(ground_surf[:,0]) - 11).argmin()
             ground_surf[step_start_ind:, 1:] = 0
