@@ -20,7 +20,7 @@ def place_camera(time, data, camera, camera_distance, view, slope):
         camera.SetFocalPoint(cam_focal_point)
 
         # camera.SetRoll(slope)
-        camera.SetRoll(31)
+        # camera.SetRoll(31)
 
     elif view == 2:
         # General view
