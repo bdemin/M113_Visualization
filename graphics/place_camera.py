@@ -48,6 +48,24 @@ def place_camera(time, data, camera, camera_distance, view, slope):
 
         cam_focal_point = chassis_pos
 
+
+    elif view == 4:
+        # For turning simulation
+        camera.SetViewUp([0,0,1])
+
+        chs_pos = data[0][0].path_loc[time] # Chassis CG @ time
+        chs2cam = [0 , -20, 5] # vector from chassis to camera position
+        camera_pos = chs_pos + chs2cam
+
+        cam_focal_point = chs_pos
+        
+        # Place camera and set focal point:
+        camera.SetPosition(camera_pos)
+        camera.SetFocalPoint(cam_focal_point)
+
+        # camera.SetRoll(slope)
+        camera.SetRoll(30)
+
     # Place camera and set focal point:
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)
