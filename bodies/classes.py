@@ -9,7 +9,7 @@ from graphics.get_3dsurface_actor import get_3dsurface_actor
 
 directory = 'graphics/STL_data/'
 class Body(object):
-    def __init__(self, type_, path_loc, path_dir, side = None):
+    def __init__(self, type_, path_loc, path_dir, path, side = None):
         self.type = type_
 
         self.path_loc = path_loc
@@ -20,8 +20,10 @@ class Body(object):
         self.side = side
 
         if type_ == 'Chassis':
-            self.actor = get_stl_actor(directory + self.type + '_fix.STL')
-            # self.actor = get_stl_actor(directory + self.type + '.STL')
+            if 'step' in path:
+                self.actor = get_stl_actor(directory + self.type + '_fix.STL')
+            else:
+                self.actor = get_stl_actor(directory + self.type + '.STL')
         else:
             self.actor = get_stl_actor(directory + self.type + '.STL')
         set_actor_visuals(self.actor, self.type)

@@ -19,5 +19,5 @@ def create_bodies(path_directory, type_, side = None):
                 path_dir[:,0] = -path_dir[:,0]
             else:
                 side = 'R'
-        bodies.append(Body(type_, path_loc, path_dir, side))
+        bodies.append(Body(type_, path_loc, path_dir, path_directory, side))
     return bodies
