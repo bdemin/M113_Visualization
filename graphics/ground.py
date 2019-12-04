@@ -54,12 +54,12 @@ def visualize_soil(PolyData, soil_type_array):
     colors = vtkNamedColors()
     colors_dict = {
         3: colors.HTMLColorToRGB('DarkKhaki'),
-        4: colors.HTMLColorToRGB('Wheat'),
-        2: colors.HTMLColorToRGB('BurlyWood'),
-        0: colors.HTMLColorToRGB('SandyBrown'),
-        1: colors.HTMLColorToRGB('Khaki'),
+        0: colors.HTMLColorToRGB('Wheat'),
+        4: colors.HTMLColorToRGB('BurlyWood'),
+        6: colors.HTMLColorToRGB('SandyBrown'),
+        2: colors.HTMLColorToRGB('Khaki'),
         5: colors.HTMLColorToRGB('DarkOliveGreen'),
-        6: colors.HTMLColorToRGB('tan')}
+        1: colors.HTMLColorToRGB('tan')}
 
     m, n = soil_type_array.shape
     soil_color_map = vtkUnsignedCharArray()
