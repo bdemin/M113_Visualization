@@ -154,7 +154,7 @@ def create_soil_type_arr(size):
 
     return soil_type_arr
 
-def get_spline_actor(surface_data, chassis_cg_path, surface_bounds):
+def get_spline_actor(surface_data, chassis_cg_path, surface_bounds, color):
     # Iterate over chassis CG points and create a spline which marks the driving path.
     # Return the spline as a vtkActor for being added later to the renderer.
 
@@ -204,7 +204,7 @@ def get_spline_actor(surface_data, chassis_cg_path, surface_bounds):
     # Define the line actor
     spline_actor = vtkActor()
     spline_actor.SetMapper(spline_mapper)
-    spline_actor.GetProperty().SetColor([0,0.7,0])
+    spline_actor.GetProperty().SetColor(color)
     spline_actor.GetProperty().SetLineWidth(10)
     
     return spline_actor

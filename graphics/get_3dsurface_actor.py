@@ -95,9 +95,27 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
     
     if path_spline_bool:
-        line_actor = get_spline_actor(smooth_loop, chassis_cg, PolyData.GetBounds())
+        line_actor = get_spline_actor(smooth_loop, chassis_cg, PolyData.GetBounds(), [0,0.7,0])
+        # line_actor = None
+        if 'Turning' in path_directory:
+            chs_x = chassis_cg[:,0]
+            chs_y = chassis_cg[:,1]
+            center = [np.average(chs_x), np.average(chs_y)]
+            thetas = np.linspace(0, 2 * np.pi, num = 50)
+            radius = np.average((np.abs(min(chs_x) - max(chs_x)), np.abs(min(chs_y)-max(chs_y))))/2
+            circle = []
+            for theta in thetas:
+                x = center[0] + radius*np.cos(theta)
+                y = center[1] + radius*np.sin(theta)
+                circle.append([x, y, np.average(chassis_cg[:,2])])
+            
+            circle_actor = get_spline_actor(smooth_loop, np.array(circle), PolyData.GetBounds(), [0.7,0,0])
+        else:
+            circle_actor = None
+
     else:
         line_actor = None
+        circle_actor = None
 
     # Create a mapper and actor for smoothed dataset
     mapper = vtkPolyDataMapper()
@@ -115,6 +133,10 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     # actor_loop.GetProperty().SetSpecular(10)
     actor_loop.GetProperty().SetSpecularPower(100)
     # actor_loop.GetProperty().SetSpecularColor(0.1,0.1,0.1)
-
-    return actor_loop, line_actor, smooth_loop
+    return_data = [actor_loop, line_actor, smooth_loop, circle_actor]
+    actors = []
+    for data in return_data:
+        if isinstance(data, vtkActor):
+            actors.append(data)
+    return actors
     
