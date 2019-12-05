@@ -15,7 +15,7 @@ path = '../M113_tests/Data_Movies/00elbit_tests/'
 # directory = path + 'Slope/' + 'Slope31deg_Friction0.55/'
 # directory = path + 'Brake/' + 'Brake10__VeryLowFriction/'
 # directory = path + 'OverSteering/' + 'OverSterring_LowFriction 10ms/'
-directory = path + 'Turning/' + 'TurningRadius_30Deg/'
+directory = path + 'Turning/' + 'TurningRadius_0Deg/'
 
 show_description(directory)
 
