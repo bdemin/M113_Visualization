@@ -76,4 +76,4 @@ class Surface(object):
 
         surface_w = 150
         ground_surf = (ground_surf[:,0], ground_surf[0,51:surface_w], ground_surf[1:,51:surface_w])
-        self.actors = get_3dsurface_actor(path_directory, ground_surf, chassis_cg)[0:2]
+        self.actors = get_3dsurface_actor(path_directory, ground_surf, chassis_cg)
