@@ -20,7 +20,7 @@ class Body(object):
         self.side = side
 
         if type_ == 'Chassis':
-            if 'step' in path:
+            if 'Step' in path:
                 self.actor = get_stl_actor(directory + self.type + '_fix.STL')
             else:
                 self.actor = get_stl_actor(directory + self.type + '.STL')
