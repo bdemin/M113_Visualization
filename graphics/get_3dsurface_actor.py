@@ -102,14 +102,17 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
             chs_y = chassis_cg[:,1]
             center = [np.average(chs_x), np.average(chs_y)]
             thetas = np.linspace(0, 2 * np.pi, num = 50)
-            radius = np.average((np.abs(min(chs_x) - max(chs_x)), np.abs(min(chs_y)-max(chs_y))))/2
+            # radius = np.average((np.abs(min(chs_x) - max(chs_x)), np.abs(min(chs_y)-max(chs_y))))/2
+            radius = 6.88 # 5.9607
+
             circle = []
             for theta in thetas:
                 x = center[0] + radius*np.cos(theta)
                 y = center[1] + radius*np.sin(theta)
                 circle.append([x, y, np.average(chassis_cg[:,2])])
             
-            circle_actor = get_spline_actor(smooth_loop, np.array(circle), PolyData.GetBounds(), [0.7,0,0])
+            circle_actor = get_spline_actor(smooth_loop, np.array(circle), PolyData.GetBounds(), [0,0,0.7])
+            # circle_actor = None
         else:
             circle_actor = None
 
