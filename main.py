@@ -11,11 +11,11 @@ from simulation_description import show_description
 # path = '../M113_tests/Data_Movies/'
 path = '../M113_tests/Data_Movies/00elbit_tests/'
 
-directory = path + 'Step/' + 'StepD/'
+# directory = path + 'Step/' + 'Step0.6_A/'
 # directory = path + 'Slope/' + 'Slope31deg_Friction0.55/'
 # directory = path + 'Brake/' + 'Brake10__VeryLowFriction/'
 # directory = path + 'OverSteering/' + 'OverSterring_LowFriction 10ms/'
-# directory = path + 'Turning/' + 'TurningRadius_0Deg/'
+directory = path + 'Turning/' + 'TurningRadius_0Deg/'
 
 show_description(directory)
 
