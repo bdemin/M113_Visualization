@@ -16,7 +16,7 @@ from bodies.classes import Surface
 
 
 record_video_bool = True
-record_video_bool = False
+# record_video_bool = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, fps, _dir):
@@ -67,6 +67,8 @@ class vtkTimerCallback(object):
 
                     if 'Step' in self.dir:
                         self.view = 5
+                    elif 'Turning' in self.dir:
+                        self.view = 4
 
                     place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view, slope)
 
