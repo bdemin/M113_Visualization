@@ -23,7 +23,7 @@ class vtkTimerCallback(object):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
-        self.pause = True
+        self.pause = False
         self.camera_flag = True
         
         self.renderer = renderer
@@ -54,7 +54,6 @@ class vtkTimerCallback(object):
                 obj.GetRenderWindow().Render()
 
             else:
-
                 if self.camera_flag:
                     if 'Slope' in self.dir:
                         # slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
