@@ -66,6 +66,19 @@ def place_camera(time, data, camera, camera_distance, view, slope):
         # camera.SetRoll(slope)
         camera.SetRoll(30)
 
+    elif view == 5:
+        camera.SetViewUp([0,0,1])
+
+        cam_focal_point = data[0][0].path_loc[-1] + [-2,0,0]
+        camera_pos = cam_focal_point + [-1.5,-15,0]
+        
+        # Place camera and set focal point:
+        camera.SetPosition(camera_pos)
+        camera.SetFocalPoint(cam_focal_point)
+
+        # camera.SetRoll(slope)
+        # camera.SetRoll(31)
+
     # Place camera and set focal point:
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)

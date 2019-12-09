@@ -66,6 +66,9 @@ class vtkTimerCallback(object):
                         text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
                         self.text_actor.SetInput(text)
 
+                    if 'Step' in self.dir:
+                        self.view = 5
+
                     place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view, slope)
 
                 place_all_bodies(self.data, self.timer_count)
