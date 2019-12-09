@@ -59,8 +59,10 @@ class Surface(object):
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2/5, 0.2/5)
             ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
             
-            step_x_loc = 1.51
-            step_height = -0.1
+            # step_x_loc = 1.51
+            step_x_loc = 7
+            # step_height = -0.1
+            step_height = 0
             step_start_ind = np.abs(np.asarray(ground_surf[:,0]) - step_x_loc).argmin()
             step_end_ind = np.abs(np.asarray(ground_surf[:,0]) - 11).argmin()
             ground_surf[step_start_ind:, 1:] = step_height
