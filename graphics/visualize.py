@@ -16,14 +16,14 @@ from bodies.classes import Surface
 
 
 record_video_bool = True
-record_video_bool = False
+# record_video_bool = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, fps, _dir):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
-        self.pause = True
+        self.pause = False
         self.camera_flag = True
         
         self.renderer = renderer
@@ -54,7 +54,6 @@ class vtkTimerCallback(object):
                 obj.GetRenderWindow().Render()
 
             else:
-
                 if self.camera_flag:
                     if 'Slope' in self.dir:
                         # slope = np.rad2deg(max(0, 0.0044 * (self.timer_count*self.dt - 5)))
@@ -65,6 +64,11 @@ class vtkTimerCallback(object):
                         slope = 0
                         text = 'time = %.1f' % (self.timer_count * self.dt) + '[sec]'
                         self.text_actor.SetInput(text)
+
+                    if 'Step' in self.dir:
+                        self.view = 5
+                    elif 'Turning' in self.dir:
+                        self.view = 4
 
                     place_camera(self.timer_count, self.data, self.camera, self.camera_distance, self.view, slope)
 
