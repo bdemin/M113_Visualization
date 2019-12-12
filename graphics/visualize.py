@@ -16,7 +16,7 @@ from bodies.classes import Surface
 
 
 record_video_bool = True
-# record_video_bool = False
+record_video_bool = False
 
 class vtkTimerCallback(object):
     def __init__(self, renderer, renWin, fps, _dir):
