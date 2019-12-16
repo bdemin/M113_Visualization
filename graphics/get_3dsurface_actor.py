@@ -100,13 +100,17 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
         if 'Turning' in path_directory:
             chs_x = chassis_cg[:,0]
             chs_y = chassis_cg[:,1]
-            center = [np.average(chs_x), np.average(chs_y)]
-            thetas = np.linspace(0, 2 * np.pi, num = 50)
+            max_x = max(chs_x);
+            min_x = min(chs_x);
+            max_y = max(chs_y);
+            min_y = min(chs_y);
+            center = [(max_x + min_x)/2, (max_y + min_y)/2]
             radius = np.average((np.abs(min(chs_x) - max(chs_x)), np.abs(min(chs_y) - max(chs_y))))/2 # Target is 5.37
             print(radius)
             
             radius = 5.43 # From Elbit experiment
             circle = []
+            thetas = np.linspace(0, 2 * np.pi, num = 50)
             for theta in thetas:
                 x = center[0] + radius*np.cos(theta)
                 y = center[1] + radius*np.sin(theta)
