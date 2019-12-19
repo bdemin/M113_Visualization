@@ -66,7 +66,7 @@ class vtkTimerCallback(object):
                         self.text_actor.SetInput(text)
 
                     if 'Step' in self.dir:
-                        self.view = 5
+                        self.view = 1
                     elif 'Turning' in self.dir:
                         self.view = 4
 
