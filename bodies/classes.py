@@ -55,17 +55,20 @@ class Surface(object):
 
         elif 'Step' in path_directory:
             size_x = 301 * 5;
-            ground_surf = -0.6 * np.ones((size_x, size_y))
-            ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2/5, 0.2/5)
+            size_x = 301;
+            ground_height = -0.6 -0.6
+            ground_surf = ground_height * np.ones((size_x, size_y))
+            # ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2/5, 0.2/5)
+            ground_surf[:,0] = np.arange(-20, -20 + size_x*0.2, 0.2)
             ground_surf[0,:] = np.arange(-20, -20 + size_y*0.2, 0.2)
             
             # step_x_loc = 1.51
-            step_x_loc = 7
-            # step_height = -0.1
-            step_height = 0
+            step_x_loc = 1.5
+            step_height = 0.5
+            # step_height = 0
             step_start_ind = np.abs(np.asarray(ground_surf[:,0]) - step_x_loc).argmin()
             step_end_ind = np.abs(np.asarray(ground_surf[:,0]) - 11).argmin()
-            ground_surf[step_start_ind:, 1:] = step_height
+            ground_surf[step_start_ind:, 1:] = ground_height + step_height
         
         elif any(x in path_directory for x in strings):
             ground_surf[:,0] = np.arange(-20, -20 + size_x*0.35, 0.35)
