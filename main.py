@@ -65,10 +65,11 @@ if 'Slope' in directory or 'OverSteering' in directory:
     # chassis[0].path_loc[:,2] -= 0.04
 
 # Fix rotations
-for idler in idlers:
-    idler.path_dir[:,1] = sprockets[0].path_dir[:,1]
+idlers[0].path_dir[:,1] = sprockets[0].path_dir[:,1]
+idlers[1].path_dir[:,1] = sprockets[1].path_dir[:,1]
+
 for road_wheel in road_wheels:
-    road_wheel.path_dir[:,1] = sprockets[0].path_dir[:,1]
+    road_wheel.path_dir[:,1] = sprockets[1].path_dir[:,1]
 
 # Trailing arm y offset
 offset = 0.0
