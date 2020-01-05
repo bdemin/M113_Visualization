@@ -17,8 +17,8 @@ path = '../M113_tests/Data_Movies/00elbit_tests/'
 # directory = path + 'OverSteering/' + 'OverSterring_LowFriction 10ms/'
 # directory = path + 'Turning/' + 'TurningRadius_0Deg/'
 # directory = path + 'Turning/' + 'Turning_hptest/'
-# directory = path + 'Turning/' + 'Constraint_Straight line/'
-directory = path + 'Turning/' + 'Differnetial_Straight line/'
+directory = path + 'Turning/' + 'Constraint_Straight line/'
+# directory = path + 'Turning/' + 'Differnetial_Straight line/'
 
 show_description(directory)
 
