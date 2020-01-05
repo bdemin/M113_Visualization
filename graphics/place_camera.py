@@ -5,6 +5,7 @@ def place_camera(time, data, camera, camera_distance, view, slope):
     # Define camera parameters
     
     camera.SetViewUp([0,0,1])
+    dolly_factor = 1
 
     if view == 1:
         camera.SetViewUp([0,0,1])
@@ -54,12 +55,14 @@ def place_camera(time, data, camera, camera_distance, view, slope):
         camera.SetViewUp([0,0,1])
 
         chs_pos = data[0][0].path_loc[time] # Chassis CG @ time
-        chs2cam = [0 , -20, 5] # vector from chassis to camera position
+        # chs2cam = [0 , -20, 5] # vector from chassis to camera position
+        chs2cam = [14 , -20, 5] # vector from chassis to camera position
         camera_pos = chs_pos + chs2cam
 
         cam_focal_point = chs_pos
         
         # Place camera and set focal point:
+        dolly_factor = 2
         camera.SetPosition(camera_pos)
         camera.SetFocalPoint(cam_focal_point)
 
@@ -85,4 +88,5 @@ def place_camera(time, data, camera, camera_distance, view, slope):
     # Place camera and set focal point:
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)
+    camera.Dolly(dolly_factor)
     
