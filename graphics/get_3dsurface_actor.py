@@ -95,7 +95,7 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
     
     if path_spline_bool:
-        line_actor = get_spline_actor(smooth_loop, chassis_cg, PolyData.GetBounds(), [0,0.7,0])
+        line_actor = get_spline_actor(smooth_loop, chassis_cg, PolyData.GetBounds(), [0,0,0.9])
         # line_actor = None
         if 'Turning' in path_directory:
             chs_x = chassis_cg[:,0]
@@ -116,7 +116,7 @@ def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
                 y = center[1] + radius*np.sin(theta)
                 circle.append([x, y, np.average(chassis_cg[:,2])])
             
-            circle_actor = get_spline_actor(smooth_loop, np.array(circle), PolyData.GetBounds(), [0,0,0.7])
+            circle_actor = get_spline_actor(smooth_loop, np.array(circle), PolyData.GetBounds(), [0.9,0,0])
             # circle_actor = None
         else:
             circle_actor = None
