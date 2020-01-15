@@ -107,6 +107,7 @@ def visualize(*args, directory, total_time = 25):
     renderer = vtkRenderer()
     renWin = vtkRenderWindow()
     renWin.AddRenderer(renderer)
+    renWin.FullScreenOn()
     iren = vtkRenderWindowInteractor()
     iren.SetRenderWindow(renWin)
 

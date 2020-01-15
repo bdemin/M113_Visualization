@@ -16,7 +16,9 @@ path = '../M113_tests/Data_Movies/00elbit_tests/'
 # directory = path + 'Brake/' + 'Brake10__VeryLowFriction/'
 # directory = path + 'OverSteering/' + 'OverSterring_LowFriction 10ms/'
 # directory = path + 'Turning/' + 'TurningRadius_0Deg/'
-directory = path + 'Turning/' + 'Turning_hptest/'
+# directory = path + 'Turning/' + 'Turning_hptest/'
+directory = path + 'Turning/' + 'Constraint_Straight line/'
+# directory = path + 'Turning/' + 'Differnetial_Straight line/'
 
 show_description(directory)
 
@@ -65,10 +67,11 @@ if 'Slope' in directory or 'OverSteering' in directory:
     # chassis[0].path_loc[:,2] -= 0.04
 
 # Fix rotations
-for idler in idlers:
-    idler.path_dir[:,1] = sprockets[0].path_dir[:,1]
+idlers[0].path_dir[:,1] = sprockets[0].path_dir[:,1]
+idlers[1].path_dir[:,1] = sprockets[1].path_dir[:,1]
+
 for road_wheel in road_wheels:
-    road_wheel.path_dir[:,1] = sprockets[0].path_dir[:,1]
+    road_wheel.path_dir[:,1] = sprockets[1].path_dir[:,1]
 
 # Trailing arm y offset
 offset = 0.0

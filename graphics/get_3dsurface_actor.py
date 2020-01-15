@@ -12,7 +12,7 @@ from graphics.create_ground_from_spheres import create_ground_from_spheres
 # Logic controls
 color_map_bool = False # Create elevation-based colormap for the ground
 soil_map_bool = True # Create soil-based colormap for the ground
-path_spline_bool = True # Render a spline marking the vehicle's drive path
+path_spline_bool = False # Render a spline marking the vehicle's drive path
 
 def get_3dsurface_actor(path_directory, ground_surf = None, chassis_cg = None):
     try:
