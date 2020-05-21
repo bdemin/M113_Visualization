@@ -10,8 +10,8 @@ from .visualizer.visualizer import Visualizer
 
 class VisualizeDBDSimulation(object):
     def __init__(self, visualization_params):
-        self.params = visualization_params
-        self.path = get_latest_directory(visualization_params['parent_directory'])
+        self.params = params
+        self.path = get_latest_directory(self.params['parent_directory'])
 
     def load_bodies_data(self):
         # Need to add bodies param
