@@ -29,16 +29,14 @@ class Surface(object):
 
         self.actors = []
 
-        if logic:
-            surface_polydata = self.apply_surface_filters(self.surface_polydata, logic)
-
-            if logic['path_spline_flag']:
-                self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
         # Load surface logic controls
         color_map_flag = logic['color_map_flag'] # Create elevation-based colormap for the ground
         soil_map_flag = logic['soil_map_flag'] # Create soil-based colormap for the ground
         path_spline_flag = logic['path_spline_flag'] # Render a spline marking the vehicle's drive path
 
+        if logic:
+            surface_polydata = self.apply_surface_filters(self.surface_polydata, logic, chassis_cg_path)
+            
         self.actors.append(self.get_surface_actor(self.surface_polydata))
         
         # Otherwise create surface data using external function
