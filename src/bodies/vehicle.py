@@ -1,6 +1,7 @@
 import numpy as np
 
-from bodies.classes import Body
+from vtk import vtkSTLReader, vtkPolyDataMapper, vtkActor, vtkTransform
+
 
 class Vehicle(object):
     # Metaclass to define common attributes of DBD vehicles.
