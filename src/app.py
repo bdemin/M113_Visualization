@@ -6,10 +6,10 @@ from .surface.surface import Surface
 from .visualizer.visualizer import Visualizer
 
 
+class App(object):
+    def load_params(self, params):
+        # Load main visualization parameter
 
-
-class VisualizeDBDSimulation(object):
-    def __init__(self, visualization_params):
         self.params = params
         self.path = get_latest_directory(self.params['parent_directory'])
 
