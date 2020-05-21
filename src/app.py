@@ -14,8 +14,8 @@ class VisualizeDBDSimulation(object):
         self.path = get_latest_directory(self.params['parent_directory'])
 
     def load_bodies_data(self):
-        # Need to add bodies param
-        invoke_vehicle_method = getattr(bodies.vehicle, self.params['vehicle_type'])
+        # Need to add bodies param | maybe vehicle is not a good idea?
+        invoke_vehicle_method = getattr(vehicle, self.params['vehicle_type'])
         self.vehicle = invoke_vehicle_method(self.path)
 
     def load_surface_data(self, surface_xyz_data = None):
