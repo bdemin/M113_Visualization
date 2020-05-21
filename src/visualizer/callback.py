@@ -15,7 +15,7 @@ class vtkTimerCallback(object):
         self.timer_count = 1
         self.cam_view = 'isometric'
         self.pause = True
-        self.camera_flag = True
+        self.is_cam_on = True
         
         self.renderer = renderer
         self.camera = vtkCamera()
@@ -37,9 +37,8 @@ class vtkTimerCallback(object):
     def keypress(self, obj, event):
         self.pause, self.camera_flag, self.camera_distance ,self.view, self.timer_count = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view, self.timer_count)
 
-
-        if self.camera_flag:
-            place_camera(self.timer_count, self.vehicle.data, self.camera, self.camera_distance, self.view)
+        if self.is_cam_on:
+            place_camera(self.timer_count, self.vehicle.data, self.camera, self.cam_dist, self.cam_view)
 
         self.vehicle.update(self.timer_count)
 
