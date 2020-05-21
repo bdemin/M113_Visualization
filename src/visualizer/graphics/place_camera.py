@@ -4,10 +4,13 @@ import numpy as np
 def place_camera(time, data, camera, camera_distance, view, slope = 0):
     # Define camera parameters
 
+    if view == 'isometric':
+        camera.SetViewUp([0,0,1])
+
+
         # camera.SetRoll(slope)
         # camera.SetRoll(31)
 
-    if view == 1:
         # General view
         chs_pos = data['Chassis'][0].path_loc[time] # Chassis CG @ time
         cam_d = 14 # [m]
