@@ -1,8 +1,11 @@
 import numpy as np
 
 
-def place_camera(time, data, camera, camera_distance, view):
+def place_camera(time, data, camera, camera_distance, view, slope = 0):
     # Define camera parameters
+
+        # camera.SetRoll(slope)
+        # camera.SetRoll(31)
 
     if view == 1:
         # General view
@@ -24,6 +27,13 @@ def place_camera(time, data, camera, camera_distance, view):
 
         cam_focal_point = chs_pos
 
+        # camera.SetRoll(slope)
+        # camera.SetRoll(15)
+
+
+        # camera.SetRoll(slope)
+        # camera.SetRoll(31)
+
     elif view == 3:
         # Wheel view
         wheel_pos = data['Road_Wheel'][7].path_loc[time] # Wheel #7 CG @ time
@@ -34,4 +44,4 @@ def place_camera(time, data, camera, camera_distance, view):
     camera.SetViewUp([0,0,1])
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)
-    
+    camera.Dolly(dolly_factor)
