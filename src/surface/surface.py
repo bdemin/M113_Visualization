@@ -13,11 +13,6 @@ from surface.functions import visualize_elevation, visualize_soil, create_soil_t
 class Surface(object):
     def __init__(self, path = None, surface_xyz_data = None, logic = None, chassis_cg_path = None):
 
-        # Load logic controls
-        # color_map_flag = logic['color_map_flag'] # Create elevation-based colormap for the ground
-        # soil_map_flag = logic['soil_map_flag'] # Create soil-based colormap for the ground
-        # path_spline_flag = logic['path_spline_flag'] # Render a spline marking the vehicle's drive path
-
         self.path = path
 
         if surface_xyz_data:
@@ -37,6 +32,10 @@ class Surface(object):
 
             if logic['path_spline_flag']:
                 self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
+        # Load surface logic controls
+        color_map_flag = logic['color_map_flag'] # Create elevation-based colormap for the ground
+        soil_map_flag = logic['soil_map_flag'] # Create soil-based colormap for the ground
+        path_spline_flag = logic['path_spline_flag'] # Render a spline marking the vehicle's drive path
 
         self.actors.append(self.get_surface_actor(self.surface_polydata))
         
