@@ -53,6 +53,8 @@ class vtkTimerCallback(object):
                     self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
                 self._filter.Modified()
                 self.writer.Write()
+                self.handle_video()
+
             if self.pause == True:
                 self.text_actor.SetInput('Pause')
                 obj.GetRenderWindow().Render()
@@ -62,6 +64,15 @@ class vtkTimerCallback(object):
                 self.timer_count += 1
         else:
             if self.video_record_flag:
+
+    def handle_video(self):
+        if self.timer_count % 500 == 0:
+            self.writer.End()
+            self.video_count += 1
+            self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
+        self._filter.Modified()
+        self.writer.Write()
+
                 self.writer.End()
             self.timer_count = 0
             self.iren.DestroyTimer()
