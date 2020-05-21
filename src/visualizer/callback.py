@@ -47,12 +47,6 @@ class vtkTimerCallback(object):
         if self.timer_count < self.num_frames - 1:
             obj.GetRenderWindow().Render()
             if self.video_record_flag:
-                if self.timer_count % 500 == 0:
-                    self.writer.End()
-                    self.video_count += 1
-                    self._filter, self.writer = get_video(self.iren.GetRenderWindow(), self.rate, 'M113_' + str(self.video_count))
-                self._filter.Modified()
-                self.writer.Write()
                 self.handle_video()
 
             if self.pause == True:
@@ -61,7 +55,6 @@ class vtkTimerCallback(object):
             else:
                 self.run_timestep()
         else:
-            if self.video_record_flag:
             self.reset()
             
     def run_timestep(self):
