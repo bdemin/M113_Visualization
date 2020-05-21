@@ -3,11 +3,22 @@ import numpy as np
 
 def place_camera(time, data, camera, camera_distance, view, slope = 0):
     # Define camera parameters
+    
+    camera.SetViewUp([0,0,1])
+    dolly_factor = 1
 
     if view == 'isometric':
         camera.SetViewUp([0,0,1])
 
         chs_pos = data['chassis'][0].path_loc[time] # Chassis CG @ time
+        chs2cam = [0 , -20, 0] # vector from chassis to camera position
+        camera_pos = chs_pos + chs2cam
+
+        cam_focal_point = chs_pos
+        
+        # Place camera and set focal point:
+        camera.SetPosition(camera_pos)
+        camera.SetFocalPoint(cam_focal_point)
 
         # camera.SetRoll(slope)
         # camera.SetRoll(31)
@@ -29,6 +40,7 @@ def place_camera(time, data, camera, camera_distance, view, slope = 0):
         chs2cam = [-9,0,3]
         # camera_pos = chassis_pos + chs2cam
 
+        # Cam direction is locked on the chassis
         chassis_dir = data['chassis'][0].path_dir[time]
         cam_d = 10
         # camera_pos = chassis_pos + [-cam_d*np.cos(chassis_dir[2]), -cam_d*np.sin(chassis_dir[2]), cam_d*np.sin(chassis_dir[1]) + 2.5]
@@ -74,7 +86,6 @@ def place_camera(time, data, camera, camera_distance, view, slope = 0):
         # camera.SetRoll(31)
 
     # Place camera and set focal point:
-    camera.SetViewUp([0,0,1])
     camera.SetPosition(camera_pos)
     camera.SetFocalPoint(cam_focal_point)
     camera.Dolly(dolly_factor)
