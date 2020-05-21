@@ -66,3 +66,118 @@ def create_bodies(path_directory, type_, side = None):
                 side = 'R'
         bodies.append(Body.factory(type_, path_loc, path_dir, side))
     return bodies
+
+
+directory = 'resources/STL_data/'
+class Body(object):
+    # Class factory to define a general body object
+
+    def __init__(self, type_, path_loc, path_dir, side = None):
+        self.type = type_
+
+        self.path_loc = path_loc
+        self.path_dir = path_dir
+
+        self.position = path_loc[0]
+        self.angles = path_dir[0]
+        
+        self.side = side
+
+        self.actor = self.get_stl_actor(directory + self.type + '.STL')
+        self.actor.GetProperty().SetInterpolationToPhong()
+
+        self.set_actor_visuals(self.actor, self.type)
+
+    def __repr__(self):
+        return "%r at: %r, %r" % (self.type,
+                                    str(self.position),
+                                    str(np.rad2deg(self.angles)))
+
+    @staticmethod
+    def factory(type_, path_loc, path_dir, side = None):
+        if side:
+            return Asymmetrical(type_, path_loc, path_dir, side)
+        return Symmetrical(type_, path_loc, path_dir)
+
+    def update(self, timer_count):
+        self.position = self.path_loc[timer_count]
+        self.angles = self.path_dir[timer_count]
+
+    def get_stl_actor(self, filename):
+        reader = vtkSTLReader()
+        reader.SetFileName(filename)
+        
+        mapper = vtkPolyDataMapper()
+        mapper.SetInputConnection(reader.GetOutputPort())
+        
+        actor = vtkActor()
+        actor.SetMapper(mapper)
+        
+        return actor
+
+    def set_actor_visuals(self, actor, _type):
+        # Class level definition of visual properties
+
+        Chassis = {'color':(0.244, 0.275, 0.075), 'ambi':0.1, 'ambic':(0.3,0.3,0.3), 'diff':0.9, 'diffc':(0.396, 0.263, 0.129), 'spec':0.6, 'specp':10}
+        Road_Wheel = {'color':(0.194, 0.225, 0.025), 'ambi':0.4, 'ambic':(1,1,1), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        Sprocket = {'color':(0.194, 0.225, 0.025), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        Idler = {'color':(0.194, 0.225, 0.025), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        Track_Unit = {'color':(0.35,0.35,0.35), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        Trailing_Arm = {'color':(0.35,0.35,0.35), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        _type = vars()[_type]
+        
+        actor.GetProperty().SetColor(_type['color'])
+        actor.GetProperty().SetAmbient(_type['ambi'])
+    #    actor.GetProperty().SetAmbientColor(_type['ambic'])
+        actor.GetProperty().SetDiffuse(_type['diff'])
+    #    actor.GetProperty().ShadingOff()
+    #    actor.GetProperty().LightingOff()
+    #    actor.GetProperty().SetDiffuseColor(_type['diffc'])
+        actor.GetProperty().SetSpecular(_type['spec'])
+        actor.GetProperty().SetSpecularPower(_type['specp'])
+
+
+class Symmetrical(Body):
+    # Class definition for bodies which are symmetrical
+
+    def __init__(self, type_, path_loc, path_dir):
+        Body.__init__(self, type_, path_loc, path_dir) #remove side
+
+    def place(self, chassis_angles):
+        # Can remove this?
+        trans = vtkTransform()
+        trans.PreMultiply()
+
+        trans.Translate(*self.position)
+
+        trans.RotateZ(np.rad2deg(self.angles[2]))
+        trans.RotateY(np.rad2deg(self.angles[1]))
+        trans.RotateX(np.rad2deg(self.angles[0]))
+
+        self.actor.SetUserTransform(trans)
+
+class Asymmetrical(Body):
+    # Class definition for bodies which are asymmetrical
+
+    def __init__(self, type_, path_loc, path_dir, side = None):
+        Body.__init__(self, type_, path_loc, path_dir, side)
+
+    def place(self, chassis_angles):
+        if self.side == 'L':
+            first_angles = (chassis_angles[0], chassis_angles[1], chassis_angles[2] - np.pi)
+            y_rotation = -self.angles[1]
+        elif self.side == 'R':
+            first_angles = chassis_angles[:]
+            y_rotation = self.angles[1]
+        
+        trans = vtkTransform()
+        trans.PreMultiply()
+        trans.Translate(*self.position)
+        
+        trans.RotateX(np.rad2deg(first_angles[0]))
+        trans.RotateY(np.rad2deg(first_angles[1]))
+        trans.RotateZ(np.rad2deg(first_angles[2]))
+        
+        trans.RotateY(np.rad2deg(y_rotation))
+
+        self.actor.SetUserTransform(trans)
