@@ -64,6 +64,8 @@ class vtkTimerCallback(object):
                 self.timer_count += 1
         else:
             if self.video_record_flag:
+            self.reset()
+            
 
     def handle_video(self):
         if self.timer_count % 500 == 0:
@@ -73,9 +75,11 @@ class vtkTimerCallback(object):
         self._filter.Modified()
         self.writer.Write()
 
+    def reset(self):
+        self.timer_count = 0
+        if self.video_record_flag:
                 self.writer.End()
-            self.timer_count = 0
-            self.iren.DestroyTimer()
-            self.iren.GetRenderWindow().Finalize()
-            self.iren.TerminateApp()
-            print('Simulation End')
+                self.iren.DestroyTimer()
+                self.iren.GetRenderWindow().Finalize()
+                self.iren.TerminateApp()
+                print('Simulation End')
