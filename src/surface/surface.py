@@ -1,5 +1,6 @@
 import numpy as np
 import os.path
+from os.path import exists
 
 from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyData, vtkLookupTable, vtkCleanPolyData, \
@@ -18,12 +19,12 @@ class Surface(object):
         if surface_xyz_data:
             self.surface_polydata = self.get_surface_polydata(surface_xyz_data)
         else:
-            if all((
-                os.path.exists(path + 'x.txt'),
-                os.path.exists(path + 'y.txt'),
-                os.path.exists(path + 'z.txt'))):
-                    self.surface_polydata = self.get_surface_polydata(get_xyz_data(path, surface_data = None)
-        self.surface_polydata = self.get_surface_polydata(surface_data)
+            if all(( # Create surface from simulation data
+                exists(path + 'x.txt'),
+                exists(path + 'y.txt'),
+                exists(path + 'z.txt'))):
+                    self.surface_polydata = self.get_surface_polydata(self.load_xyz_data_from_path(path))
+
 
         self.actors = []
 
