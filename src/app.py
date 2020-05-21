@@ -29,3 +29,4 @@ class App(object):
         visualizer.add_actors()
         visualizer.init_callback(total_time, num_frames)
         
+app = App()
