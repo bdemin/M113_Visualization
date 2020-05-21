@@ -1,5 +1,5 @@
 from src.data.visualization_params import params
-from src.visualizer_app import app
+from src.app import app
 
 
 def main():
