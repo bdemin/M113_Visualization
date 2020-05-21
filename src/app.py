@@ -1,11 +1,11 @@
 import numpy as np
 
-from helpers.get_latest_directory import get_latest_directory
-import bodies.vehicle
+import src.bodies.vehicle as vehicle
+from .data.get_latest_directory import get_latest_directory
+from .surface.surface import Surface
+from .visualizer.visualizer import Visualizer
 
-from surface.classes import Surface
 
-from visualization.visualizer import Visualizer
 
 
 class VisualizeDBDSimulation(object):
