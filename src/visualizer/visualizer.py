@@ -2,7 +2,7 @@ from vtk import vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
     vtkOrientationMarkerWidget
 
-from visualization.callback import vtkTimerCallback
+from .callback import vtkTimerCallback
 
 
 class Visualizer(object):
