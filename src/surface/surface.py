@@ -41,19 +41,13 @@ class Surface(object):
 
         self.actors.append(self.get_surface_actor(self.surface_polydata))
         
-        # Surface data supplied directly
-        # elif surface_data:
-            # return surface_data
-
         # Otherwise create surface data using external function
         from surface.functions import create_ground_from_spheres
         return create_ground_from_spheres()
-
-
-    def get_surface_polydata(self, data):
+    def get_surface_polydata(self, xyz_data):
         # Triangulate the data and return vtkPolyData object.
         
-        x_data, y_data, z_data = data
+        x_data, y_data, z_data = xyz_data
         self.m = z_data.shape[0]
         self.n = z_data.shape[1]
         
