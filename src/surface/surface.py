@@ -26,6 +26,11 @@ class Surface(object):
                 exists(path + 'z.txt'))):
                     self.surface_polydata = self.get_surface_polydata(self.load_xyz_data_from_path(path))
 
+            else: # Otherwise create surface data using external function
+                from .functions import get_random_surface_xyz_data
+                import warnings
+                warnings.warn('No surface data found in ', self.path)
+                self.surface_polydata = self.get_surface_polydata(get_random_surface_xyz_data())
 
         self.actors = []
 
@@ -39,9 +44,6 @@ class Surface(object):
             
         self.actors.append(self.get_surface_actor(self.surface_polydata))
         
-        # Otherwise create surface data using external function
-        from surface.functions import create_ground_from_spheres
-        return create_ground_from_spheres()
     def get_surface_polydata(self, xyz_data):
         # Triangulate the data and return vtkPolyData object.
         

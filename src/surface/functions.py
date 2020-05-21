@@ -212,7 +212,7 @@ def get_spline_actor(surface_data, chassis_cg_path):
 import numpy as np
 
 
-def create_ground_from_spheres():
+def get_random_surface_xyz_data():
     np.random.seed(1)
 
     size_x = 301; size_y = 701
