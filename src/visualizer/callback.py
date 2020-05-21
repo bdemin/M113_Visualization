@@ -59,13 +59,17 @@ class vtkTimerCallback(object):
                 self.text_actor.SetInput('Pause')
                 obj.GetRenderWindow().Render()
             else:
-                text = 'time = %.1fs' % (self.timer_count * self.dt)
-                self.text_actor.SetInput(text)
-                self.timer_count += 1
+                self.run_timestep()
         else:
             if self.video_record_flag:
             self.reset()
             
+    def run_timestep(self):
+        self.vehicle.update(self.timer_count)
+        text = 'time = %.1fs' % (self.timer_count * self.dt)
+        self.text_actor.SetInput(text)
+        self.timer_count += 1
+
 
     def handle_video(self):
         if self.timer_count % 500 == 0:
