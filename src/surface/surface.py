@@ -13,6 +13,7 @@ from .functions import visualize_elevation, visualize_soil, create_soil_type_arr
 
 class Surface(object):
     def __init__(self, path = None, surface_xyz_data = None, logic = None, chassis_cg_path = None):
+        # Class for creating and manipulating the surface/ground.
 
         self.path = path
 
@@ -109,15 +110,18 @@ class Surface(object):
         z_data = np.loadtxt(path + 'z.txt', delimiter = ',')
         # z_data -= 0.1 # Fix ground clipping
 
-    def apply_surface_filters(self, PolyData, logic):
         return x_data, y_data, z_data
 
+    def apply_surface_filters(self, PolyData, logic, chassis_ch_path):
         if logic['color_map_flag']:
             visualize_elevation(PolyData)
             
         elif logic['soil_map_flag']:
             soil_type_array = create_soil_type_arr((self.m, self.n))
             visualize_soil(PolyData, soil_type_array)
+
+        elif logic['path_spline_flag']:
+                self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
 
         # Clean the polydata so that the edges are shared
         cleanPolyData = vtkCleanPolyData()
@@ -129,11 +133,12 @@ class Surface(object):
         smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
         return smooth_loop
         
-    def get_line_actor(self, smooth_loop, chassis_cg):
+    @staticmethod
+    def get_line_actor(smooth_loop, chassis_cg):
         return get_spline_actor(smooth_loop, chassis_cg)
 
-
-    def get_surface_actor(self, smooth_loop):
+    @staticmethod
+    def get_surface_actor(smooth_loop):
         # Create a mapper and actor for smoothed dataset
         mapper = vtkPolyDataMapper()
         # mapper.SetInputConnection(smooth_loop.GetOutputPort())
