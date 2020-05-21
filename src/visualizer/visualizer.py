@@ -31,7 +31,7 @@ class Visualizer(object):
         win_size = (int(win_scale*1920), int(win_scale*1080))
         self.renWin.SetSize(win_size)
 
-        # Add stationary axes (Currently breaks the code)
+        # Add stationary axes
         # axesActor = vtkAxesActor()
         # scale_actor(axesActor, 4)
         # widget = vtkOrientationMarkerWidget()
