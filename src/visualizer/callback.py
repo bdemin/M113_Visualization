@@ -1,11 +1,14 @@
-from vtk import vtkCamera
+import numpy as np
 
-from visualization.place_camera import place_camera
-from visualization.transformations import scale_actor
-from visualization.draw_text import draw_text
-from visualization.get_video import get_video, get_snapshots, snap
+from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
+    vtkRenderWindowInteractor, vtkAxesActor, \
+    vtkOrientationMarkerWidget
 
-from visualization.event_handling import keyboard_events
+from .graphics.place_camera import place_camera
+from .graphics.draw_text import draw_text
+from .graphics.get_video import get_video
+from .event_handling import keyboard_events
+# from .graphics.transformations import scale_actor
 
 
 class vtkTimerCallback(object):
