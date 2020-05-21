@@ -33,9 +33,7 @@ class vtkTimerCallback(object):
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
 
     def run_main_loop(self, obj, event):
-
-    def keypress(self, obj, event):
-        self.pause, self.camera_flag, self.camera_distance ,self.view, self.timer_count = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view, self.timer_count)
+        # self.run_timestep()
 
         if self.is_cam_on:
             place_camera(self.timer_count, self.vehicle.data, self.camera, self.cam_dist, self.cam_view)
@@ -61,6 +59,9 @@ class vtkTimerCallback(object):
         text = 'time = %.1fs' % (self.timer_count * self.dt)
         self.text_actor.SetInput(text)
         self.timer_count += 1
+
+    def keypress(self, obj, event):
+        self.pause, self.is_cam_on, self.cam_dist ,self.cam_view, self.timer_count = keyboard_events(obj, self.pause, self.is_cam_on, self.cam_dist, self.cam_view, self.timer_count)
 
 
     def handle_video(self):
