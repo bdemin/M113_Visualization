@@ -13,6 +13,7 @@ class vtkTimerCallback(object):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
         self.timer_count = 1
+        self.cam_view = 'isometric'
         self.pause = True
         self.camera_flag = True
         

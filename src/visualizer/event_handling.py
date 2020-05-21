@@ -17,12 +17,12 @@ def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
         camera_distance -= 1
 
     if key == 'v':
-        if view == 1:
+        if view == 'isometric':
             view = 2
         elif view == 2:
             view = 3
         else:
-            view = 1
+            view = 'isometric'
 
     if pause:
         if key == 'bracketright':
