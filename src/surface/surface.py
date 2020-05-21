@@ -16,8 +16,9 @@ class Surface(object):
 
         self.path = path
 
-        if surface_xyz_data:
+        if surface_xyz_data: # Create surface from external data
             self.surface_polydata = self.get_surface_polydata(surface_xyz_data)
+
         else:
             if all(( # Create surface from simulation data
                 exists(path + 'x.txt'),
