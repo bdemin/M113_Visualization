@@ -12,9 +12,11 @@ from .event_handling import keyboard_events
 
 
 class vtkTimerCallback(object):
+    # Change
     def __init__(self, renderer, renWin, rate, video_record_flag):
     # I can try putting most visualize commands here?
     # Move observer definitions here?
+
         self.timer_count = 1
         self.cam_view = 'isometric'
         self.pause = True
@@ -22,9 +24,8 @@ class vtkTimerCallback(object):
         
         self.renderer = renderer
         self.camera = vtkCamera()
-        self.camera_distance = 14
+        self.cam_dist = 14
         self.renderer.SetActiveCamera(self.camera)
-        self.view = 1
         
         self.text_actor = draw_text('Init')
         self.renderer.AddActor(self.text_actor)
@@ -41,9 +42,7 @@ class vtkTimerCallback(object):
         if self.is_cam_on:
             place_camera(self.timer_count, self.vehicle.data, self.camera, self.cam_dist, self.cam_view)
 
-        self.vehicle.update(self.timer_count)
-
-        # if 0 <= self.timer_count and self.timer_count < int(self.num_frames - 1):
+        # self.vehicle.update(self.timer_count)
         if self.timer_count < self.num_frames - 1:
             obj.GetRenderWindow().Render()
             if self.video_record_flag:
