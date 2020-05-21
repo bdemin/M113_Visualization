@@ -40,17 +40,6 @@ class Surface(object):
 
         self.actors.append(self.get_surface_actor(self.surface_polydata))
         
-    def get_xyz_data(self):
-        # Return np arrays representing surface x,y,z data
-
-        # Surface x,y,z data supplied from a folder
-        if path:
-            x_data = np.loadtxt(path + 'x.txt', delimiter = ',')
-            y_data = np.loadtxt(path + 'y.txt', delimiter = ',')
-            z_data = np.loadtxt(path + 'z.txt', delimiter = ',')
-            # z_data -= 0.1 #fix ground clipping
-            return x_data, y_data, z_data
-
         # Surface data supplied directly
         # elif surface_data:
             # return surface_data
@@ -116,8 +105,18 @@ class Surface(object):
         PolyData.SetPolys(triangles)
         return PolyData
 
+    @staticmethod
+    def load_xyz_data_from_path(path):
+        # Return np arrays representing surface x,y,z data
+        
+        x_data = np.loadtxt(path + 'x.txt', delimiter = ',')
+        y_data = np.loadtxt(path + 'y.txt', delimiter = ',')
+        z_data = np.loadtxt(path + 'z.txt', delimiter = ',')
+        # z_data -= 0.1 # Fix ground clipping
 
     def apply_surface_filters(self, PolyData, logic):
+        return x_data, y_data, z_data
+
         if logic['color_map_flag']:
             visualize_elevation(PolyData)
             
