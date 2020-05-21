@@ -10,3 +10,4 @@ def draw_text(_input):
     text_prop.SetColor(1,1,1)
     text_actor.SetDisplayPosition(80,900)
     return text_actor
+    
