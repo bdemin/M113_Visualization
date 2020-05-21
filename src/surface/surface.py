@@ -8,7 +8,7 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyDataMapper, vtkActor, \
     vtkNamedColors
 
-from surface.functions import visualize_elevation, visualize_soil, create_soil_type_arr, get_spline_actor
+from .functions import visualize_elevation, visualize_soil, create_soil_type_arr, get_spline_actor
 
 
 class Surface(object):
