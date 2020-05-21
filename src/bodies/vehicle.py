@@ -4,7 +4,7 @@ from vtk import vtkSTLReader, vtkPolyDataMapper, vtkActor, vtkTransform
 
 
 class Vehicle(object):
-    # Metaclass to define common attributes of DBD vehicles.
+    # Class for containing common attributes.
     
     def __init__(self, path):
         self.data = dict()
@@ -20,7 +20,7 @@ class Vehicle(object):
 
 
 class M113(Vehicle):
-    # Inherits from Vehicle and adds all the relevant attributes for visualizing M113 DBD results.
+    # Container for all the relevant bodies of an M113 vehicle
     
     def __init__(self, path):
         Vehicle.__init__(self, path)
