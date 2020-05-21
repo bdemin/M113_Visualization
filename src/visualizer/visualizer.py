@@ -64,7 +64,8 @@ class Visualizer(object):
         callback.iren = self.iren
         callback.dt = total_time/num_frames
         
-        self.iren.AddObserver('TimerEvent', callback.execute)
+        # self.iren.AddObserver('TimerEvent', callback.execute)
+        self.iren.AddObserver('TimerEvent', callback.run_main_loop)
         self.iren.AddObserver('KeyPressEvent', callback.keypress)
         
         self.iren.CreateRepeatingTimer(int(1/FPMS)) #ms

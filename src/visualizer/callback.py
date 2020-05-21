@@ -32,12 +32,12 @@ class vtkTimerCallback(object):
             self.video_count = 1
             self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
 
+    def run_main_loop(self, obj, event):
 
     def keypress(self, obj, event):
         self.pause, self.camera_flag, self.camera_distance ,self.view, self.timer_count = keyboard_events(obj, self.pause, self.camera_flag, self.camera_distance, self.view, self.timer_count)
 
 
-    def execute(self, obj, event):
         if self.camera_flag:
             place_camera(self.timer_count, self.vehicle.data, self.camera, self.camera_distance, self.view)
 
