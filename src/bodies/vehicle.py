@@ -32,18 +32,18 @@ class M113(Vehicle):
 
 
 class Eitan(Vehicle):
-    def __init__(self):
-        Vehicle.__init__(self)
+    def __init__(self, path):
+        Vehicle.__init__(self, path)
 
 
 class MK4(Vehicle):
-    def __init__(self):
-        Vehicle.__init__(self)
+    def __init__(self, path):
+        Vehicle.__init__(self, path)
 
 
 class D9(Vehicle):
-    def __init__(self):
-        Vehicle.__init__(self)
+    def __init__(self, path):
+        Vehicle.__init__(self, path)
         
 
 def create_bodies(path_directory, type_, side = None):
