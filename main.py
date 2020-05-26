@@ -3,7 +3,8 @@ from src.app import app
 
 
 def main():
-    params.load_data('m113_novid')
+    # params.load_data('m113_novid')
+    params.load_data('eitan_novid')
 
     app.load_params(params.get_data)
     app.load_bodies_data()

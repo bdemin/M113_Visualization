@@ -71,6 +71,36 @@ class SimulationTypes(object):
             'video': video
         }
         
+    def eitan_novid(self):
+        # M113 visualization with all bodies, surface and no video recording
+
+        parent_directory = '../Eitan/Results/'
+
+        vehicle_type = 'Eitan'
+
+        bodies = {
+            'Chassis': True,
+            'road_wheels': True,
+        }
+
+        surface = {
+            'visualize_surface': True,
+            'soil_map_flag': False,
+            'color_map_flag': False,
+            'path_spline_flag': False
+        }
+
+        video = {
+            'record_video_flag': False,
+        }
+
+        self.params = {
+            'vehicle_type': vehicle_type,
+            'parent_directory': parent_directory,
+            'bodies': bodies,
+            'surface': surface,
+            'video': video
+        }
 
 class VisualizationParameters(SimulationTypes):
     # Class that deals with various visualization parameters - which bodies to include, surface filters, video recording, etc.
