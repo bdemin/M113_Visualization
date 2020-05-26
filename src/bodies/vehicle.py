@@ -35,7 +35,9 @@ class M113(Vehicle):
 
 class Eitan(Vehicle):
     def __init__(self, path):
-        Vehicle.__init__(self, path)
+        vehicle_type = self.__class__.__name__
+        Vehicle.__init__(self, path, vehicle_type)
+        self.data['road_wheels'] = create_bodies(path, vehicle_type, 'Road_Wheel', side = True)
 
 
 class MK4(Vehicle):
