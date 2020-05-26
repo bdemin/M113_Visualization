@@ -72,7 +72,7 @@ class SimulationTypes(object):
         }
         
     def eitan_novid(self):
-        # M113 visualization with all bodies, surface and no video recording
+        # Eitan visualization with all bodies, surface and no video recording
 
         parent_directory = '../Eitan/Results/'
 
@@ -106,6 +106,8 @@ class VisualizationParameters(SimulationTypes):
     # Class that deals with various visualization parameters - which bodies to include, surface filters, video recording, etc.
 
     def load_data(self, method_string):
+        # Load simulation data into instance
+        
         invoke_method = getattr(self, method_string)
         invoke_method()
 
