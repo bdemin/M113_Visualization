@@ -1,4 +1,5 @@
-def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
+# def keyboard_events(obj, pause, camera.is_on, camera_distance, view, timer):
+def keyboard_events(obj, pause, camera, timer):
     key = obj.GetKeySym()
     print(key)
     if key == 'o' and pause == False:
@@ -6,14 +7,14 @@ def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
     elif key == 'o':
         pause = False
         
-    if key == 'i' and camera_flag:
-        camera_flag = False
+    if key == 'i' and camera.is_on:
+        camera.is_on = False
     elif key == 'i':
-        camera_flag = True
+        camera.is_on = True
         
-    if key == 'u' and camera_flag:
+    if key == 'u' and camera.is_on:
         camera_distance += 1
-    if key == 'y' and camera_flag:
+    if key == 'y' and camera.is_on:
         camera_distance -= 1
 
     if key == 'v':
@@ -42,5 +43,5 @@ def keyboard_events(obj, pause, camera_flag, camera_distance, view, timer):
         pass
         
 
-    return pause, camera_flag, camera_distance, view, timer
+    return pause, camera.is_on, camera_distance, view, timer
     
