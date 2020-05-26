@@ -24,12 +24,13 @@ class M113(Vehicle):
     # Container for all the relevant bodies of an M113 vehicle
     
     def __init__(self, path):
-        Vehicle.__init__(self, path)
-        self.data['road_wheels'] = create_bodies(path, 'Road_Wheel', side = True)
-        self.data['trailing_arms'] = create_bodies(path, 'Trailing_Arm', side = True)
-        self.data['sprockets'] = create_bodies(path, 'Sprocket', side = True)
-        self.data['idlers'] = create_bodies(path, 'Idler', side = True)
-        self.data['track_units'] = create_bodies(path, 'Track_Unit', side = True)
+        vehicle_type = self.__class__.__name__
+        Vehicle.__init__(self, path, vehicle_type)
+        self.data['road_wheels'] = create_bodies(path, vehicle_type, 'Road_Wheel', side = True)
+        self.data['trailing_arms'] = create_bodies(path, vehicle_type, 'Trailing_Arm', side = True)
+        self.data['sprockets'] = create_bodies(path, vehicle_type, 'Sprocket', side = True)
+        self.data['idlers'] = create_bodies(path, vehicle_type, 'Idler', side = True)
+        self.data['track_units'] = create_bodies(path, vehicle_type, 'Track_Unit', side = True)
 
 
 class Eitan(Vehicle):
