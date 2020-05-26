@@ -68,7 +68,6 @@ def create_bodies(path_directory, type_, side = None):
     return bodies
 
 
-directory = 'resources/STL_data/'
 class Body(object):
     # Class factory to define a general body object
 
@@ -82,8 +81,9 @@ class Body(object):
         self.angles = path_dir[0]
         
         self.side = side
-
-        self.actor = self.get_stl_actor(directory + self.type + '.STL')
+        
+        directory = 'resources/STL_data/' + vehicle_type +'/' + self.type + '.STL'
+        self.actor = self.get_stl_actor(directory)
         self.actor.GetProperty().SetInterpolationToPhong()
 
         self.set_actor_visuals(self.actor, self.type)
