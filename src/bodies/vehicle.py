@@ -6,9 +6,10 @@ from vtk import vtkSTLReader, vtkPolyDataMapper, vtkActor, vtkTransform
 class Vehicle(object):
     # Class for containing common attributes.
     
-    def __init__(self, path):
+    def __init__(self, path, vehicle_type):
+        self.vehicle_type = vehicle_type
         self.data = dict()
-        self.data['chassis'] = create_bodies(path, 'Chassis')
+        self.data['chassis'] = create_bodies(path, vehicle_type, 'Chassis')
         # can be improved (inputs, func rather than method, path, etc)
 
     def update(self, timer_count):
@@ -46,7 +47,7 @@ class D9(Vehicle):
         Vehicle.__init__(self, path)
         
 
-def create_bodies(path_directory, type_, side = None):
+def create_bodies(path_directory, vehicle_type, type_, side = None):
     # Return a list of specific bodies data
 
     bodies = []
@@ -64,14 +65,14 @@ def create_bodies(path_directory, type_, side = None):
                 path_dir[:,0] = -path_dir[:,0]
             else:
                 side = 'R'
-        bodies.append(Body.factory(type_, path_loc, path_dir, side))
+        bodies.append(Body.factory(type_, path_loc, path_dir, vehicle_type, side))
     return bodies
 
 
 class Body(object):
     # Class factory to define a general body object
 
-    def __init__(self, type_, path_loc, path_dir, side = None):
+    def __init__(self, type_, path_loc, path_dir, vehicle_type, side = None):
         self.type = type_
 
         self.path_loc = path_loc
@@ -94,10 +95,10 @@ class Body(object):
                                     str(np.rad2deg(self.angles)))
 
     @staticmethod
-    def factory(type_, path_loc, path_dir, side = None):
+    def factory(type_, path_loc, path_dir, vehicle_type, side = None):
         if side:
-            return Asymmetrical(type_, path_loc, path_dir, side)
-        return Symmetrical(type_, path_loc, path_dir)
+            return Asymmetrical(type_, path_loc, path_dir, vehicle_type, side)
+        return Symmetrical(type_, path_loc, path_dir, vehicle_type)
 
     def update(self, timer_count):
         self.position = self.path_loc[timer_count]
@@ -140,8 +141,8 @@ class Body(object):
 class Symmetrical(Body):
     # Class definition for bodies which are symmetrical
 
-    def __init__(self, type_, path_loc, path_dir):
-        Body.__init__(self, type_, path_loc, path_dir) #remove side
+    def __init__(self, type_, path_loc, path_dir, vehicle_type):
+        Body.__init__(self, type_, path_loc, path_dir, vehicle_type) #remove side
 
     def place(self, chassis_angles):
         # Can remove this?
@@ -159,8 +160,8 @@ class Symmetrical(Body):
 class Asymmetrical(Body):
     # Class definition for bodies which are asymmetrical
 
-    def __init__(self, type_, path_loc, path_dir, side = None):
-        Body.__init__(self, type_, path_loc, path_dir, side)
+    def __init__(self, type_, path_loc, path_dir, vehicle_type, side = None):
+        Body.__init__(self, type_, path_loc, path_dir, vehicle_type, side)
 
     def place(self, chassis_angles):
         if self.side == 'L':
