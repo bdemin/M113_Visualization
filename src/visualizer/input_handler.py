@@ -39,13 +39,5 @@ def keyboard_events(obj, pause, camera, timer):
     elif key == 'h':
         camera.dolly_factor -= 1
 
-
-    # Add camera zoom
-    if key == 'equal':
-        pass
-    if key == 'minus':
-        pass
-        
-
     return pause, camera.is_on, camera_distance, view, timer
     
