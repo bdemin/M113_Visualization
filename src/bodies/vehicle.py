@@ -58,6 +58,44 @@ class D9(Vehicle):
 def create_bodies(path_directory, vehicle_type, type_, side = None):
     # Return a list of specific bodies data
 
+    if vehicle_type == 'Eitan':
+        if type_ == 'Chassis':
+            bodies = []
+            path_data = np.loadtxt(path_directory + type_ + '.txt', delimiter = ',')
+            num_cols = int(path_data.shape[1])
+            for index in range(0, 6, 6):
+                loc_slice = slice(index, index+3)
+                dir_slice = slice(index+3, index+6)
+                path_loc = np.copy(path_data[:, loc_slice])
+                path_dir = np.copy(path_data[:, dir_slice])
+                if side:
+                    if index < num_cols/2:
+                        side = 'L'
+                        path_dir[:,2] = path_dir[:,2] - np.pi
+                        path_dir[:,0] = -path_dir[:,0]
+                    else:
+                        side = 'R'
+                bodies.append(Body.factory(type_, path_loc, path_dir, vehicle_type, side))
+
+        elif type_ == 'Road_Wheel':
+            bodies = []
+            path_data = np.loadtxt(path_directory + type_ + '.txt', delimiter = ',')
+            num_cols = int(path_data.shape[1])
+            for index in range(0, num_cols, 6 + 19-7):
+                loc_slice = slice(index, index+3)
+                dir_slice = slice(index+3, index+6)
+                path_loc = np.copy(path_data[:, loc_slice])
+                path_dir = np.copy(path_data[:, dir_slice])
+                if side:
+                    if index < num_cols/2:
+                        side = 'L'
+                        path_dir[:,2] = path_dir[:,2] - np.pi
+                        path_dir[:,0] = -path_dir[:,0]
+                    else:
+                        side = 'R'
+                bodies.append(Body.factory(type_, path_loc, path_dir, vehicle_type, side))
+    return bodies
+
     bodies = []
     path_data = np.loadtxt(path_directory + type_ + '.txt', delimiter = ',')
     num_cols = int(path_data.shape[1])
