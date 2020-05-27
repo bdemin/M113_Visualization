@@ -35,3 +35,19 @@ class Camera(vtkCamera):
 
             cam_focal_point = chassis_pos
 
+        elif self.current_view == 'rear':
+            self.SetViewUp([0,0,1])
+            dir_vec = np.array((-3,0,1))
+            dir_vec = dir_vec / np.linalg.norm(dir_vec)
+
+            heading_vec = np.zeros(3)
+            heading_vec[0] = np.cos(chassis_dir[2])
+            heading_vec[1] = np.sin(chassis_dir[2])
+            heading_vec[2] = 0
+            heading_vec = heading_vec / np.linalg.norm(heading_vec)
+
+            camera_pos = chassis_pos - self.distance*heading_vec
+            
+            self.roll_angle = np.rad2deg(chassis_dir[0])
+            cam_focal_point = chassis_pos
+
