@@ -17,12 +17,15 @@ def keyboard_events(obj, pause, camera, timer):
         camera.distance -= 1
 
     if key == 'v':
-        if view == 'isometric':
-            view = 2
-        elif view == 2:
-            view = 3
+        if camera.current_view == 'isometric':
+            camera.current_view = 'general'
+        elif camera.current_view == 'general':
+            camera.current_view = 'rear'
+        elif camera.current_view == 'rear':
+            camera.current_view = 'top'
         else:
-            view = 'isometric'
+            camera.current_view = 'isometric'
+        print(f'Camera set to: {camera.current_view} view')
 
     if key == 'bracketright':
         # check if there is enough time
@@ -39,5 +42,5 @@ def keyboard_events(obj, pause, camera, timer):
     elif key == 'h':
         camera.dolly_factor -= 1
 
-    return pause, camera.is_on, camera_distance, view, timer
+    return pause, timer
     
