@@ -9,6 +9,7 @@ from .graphics.get_video import get_video
 from .input_handler import keyboard_events
 # from .graphics.transformations import scale_actor
 
+from .camera import Camera
 
 class vtkTimerCallback(object):
     # Change
