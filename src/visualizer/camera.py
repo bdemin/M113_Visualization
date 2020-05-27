@@ -1,3 +1,5 @@
+import numpy as np
+
 from vtk import vtkCamera
 
 
@@ -51,3 +53,15 @@ class Camera(vtkCamera):
             self.roll_angle = np.rad2deg(chassis_dir[0])
             cam_focal_point = chassis_pos
 
+        elif self.current_view == 'top':
+            self.roll_angle = 0
+
+            dir_vec = np.array((0,0,1))
+            camera_pos = chassis_pos + dir_vec*self.distance
+            cam_focal_point = chassis_pos
+            
+        # Place camera and set focal point:
+        self.SetPosition(camera_pos)
+        self.SetFocalPoint(cam_focal_point)
+        self.Roll(self.roll_angle)
+        # self.Dolly(self.dolly_factor)
