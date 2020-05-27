@@ -17,13 +17,11 @@ class vtkTimerCallback(object):
     # Move observer definitions here?
 
         self.timer_count = 1
-        self.cam_view = 'isometric'
         self.pause = True
-        self.is_cam_on = True
         
+        self.camera = Camera()
+
         self.renderer = renderer
-        self.camera = vtkCamera()
-        self.cam_dist = 14
         self.renderer.SetActiveCamera(self.camera)
         
         self.text_actor = draw_text('Init')
@@ -38,8 +36,8 @@ class vtkTimerCallback(object):
     def run_main_loop(self, obj, event):
         # self.run_timestep()
 
-        if self.is_cam_on:
-            place_camera(self.timer_count, self.vehicle.data, self.camera, self.cam_dist, self.cam_view)
+        if self.camera.is_on:
+            self.camera.place_camera(self.timer_count, self.vehicle.get_pos_and_dir)
 
         # self.vehicle.update(self.timer_count)
         if self.timer_count < self.num_frames - 1:
