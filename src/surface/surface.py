@@ -49,6 +49,8 @@ class Surface(object):
         # Triangulate the data and return vtkPolyData object.
         
         x_data, y_data, z_data = xyz_data
+        x_data, y_data = y_data, x_data
+        z_data = np.transpose(z_data)
         self.m = z_data.shape[0]
         self.n = z_data.shape[1]
         
