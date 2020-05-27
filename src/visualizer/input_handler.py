@@ -24,12 +24,12 @@ def keyboard_events(obj, pause, camera, timer):
         else:
             view = 'isometric'
 
-    if pause:
-        if key == 'bracketright':
-            timer += 10
-        elif key == 'bracketleft':
-            if timer > 10:
-                timer -= 10
+    if key == 'bracketright':
+        # check if there is enough time
+        timer += 10
+    elif key == 'bracketleft':
+        if timer > 10:
+            timer -= 10
 
     if key == 'backslash':
         timer = 0
