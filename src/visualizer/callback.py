@@ -6,7 +6,7 @@ from vtk import vtkRenderer, vtkRenderWindow, \
 
 from .graphics.draw_text import draw_text
 from .graphics.get_video import get_video
-from .event_handling import keyboard_events
+from .input_handler import keyboard_events
 # from .graphics.transformations import scale_actor
 
 
@@ -60,7 +60,8 @@ class vtkTimerCallback(object):
         self.timer_count += 1
 
     def keypress(self, obj, event):
-        self.pause, self.is_cam_on, self.cam_dist ,self.cam_view, self.timer_count = keyboard_events(obj, self.pause, self.is_cam_on, self.cam_dist, self.cam_view, self.timer_count)
+        self.pause, self.timer_count = \
+            keyboard_events(obj, self.pause, self.camera, self.timer_count)
 
 
     def handle_video(self):
