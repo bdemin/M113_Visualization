@@ -34,6 +34,11 @@ def keyboard_events(obj, pause, camera, timer):
     if key == 'backslash':
         timer = 0
 
+    if key == 'j':
+        camera.dolly_factor += 1
+    elif key == 'h':
+        camera.dolly_factor -= 1
+
 
     # Add camera zoom
     if key == 'equal':
