@@ -1,10 +1,9 @@
 import numpy as np
 
-from vtk import vtkCamera, vtkRenderer, vtkRenderWindow, \
+from vtk import vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
     vtkOrientationMarkerWidget
 
-from .graphics.place_camera import place_camera
 from .graphics.draw_text import draw_text
 from .graphics.get_video import get_video
 from .event_handling import keyboard_events

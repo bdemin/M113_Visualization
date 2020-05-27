@@ -25,7 +25,6 @@ class Visualizer(object):
         self.renderer.GradientBackgroundOn()
         self.renderer.SetBackground(0,0,0.5)
         self.renderer.SetBackground2(0.2,0.2,0.6)
-        self.renWin.SetSize(1920, 1080)
 
         win_scale = 1/1.25
         win_size = (int(win_scale*1920), int(win_scale*1080))
@@ -65,7 +64,6 @@ class Visualizer(object):
         callback.iren = self.iren
         callback.dt = total_time/num_frames
         
-        # self.iren.AddObserver('TimerEvent', callback.execute)
         self.iren.AddObserver('TimerEvent', callback.run_main_loop)
         self.iren.AddObserver('KeyPressEvent', callback.keypress)
         

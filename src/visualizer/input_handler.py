@@ -1,7 +1,6 @@
 # def keyboard_events(obj, pause, camera.is_on, camera_distance, view, timer):
 def keyboard_events(obj, pause, camera, timer):
     key = obj.GetKeySym()
-    print(key)
     if key == 'o' and pause == False:
         pause = True
     elif key == 'o':
