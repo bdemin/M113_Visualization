@@ -12,9 +12,9 @@ def keyboard_events(obj, pause, camera, timer):
         camera.is_on = True
         
     if key == 'u' and camera.is_on:
-        camera_distance += 1
+        camera.distance += 1
     if key == 'y' and camera.is_on:
-        camera_distance -= 1
+        camera.distance -= 1
 
     if key == 'v':
         if view == 'isometric':
