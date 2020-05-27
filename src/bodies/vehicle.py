@@ -19,6 +19,11 @@ class Vehicle(object):
                 body.update(timer_count)
                 body.place(chassis_angles)
 
+    @property
+    def get_pos_and_dir(self):
+        position = self.data['chassis'][0].position
+        direction = self.data['chassis'][0].angles
+        return position, direction
 
 class M113(Vehicle):
     # Container for all the relevant bodies of an M113 vehicle
