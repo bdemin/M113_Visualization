@@ -15,3 +15,12 @@ class Text(object):
 
         self.actor.SetInput('Visualization ready')
 
+    def update(self, frame, view):
+        text = 'Time = %.1f seconds' % (frame * self.dt)
+        text += f'\nCurrent view: {view}'
+        self.actor.SetInput(text)
+
+    def pause(self, view):
+        text = 'Paused'
+        text += f'\nCurrent view: {view}'
+        self.actor.SetInput(text)
