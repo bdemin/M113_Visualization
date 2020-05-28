@@ -13,8 +13,8 @@ from .camera import Camera
 
 class vtkTimerCallback(object):
     # Change
-    def __init__(self, renderer, renWin, rate, video_record_flag):
     # I can try putting most visualize commands here?
+    def __init__(self, renderer, renWin, rate, video_record_flag, dt):
     # Move observer definitions here?
 
         self.timer_count = 1
