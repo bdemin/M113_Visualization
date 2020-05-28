@@ -1,3 +1,5 @@
+from win32api import GetSystemMetrics
+
 from vtk import vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
     vtkOrientationMarkerWidget
@@ -26,8 +28,9 @@ class Visualizer(object):
         self.renderer.SetBackground(0,0,0.5)
         self.renderer.SetBackground2(0.2,0.2,0.6)
 
-        win_scale = 1/1.25
-        win_size = (int(win_scale*1920), int(win_scale*1080))
+        disp_res = GetSystemMetrics(0), GetSystemMetrics(1)
+        win_scale = 1
+        win_size = (int(win_scale*disp_res[0]), int(win_scale*disp_res[1]))
         self.renWin.SetSize(win_size)
 
         # Add stationary axes
