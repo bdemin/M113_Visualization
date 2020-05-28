@@ -4,7 +4,7 @@ from vtk import vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
     vtkOrientationMarkerWidget
 
-from .graphics.draw_text import draw_text
+from .graphics.draw_text import Text
 from .graphics.get_video import get_video
 from .input_handler import keyboard_events
 # from .graphics.transformations import scale_actor
@@ -25,8 +25,8 @@ class vtkTimerCallback(object):
         self.renderer = renderer
         self.renderer.SetActiveCamera(self.camera)
         
-        self.text_actor = draw_text('Init')
-        self.renderer.AddActor(self.text_actor)
+        self.text = Text(dt)
+        self.renderer.AddActor(self.text.actor)
         
         self.video_record_flag = video_record_flag
         if self.video_record_flag:
@@ -47,7 +47,7 @@ class vtkTimerCallback(object):
                 self.handle_video()
 
             if self.pause == True:
-                self.text_actor.SetInput('Pause')
+                self.text.pause(self.camera.current_view)
                 obj.GetRenderWindow().Render()
             else:
                 self.run_timestep()
@@ -56,8 +56,7 @@ class vtkTimerCallback(object):
             
     def run_timestep(self):
         self.vehicle.update(self.timer_count)
-        text = 'time = %.1fs' % (self.timer_count * self.dt)
-        self.text_actor.SetInput(text)
+        self.text.update(self.timer_count, self.camera.current_view)
         self.timer_count += 1
 
     def keypress(self, obj, event):
