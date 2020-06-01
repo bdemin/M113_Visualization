@@ -50,8 +50,9 @@ class Visualizer(object):
                 for body in body_type:
                     self.renderer.AddActor(body.actor)
 
-        for actor in self.surface.actors:
-            self.renderer.AddActor(actor)
+        if self.surface.actors:
+            for actor in self.surface.actors:
+                self.renderer.AddActor(actor)
 
     def init_callback(self, total_time, num_frames):
         self.iren.Initialize()
