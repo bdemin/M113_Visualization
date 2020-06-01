@@ -13,24 +13,24 @@ from .input_handler import keyboard_events
 
 class vtkTimerCallback(object):
     # Change
-    def __init__(self, renderer, renWin, rate, video_record_flag, dt):
+    def __init__(self, visualizer):
     # Move observer definitions here?
         self.timer_count = 1
         self.pause = True
-        self.video_record_flag = video_record_flag
+        self.video_record_flag = visualizer.video_record_flag
         
         self.camera = Camera()
 
-        self.renderer = renderer
+        self.renderer = visualizer.renderer
         self.renderer.SetActiveCamera(self.camera)
         
-        self.text = Text(dt)
+        self.text = Text(visualizer.dt)
         self.renderer.AddActor(self.text.actor)
         
         if self.video_record_flag:
             self.rate = rate
             self.video_count = 1
-            self._filter, self.writer = get_video(renWin, self.rate, 'M113_' + str(self.video_count))
+            self._filter, self.writer = get_video(visualizer.renWin, self.rate, 'M113_' + str(self.video_count))
 
     def run_main_loop(self, obj, event):
         # self.run_timestep()

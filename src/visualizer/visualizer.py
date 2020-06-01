@@ -57,11 +57,10 @@ class Visualizer(object):
         self.iren.Initialize()
         
         # Sign up to receive TimerEvent
-        FPS = num_frames/total_time
-        FPMS = FPS/1000
-        dt = total_time/num_frames
+        self.FPS = num_frames/total_time
+        self.dt = total_time/num_frames
         
-        callback = vtkTimerCallback(self.renderer, self.renWin, FPS, self.video_record_flag, dt)
+        callback = vtkTimerCallback(self)
         callback.vehicle = self.vehicle
         callback.ren = self.renderer
         callback.num_frames = num_frames
