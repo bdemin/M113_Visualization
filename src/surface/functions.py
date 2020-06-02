@@ -1,8 +1,47 @@
 import numpy as np
+from PIL import Image
 
 from vtk import vtkLookupTable, vtkUnsignedCharArray, vtkNamedColors, \
     vtkCellLocator, vtkPoints, mutable, vtkParametricSpline, vtkParametricFunctionSource, \
         vtkPolyDataMapper, vtkActor
+
+
+def map_texture(surface, filename):
+    # Load a texture and map it onto surface
+
+    im_file = 'resources/textures/' + filename + '.jpg'
+    im_data = Image.open(im_file, 'r')
+    im_data = im_data.resize((50,50))
+
+    color_map = vtkUnsignedCharArray()
+    color_map.SetNumberOfComponents(3)
+    color_map.SetName("Colors")
+
+    img_i = 0
+    img_j = 0
+    for _ in range(surface.m - 1):
+        for _ in range(surface.n - 1):
+            # A pixel is represented as 2 triangles arranged as a square.
+            # Each triangle contains 3 points, so we color 6 consecutive
+            # points for each pixel.
+            for _ in range(6):
+                color_map.InsertNextTypedTuple(im_data.getpixel((img_i, img_j)))
+                
+            if img_j >= im_data.height - 1:
+                img_j = 0
+            else:
+                img_j += 1
+        img_j = 0
+        if img_i >= im_data.width - 1:
+            img_i = 0
+        else:
+            img_i += 1
+
+    surface.surface_polydata.GetPointData().SetScalars(color_map)
+
+
+
+
 
 
 def visualize_elevation(PolyData):

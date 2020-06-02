@@ -39,6 +39,7 @@ class Surface(object):
         color_map_flag = logic['color_map_flag'] # Create elevation-based colormap for the ground
         soil_map_flag = logic['soil_map_flag'] # Create soil-based colormap for the ground
         path_spline_flag = logic['path_spline_flag'] # Render a spline marking the vehicle's drive path
+        texture = logic['texture_map'] # Map a texture on the ground
 
         if logic:
             surface_polydata = self.apply_surface_filters(self.surface_polydata, logic, chassis_cg_path)
@@ -121,6 +122,9 @@ class Surface(object):
         elif logic['soil_map_flag']:
             soil_type_array = create_soil_type_arr((self.m, self.n))
             visualize_soil(PolyData, soil_type_array)
+        
+        elif logic['texture_map']:
+            map_texture(self, logic['texture_map'])
 
         elif logic['path_spline_flag']:
                 self.actors.append(self.get_line_actor(surface_polydata, chassis_cg_path))
