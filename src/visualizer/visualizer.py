@@ -17,7 +17,7 @@ class Visualizer(object):
         else:
             self.video_record_flag = False
 
-        # Create renderer, figure and axes
+        # Create renderer, window and interactor
         self.renderer = vtkRenderer()
         self.renWin = vtkRenderWindow()
         self.renWin.AddRenderer(self.renderer)
@@ -57,6 +57,7 @@ class Visualizer(object):
 
     def init_callback(self, total_time, num_frames):
         self.iren.Initialize()
+        # self.renWin.Render()
         
         # Sign up to receive TimerEvent
         self.FPS = num_frames/total_time
@@ -71,5 +72,6 @@ class Visualizer(object):
         self.iren.AddObserver('TimerEvent', callback.run_main_loop)
         self.iren.AddObserver('KeyPressEvent', callback.keypress)
         
-        self.iren.CreateRepeatingTimer(int(1/FPMS)) #ms
+        FPMS = self.FPS/1000 # frames per millisecond
+        self.iren.CreateRepeatingTimer(int(1/FPMS))
         self.iren.Start()
