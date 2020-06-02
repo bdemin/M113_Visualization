@@ -87,7 +87,8 @@ class SimulationTypes(object):
             'visualize_surface': True,
             'soil_map_flag': False,
             'color_map_flag': False,
-            'path_spline_flag': False
+            'path_spline_flag': False,
+            'texture_map': 'grass'
         }
 
         video = {
