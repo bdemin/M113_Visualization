@@ -209,9 +209,6 @@ def get_spline_actor(surface_data, chassis_cg_path):
     
     return spline_actor
 
-import numpy as np
-
-
 def get_random_surface_xyz_data():
     np.random.seed(1)
 

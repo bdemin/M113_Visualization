@@ -57,7 +57,6 @@ class Visualizer(object):
 
     def init_callback(self, total_time, num_frames):
         self.iren.Initialize()
-        # self.renWin.Render()
         
         # Sign up to receive TimerEvent
         self.FPS = num_frames/total_time

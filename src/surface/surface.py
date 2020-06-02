@@ -1,5 +1,4 @@
 import numpy as np
-import os.path
 from os.path import exists
 
 from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
@@ -8,7 +7,8 @@ from vtk import vtkPoints, vtkCellArray, vtkTriangle, \
     vtkPolyDataMapper, vtkActor, \
     vtkNamedColors
 
-from .functions import visualize_elevation, visualize_soil, create_soil_type_arr, get_spline_actor
+# from .functions import visualize_elevation, visualize_soil, create_soil_type_arr, get_spline_actor, map_texture
+from .functions import *
 
 
 class Surface(object):
@@ -129,7 +129,7 @@ class Surface(object):
         cleanPolyData = vtkCleanPolyData()
         cleanPolyData.SetInputData(PolyData)
         
-        # Use a filter to smooth the data (will add triangles and smooth)
+        # Use a filter to smooth the data
         smooth_loop = vtkLoopSubdivisionFilter()
         smooth_loop.SetNumberOfSubdivisions(3)
         smooth_loop.SetInputConnection(cleanPolyData.GetOutputPort())
