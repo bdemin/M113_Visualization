@@ -81,6 +81,7 @@ class SimulationTypes(object):
         bodies = {
             'Chassis': True,
             'road_wheels': True,
+            'rims': True
         }
 
         surface = {

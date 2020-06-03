@@ -43,6 +43,7 @@ class Eitan(Vehicle):
         vehicle_type = self.__class__.__name__
         Vehicle.__init__(self, path, vehicle_type)
         self.data['road_wheels'] = create_bodies(path, vehicle_type, 'Road_Wheel', side = True)
+        self.data['rims'] = create_bodies(path, vehicle_type, 'Rim', side = True)
 
 
 class MK4(Vehicle):
@@ -77,9 +78,9 @@ def create_bodies(path_directory, vehicle_type, type_, side = None):
                         side = 'R'
                 bodies.append(Body.factory(type_, path_loc, path_dir, vehicle_type, side))
 
-        elif type_ == 'Road_Wheel':
+        elif type_ == 'Road_Wheel' or type_ == 'Rim':
             bodies = []
-            path_data = np.loadtxt(path_directory + type_ + '.txt', delimiter = ',')
+            path_data = np.loadtxt(path_directory + 'Road_Wheel' + '.txt', delimiter = ',')
             num_cols = int(path_data.shape[1])
             for index in range(0, num_cols, 6 + 19-7):
                 loc_slice = slice(index, index+3)
@@ -165,8 +166,11 @@ class Body(object):
     def set_actor_visuals(self, actor, _type):
         # Class level definition of visual properties
 
-        Chassis = {'color':(0.244, 0.275, 0.075), 'ambi':0.1, 'ambic':(0.3,0.3,0.3), 'diff':0.9, 'diffc':(0.396, 0.263, 0.129), 'spec':0.6, 'specp':10}
-        Road_Wheel = {'color':(0.194, 0.225, 0.025), 'ambi':0.4, 'ambic':(1,1,1), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        # Chassis = {'color':(0.244, 0.275, 0.075), 'ambi':0.1, 'ambic':(0.3,0.3,0.3), 'diff':0.9, 'diffc':(0.396, 0.263, 0.129), 'spec':0.6, 'specp':10}
+        Chassis = {'color':(167/255, 158/255, 125/255), 'ambi':0.1, 'ambic':(0.3,0.3,0.3), 'diff':0.9, 'diffc':(0.396, 0.263, 0.129), 'spec':0.6, 'specp':10}
+        # Road_Wheel = {'color':(0.194, 0.225, 0.025), 'ambi':0.4, 'ambic':(1,1,1), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        Road_Wheel = {'color':(0.2, 0.2, 0.2), 'ambi':0.4, 'ambic':(1,1,1), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
+        Rim = {'color':(167/255, 158/255, 125/255), 'ambi':0.4, 'ambic':(1,1,1), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
         Sprocket = {'color':(0.194, 0.225, 0.025), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
         Idler = {'color':(0.194, 0.225, 0.025), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
         Track_Unit = {'color':(0.35,0.35,0.35), 'ambi':0.3, 'ambic':(0,0,0), 'diff':0.3, 'diffc':(0.396, 0.263, 0.129), 'spec':0, 'specp':0}
