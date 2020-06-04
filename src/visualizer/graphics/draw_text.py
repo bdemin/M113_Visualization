@@ -20,7 +20,3 @@ class Text(object):
         text += f'\nCurrent view: {view}'
         self.actor.SetInput(text)
 
-    def pause(self, view):
-        text = 'Paused'
-        text += f'\nCurrent view: {view}'
-        self.actor.SetInput(text)
