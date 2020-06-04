@@ -12,7 +12,7 @@ class Vehicle(object):
         self.data['chassis'] = create_bodies(path, vehicle_type, 'Chassis')
         # can be improved (inputs, func rather than method, path, etc)
 
-    def update(self, timer_count):
+    def update(self, timer_count = 0):
         chassis_angles = self.data['chassis'][0].angles
         for bodies in self.data.values():
             for body in bodies:
