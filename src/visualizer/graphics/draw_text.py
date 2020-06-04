@@ -15,8 +15,15 @@ class Text(object):
         self.callback = callback
         self.callback.renderer.AddActor(self.actor)
 
-    def update(self, frame, view):
-        text = 'Time = %.1f seconds' % (frame * self.dt)
-        text += f'\nCurrent view: {view}'
-        self.actor.SetInput(text)
+        self.update()
+        
+    def update(self):
+        # Update text with new callback data
 
+        self.text[0] = 'Paused' if self.callback.pause \
+            else ''
+        self.text[1] = 'Time = %.1f seconds' % (self.callback.timer_count * self.dt)
+        self.text[2] = f'Current view: {self.callback.camera.current_view}'
+        self.text[3] = 'Camera enabled' if self.callback.camera.is_on \
+            else 'Camera disabled'
+        self.actor.SetInput('\n'.join(self.text))

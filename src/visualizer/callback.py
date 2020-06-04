@@ -24,7 +24,6 @@ class vtkTimerCallback(object):
         self.renderer = visualizer.renderer
         self.renderer.SetActiveCamera(self.camera)
         
-        self.renderer.AddActor(self.text.actor)
         self.text = Text(self, visualizer.dt)
         
         if self.video_record_flag:
@@ -45,16 +44,15 @@ class vtkTimerCallback(object):
                 self.handle_video()
 
             if self.pause == True:
-                self.text.pause(self.camera.current_view)
                 obj.GetRenderWindow().Render()
             else:
                 self.run_timestep()
         else:
             self.reset()
+        self.text.update()
             
     def run_timestep(self):
         self.vehicle.update(self.timer_count)
-        self.text.update(self.timer_count, self.camera.current_view)
         self.timer_count += 1
 
     def keypress(self, obj, event):
