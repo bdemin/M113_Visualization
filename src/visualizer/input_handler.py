@@ -1,46 +1,44 @@
-# def keyboard_events(obj, pause, camera.is_on, camera_distance, view, timer):
-def keyboard_events(obj, pause, camera, timer):
+# Fix conditionals
+
+def keyboard_events(obj, callback):
     key = obj.GetKeySym()
-    if key == 'o' and pause == False:
-        pause = True
+    if key == 'o' and callback.pause == False:
+        callback.pause = True
     elif key == 'o':
-        pause = False
+        callback.pause = False
         
-    if key == 'i' and camera.is_on:
-        camera.is_on = False
+    if key == 'i' and callback.camera.is_on:
+        callback.camera.is_on = False
     elif key == 'i':
-        camera.is_on = True
+        callback.camera.is_on = True
         
-    if key == 'u' and camera.is_on:
-        camera.distance += 1
-    if key == 'y' and camera.is_on:
-        camera.distance -= 1
+    if key == 'u' and callback.camera.is_on:
+        callback.camera.distance += 1
+    if key == 'y' and callback.camera.is_on:
+        callback.camera.distance -= 1
 
     if key == 'v':
-        if camera.current_view == 'isometric':
-            camera.current_view = 'general'
-        elif camera.current_view == 'general':
-            camera.current_view = 'rear'
-        elif camera.current_view == 'rear':
-            camera.current_view = 'top'
+        if callback.camera.current_view == 'isometric':
+            callback.camera.current_view = 'general'
+        elif callback.camera.current_view == 'general':
+            callback.camera.current_view = 'rear'
+        elif callback.camera.current_view == 'rear':
+            callback.camera.current_view = 'top'
         else:
-            camera.current_view = 'isometric'
-        print(f'Camera set to: {camera.current_view} view')
+            callback.camera.current_view = 'isometric'
+        print(f'Camera set to: {callback.camera.current_view} view')
 
     if key == 'bracketright':
         # check if there is enough time
-        timer += 10
+        callback.timer_count += 10
     elif key == 'bracketleft':
-        if timer > 10:
-            timer -= 10
+        if callback.timer_count > 10:
+            callback.timer_count -= 10
 
     if key == 'backslash':
-        timer = 0
+        callback.timer_count = 0
 
     if key == 'j':
-        camera.dolly_factor += 1
+        callback.camera.dolly_factor += 1
     elif key == 'h':
-        camera.dolly_factor -= 1
-
-    return pause, timer
-    
+        callback.camera.dolly_factor -= 1

@@ -52,9 +52,7 @@ class vtkTimerCallback(object):
         self.timer_count += 1
 
     def keypress(self, obj, event):
-        self.pause, self.timer_count = \
-            keyboard_events(obj, self.pause, self.camera, self.timer_count)
-
+        keyboard_events(obj, self)
     def handle_video(self):
         if self.timer_count % 500 == 0:
             self.writer.End()
