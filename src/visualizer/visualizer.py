@@ -7,6 +7,7 @@ from vtk import vtkRenderer, vtkRenderWindow, \
 from .callback import vtkTimerCallback
 
 
+# Add resolution data to instance?
 class Visualizer(object):
     def __init__(self, logic = None, vehicle = None, surface = None):
         self.vehicle = vehicle
@@ -39,7 +40,7 @@ class Visualizer(object):
         self.widget = vtkOrientationMarkerWidget()
         self.widget.SetOrientationMarker(vtkAxesActor())
         self.widget.SetInteractor(self.iren)
-        self.widget.SetViewport(0.02, 0.4, 0.1, 0.7)
+        self.widget.SetViewport(0.02, 0.04, 0.3, 0.3)
         self.widget.EnabledOn()
         self.widget.InteractiveOn()
 
