@@ -24,8 +24,8 @@ class vtkTimerCallback(object):
         self.renderer = visualizer.renderer
         self.renderer.SetActiveCamera(self.camera)
         
-        self.text = Text(visualizer.dt)
         self.renderer.AddActor(self.text.actor)
+        self.text = Text(self, visualizer.dt)
         
         if self.video_record_flag:
             self.rate = rate
