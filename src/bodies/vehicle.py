@@ -193,7 +193,7 @@ class Symmetrical(Body):
 
     def __init__(self, type_, path_loc, path_dir, vehicle_type):
         Body.__init__(self, type_, path_loc, path_dir, vehicle_type) #remove side
-
+        
     def place(self, chassis_angles):
         # Can remove this?
         trans = vtkTransform()
@@ -212,6 +212,9 @@ class Asymmetrical(Body):
 
     def __init__(self, type_, path_loc, path_dir, vehicle_type, side = None):
         Body.__init__(self, type_, path_loc, path_dir, vehicle_type, side)
+        
+        # Fix roll direction with asymmetrical bodies
+        self.path_dir[:,0] = self.path_dir[:,0] * -1
 
     def place(self, chassis_angles):
         if self.side == 'L':
