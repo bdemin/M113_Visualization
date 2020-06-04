@@ -3,6 +3,8 @@ from vtk import vtkTextActor
 
 class Text(object):
     def __init__(self, callback, dt):
+        # Class to handle dynamic text object on the graphics window
+        
         self.text = 4*[None]
         self.actor = vtkTextActor()
         text_prop = self.actor.GetTextProperty()

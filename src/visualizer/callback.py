@@ -1,5 +1,3 @@
-import numpy as np
-
 from vtk import vtkRenderer, vtkRenderWindow, \
     vtkRenderWindowInteractor, vtkAxesActor, \
     vtkOrientationMarkerWidget
@@ -8,11 +6,9 @@ from .camera import Camera
 from .graphics.draw_text import Text
 from .graphics.get_video import get_video
 from .input_handler import keyboard_events
-# from .graphics.transformations import scale_actor
 
 
 class vtkTimerCallback(object):
-    # Change
     def __init__(self, visualizer):
     # Move observer definitions here?
         self.timer_count = 1
